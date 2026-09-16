@@ -1,0 +1,59 @@
+import { Component, signal } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Auth } from '../../../servicios/auth';
+
+@Component({
+  imports: [ReactiveFormsModule],
+  selector: 'app-registro',
+  styleUrl: './registro.css',
+  templateUrl: './registro.html',
+})
+export class Registro {
+  formulario = new FormGroup({
+    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
+    nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    tipoSangre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    colorOjos: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    diasVacacionesAnio: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
+  });
+
+  error = signal('');
+  cargando = signal(false);
+  
+  constructor(private auth: Auth, private router: Router) {}
+
+  async registrar() {
+    if (this.formulario.invalid) {
+      return;
+    }
+
+    this.cargando.set(true);
+    this.error.set('');
+
+    const valores = this.formulario.getRawValue();
+
+    const { error } = await this.auth.registrarUsuario({
+      email: valores.email,
+      password: valores.password,
+      nombre: valores.nombre,
+      apellido: valores.apellido,
+      fechaNacimiento: valores.fechaNacimiento,
+      tipoSangre: valores.tipoSangre,
+      colorOjos: valores.colorOjos,
+      diasVacacionesAnio: valores.diasVacacionesAnio,
+    });
+
+    this.cargando.set(false);
+
+    if (error) {
+      this.error.set(error.message);
+      return;
+    }
+
+    this.router.navigate(['/login']);
+  }
+}
