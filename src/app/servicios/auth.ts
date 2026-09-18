@@ -1,4 +1,4 @@
-import { Service, inject } from '@angular/core';
+import { Service, inject, signal } from '@angular/core';
 import { Supabase } from './supabase';
 import { DatosRegistro } from '../modelos/datos-registro';
 import { DatosLogin } from '../modelos/datos-login';
@@ -6,18 +6,45 @@ import { UsuarioActual } from '../modelos/usuario-actual';
 
 @Service()
 export class Auth {
-  private supabaseService = inject(Supabase);
+    private supabaseService = inject(Supabase);
 
-  signIn(email: string, password: string) {
-    return this.supabaseService.supabase.auth.signInWithPassword({ email, password });
-  }
+    usuarioLogueado = signal(false);
+    usuarioActual = signal<UsuarioActual | null>(null);
+    
+    ingresoAnonimo = signal(false);
+    datosAnonimo = signal<{ nombre: string; apellido: string } | null>(null);
 
-    signUp(email: string, password: string) {
-        return this.supabaseService.supabase.auth.signUp({email, password});
+    constructor() {
+    this.actualizarUsuarioLogueado()
     }
 
-    signOut() {
-        return this.supabaseService.supabase.auth.signOut();
+    private async actualizarUsuarioLogueado() {
+        const usuario = await this.getCurrentUser();
+        this.usuarioLogueado.set(usuario !== null);
+        this.usuarioActual.set(usuario);
+    }
+
+      marcarIngresoAnonimo(nombre: string, apellido: string) {
+        this.ingresoAnonimo.set(true);
+        this.datosAnonimo.set({ nombre, apellido });
+    }
+
+    async signIn(email: string, password: string) {
+        const resultado = await this.supabaseService.supabase.auth.signInWithPassword({ email, password });
+        await this.actualizarUsuarioLogueado();
+        return resultado;
+    }
+
+    async signUp(email: string, password: string) {
+        const resultado = await this.supabaseService.supabase.auth.signUp({ email, password });
+        await this.actualizarUsuarioLogueado();
+        return resultado;
+    }
+
+    async signOut() {
+        const resultado = await this.supabaseService.supabase.auth.signOut();
+        await this.actualizarUsuarioLogueado();
+        return resultado;
     }
 
     getUser() {
@@ -29,20 +56,20 @@ export class Auth {
     }
 
     async getCurrentUser(): Promise<UsuarioActual | null> {
-    const { data: sesion } = await this.getUser();
+        const { data: sesion } = await this.getUser();
 
-    if (!sesion.user) {
-        return null;
+        if (!sesion.user) {
+            return null;
+        }
+
+        const { data: usuario } = await this.supabaseService.supabase
+            .from('usuarios')
+            .select('id, mail, rol')
+            .eq('id', sesion.user.id)
+            .single();
+
+        return usuario;
     }
-
-    const { data: usuario } = await this.supabaseService.supabase
-        .from('usuarios')
-        .select('id, mail, rol')
-        .eq('id', sesion.user.id)
-        .single();
-
-    return usuario;
-}
 
     obtenerRutaHomePorRol(rol: string | undefined): string {
         switch (rol) {
@@ -78,6 +105,10 @@ export class Auth {
                 dias_vacaciones_anio: datos.diasVacacionesAnio,
             });
 
-        return { error: errorPerfil };
-    }
+            return { error: errorPerfil };
+        }
+
+
+
+
 }

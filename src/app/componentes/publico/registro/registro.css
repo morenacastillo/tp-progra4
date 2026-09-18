@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-image: linear-gradient(rgba(43, 10, 12, 0.85), rgba(43, 10, 12, 0.85)), var(--img-splash);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.auth-card {
+  max-width: 520px;
+}
+
+.auth-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.campo-ancho {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+  .auth-card form {
+    grid-template-columns: 1fr;
+  }
+}
+

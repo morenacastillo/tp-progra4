@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../servicios/auth';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
@@ -43,7 +43,11 @@ export class Login {
 
     this.cargando.set(false);
 
-    this.router.navigate([this.auth.obtenerRutaHomePorRol(usuario?.rol)]);
+    this.router.navigate(['/home-cliente'])
   }
+
+  
 }
+
+
 
