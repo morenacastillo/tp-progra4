@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  padding: 32px 24px;
+}
+
+.detalle {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.detalle img {
+  width: 280px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--color-surface-light);
+}
+
+.info {
+  flex: 1;
+  min-width: 240px;
+}

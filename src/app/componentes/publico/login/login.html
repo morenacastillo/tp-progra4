@@ -3,17 +3,21 @@
 
   <form [formGroup]="formulario" (ngSubmit)="login()">
 
-    <label for="email">Mail</label>
-    <input id="email" type="email" formControlName="email" placeholder="Ingresa tu correo electronico"/>
+    <div class="campo">
+      <label for="email">Mail</label>
+      <input id="email" type="email" formControlName="email" placeholder="Ingresa tu correo electronico"/>
+    </div>
 
-    <label for="password">Contraseña</label>
-    <input id="password" type="password" formControlName="password" placeholder="Ingresa tu contraseña"/>
+    <div class="campo">
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" formControlName="password" placeholder="Ingresa tu contraseña"/>
+    </div>
 
     @if (error()) {
-      <p class="error">{{ error() }}</p>
+      <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    <button type="submit" [disabled]="formulario.invalid || cargando()">
+    <button type="submit" class="campo-ancho" [disabled]="formulario.invalid || cargando()">
       @if (cargando()) {
         Ingresando...
       } @else {
@@ -21,10 +25,10 @@
       }
     </button>
 
-    <button type="button" [routerLink]="['/ingresoAnonimo']">Ingresar como anonimo</button>
+    <button type="button" class="campo-ancho" [routerLink]="['/ingresoAnonimo']">Ingresar como anonimo</button>
 
-    <h4>¿Todavia no tenes usuario?</h4>
-    <button type="button" [routerLink]="['/registro']">Registrarse</button>
-    
+    <h4 class="campo-ancho">¿Todavia no tenes usuario?</h4>
+    <button type="button" class="campo-ancho" [routerLink]="['/registro']">Registrarse</button>
+
   </form>
 </div>

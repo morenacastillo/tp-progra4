@@ -1,0 +1,7 @@
+<div class="carta-pelicula" appCarteleraComprar>
+  <img [src]="imagen()" [alt]="nombre()" />
+  <div class="overlay-hover">
+    <span>{{ nombre() }}</span>
+    <button type="button" [routerLink]="['/home-cliente/pelicula', id()]">Comprar</button>
+  </div>
+</div>

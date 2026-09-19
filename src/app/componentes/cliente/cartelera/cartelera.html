@@ -1,0 +1,7 @@
+<h3>Peliculas en cartelera</h3>
+
+<div class="grilla">
+  @for (pelicula of peliculas(); track pelicula.id) {
+    <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula. imagen_url" />
+  }
+</div>

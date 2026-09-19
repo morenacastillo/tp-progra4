@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  background: var(--color-header);
+}
+
+button {
+  background: var(--color-btn);
+  color: #ffffff;
+  padding: 8px 20px;
+}

@@ -10,7 +10,6 @@ import { Auth } from '../../../servicios/auth';
   templateUrl: './login.html',
 })
 export class Login {
-
   formulario = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
@@ -18,7 +17,8 @@ export class Login {
 
   error = signal('');
   cargando = signal(false);
-  
+  guardadoOk = signal(false);
+
   constructor(private auth: Auth, private router: Router) {}
 
   async login() {
@@ -28,6 +28,7 @@ export class Login {
 
     this.cargando.set(true);
     this.error.set('');
+    this.guardadoOk.set(false);
 
     const valores = this.formulario.getRawValue();
 
@@ -39,15 +40,9 @@ export class Login {
       return;
     }
 
-    const usuario = await this.auth.getCurrentUser();
-
     this.cargando.set(false);
+    this.guardadoOk.set(true);
 
-    this.router.navigate(['/home-cliente'])
+    this.router.navigate(['/home-cliente']);
   }
-
-  
 }
-
-
-

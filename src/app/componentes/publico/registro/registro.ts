@@ -23,7 +23,8 @@ export class Registro {
 
   error = signal('');
   cargando = signal(false);
-  
+  guardadoOk = signal(false);
+
   constructor(private auth: Auth, private router: Router) {}
 
   async registrar() {
@@ -33,6 +34,7 @@ export class Registro {
 
     this.cargando.set(true);
     this.error.set('');
+    this.guardadoOk.set(false);
 
     const valores = this.formulario.getRawValue();
 
@@ -54,6 +56,7 @@ export class Registro {
       return;
     }
 
+    this.guardadoOk.set(true);
     this.router.navigate(['/login']);
   }
 }

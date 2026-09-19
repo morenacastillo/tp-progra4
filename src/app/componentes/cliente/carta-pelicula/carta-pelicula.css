@@ -1,0 +1,54 @@
+.carta-pelicula {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 50% 50% 8px 8px / 20% 20% 8px 8px;
+  overflow: hidden;
+  background: var(--color-surface-light);
+}
+
+.carta-pelicula img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.2s ease;
+}
+
+.overlay-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.35);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.carta-pelicula.hover-activo img {
+  filter: blur(4px);
+}
+
+.carta-pelicula.hover-activo .overlay-hover {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-hover span {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 26px;
+  text-transform: uppercase;
+}
+
+.overlay-hover button {
+  background: var(--color-btn);
+  color: #ffffff;
+  padding: 8px 20px;
+  font-size: 20px;
+}

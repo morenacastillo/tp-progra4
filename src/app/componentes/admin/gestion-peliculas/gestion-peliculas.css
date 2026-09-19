@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  padding: 24px;
+}
+
+.auth-card {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  border-radius: var(--radius);
+  border: none;
+  padding: 10px 14px;
+  background: #ffffff;
+  color: #1a1310;
+  resize: vertical;
+}
+
+.auth-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.campo-ancho {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+  .auth-card form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -10,12 +10,13 @@ export class Auth {
 
     usuarioLogueado = signal(false);
     usuarioActual = signal<UsuarioActual | null>(null);
-    
     ingresoAnonimo = signal(false);
     datosAnonimo = signal<{ nombre: string; apellido: string } | null>(null);
 
+    listo: Promise<void>;
+
     constructor() {
-    this.actualizarUsuarioLogueado()
+        this.listo = this.actualizarUsuarioLogueado();
     }
 
     private async actualizarUsuarioLogueado() {
@@ -24,7 +25,7 @@ export class Auth {
         this.usuarioActual.set(usuario);
     }
 
-      marcarIngresoAnonimo(nombre: string, apellido: string) {
+    marcarIngresoAnonimo(nombre: string, apellido: string) {
         this.ingresoAnonimo.set(true);
         this.datosAnonimo.set({ nombre, apellido });
     }
@@ -58,57 +59,39 @@ export class Auth {
     async getCurrentUser(): Promise<UsuarioActual | null> {
         const { data: sesion } = await this.getUser();
 
-        if (!sesion.user) {
-            return null;
-        }
-
-        const { data: usuario } = await this.supabaseService.supabase
-            .from('usuarios')
-            .select('id, mail, rol')
-            .eq('id', sesion.user.id)
-            .single();
-
-        return usuario;
+    if (!sesion.user) {
+        return null;
     }
 
-    obtenerRutaHomePorRol(rol: string | undefined): string {
-        switch (rol) {
-            case 'admin': 
-                return '/home-admin';
-            case 'empleado':
-                return '/home-empleado';
-            case 'cliente':
-                return '/home-cliente';
-            default:
-                return '/login';
-        }
+    const { data: usuario } = await this.supabaseService.supabase
+        .from('usuarios')
+        .select('id, mail, rol')
+        .eq('id', sesion.user.id)
+        .single();
+
+    return usuario;
     }
 
     async registrarUsuario(datos: DatosRegistro) {
-        const { data, error } = await this.signUp(datos.email, datos.password);
+    const { data, error } = await this.signUp(datos.email, datos.password);
 
-        if (error || !data.user) {
-            return { error };
-        }
+    if (error || !data.user) {
+        return { error };
+    }
 
-    
-        const { error: errorPerfil } = await this.supabaseService.supabase
-            .from('usuarios')
-            .insert({
-                id: data.user.id,
-                mail: datos.email,
-                nombre: datos.nombre,
-                apellido: datos.apellido,
-                fecha_nacimiento: datos.fechaNacimiento,
-                tipo_sangre: datos.tipoSangre,
-                color_ojos: datos.colorOjos,
-                dias_vacaciones_anio: datos.diasVacacionesAnio,
-            });
+    const { error: errorPerfil } = await this.supabaseService.supabase
+        .from('usuarios')
+        .insert({
+        id: data.user.id,
+        mail: datos.email,
+        nombre: datos.nombre,
+        apellido: datos.apellido,
+        fecha_nacimiento: datos.fechaNacimiento,
+        tipo_sangre: datos.tipoSangre,
+        color_ojos: datos.colorOjos,
+        dias_vacaciones_anio: datos.diasVacacionesAnio,
+        });
 
-            return { error: errorPerfil };
-        }
-
-
-
-
+    return { error: errorPerfil };
+    }
 }

@@ -30,7 +30,16 @@ export const routes: Routes = [
       loadComponent: () => import('./componentes/compartidos/layout/layout').then(m => m.Layout),
       canMatch: [roleAdmin],
       children: [
-        { path: '', loadComponent: () => import('./componentes/admin/home-admin/home-admin').then(m => m.HomeAdmin) }
+        { 
+          path: '', loadComponent: () => import('./componentes/admin/home-admin/home-admin').then(m => m.HomeAdmin) 
+        },
+        {
+          path: 'empleados', loadComponent: () => import('./componentes/admin/empleados/empleados').then(m => m.Empleados) 
+        },
+        {
+          path: 'peliculas', loadComponent: () => import('./componentes/admin/gestion-peliculas/gestion-peliculas').then(m => m.GestionPeliculas) 
+        },
+
       ]
     },
 
@@ -39,7 +48,16 @@ export const routes: Routes = [
       loadComponent: () => import('./componentes/compartidos/layout/layout').then(m => m.Layout),
       canMatch: [accesoCliente],
       children: [
-        { path: '', loadComponent: () => import('./componentes/cliente/home-cliente/home-cliente').then(m => m.HomeCliente) }
+        {
+          path: '', loadComponent: () => import('./componentes/cliente/home-cliente/home-cliente').then(m => m.HomeCliente) 
+        },
+        {
+          path: 'cartelera', loadComponent: () => import('./componentes/cliente/cartelera/cartelera').then(m => m.Cartelera) 
+        },
+        {
+          path: 'pelicula/:id',
+          loadComponent: () => import('./componentes/cliente/detalle-pelicula/detalle-pelicula').then(m => m.DetallePelicula)
+        },
       ]
     },
 

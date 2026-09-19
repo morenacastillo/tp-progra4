@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Auth } from '../../../servicios/auth';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [],
@@ -6,4 +8,13 @@ import { Component } from '@angular/core';
   styleUrl: './footer.css',
   templateUrl: './footer.html',
 })
-export class Footer {}
+export class Footer {
+
+  constructor(private auth: Auth, private router: Router) {}
+
+  async salir() {
+    await this.auth.signOut();
+    this.router.navigate(['/login']);
+  }
+}
+

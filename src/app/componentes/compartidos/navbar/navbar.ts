@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { EsAdmin } from '../../../directivas/es-admin';
 import { EsEmpleado } from '../../../directivas/es-empleado';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   imports: [EsAdmin, EsEmpleado, RouterLink],
@@ -9,4 +9,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.css',
   templateUrl: './navbar.html',
 })
-export class Navbar {}
+export class Navbar {
+  private router = inject(Router);
+
+  estaEnHomeAdmin = this.router.url.startsWith('/home-admin');
+  estaEnHomeEmpleado = this.router.url.startsWith('/home-empleado');
+}

@@ -1,0 +1,78 @@
+<div class="auth-card">
+  <h2>Alta de peliculas</h2>
+
+  <form [formGroup]="formPeliculas" (ngSubmit)="guardar()">
+
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" formControlName="nombre" placeholder="Ingresa el nombre de la pelicula">
+    </div>
+
+    <div class="campo">
+      <label for="sinopsis">Sinopsis</label>
+      <textarea id="sinopsis" formControlName="sinopsis" placeholder="Ingresa la sinopsis de la pelicula"></textarea>
+    </div>
+
+    <div class="campo">
+      <label for="imagen">Imagen en URL</label>
+      <input type="url" id="imagen" formControlName="imagen" placeholder="Ingresa el URL de la pelicula">
+    </div>
+
+    <div class="campo">
+      <label for="duracion">Duración (minutos)</label>
+      <input type="number" id="duracion" formControlName="duracion" placeholder="Ingresa la duración en minutos">
+    </div>
+
+    <div class="campo">
+      <label for="restriccionEdad">Restriccion de edad</label>
+      <select id="restriccionEdad" formControlName="restriccionEdad">
+        <option value="" disabled>Selecciona la restriccion de edad</option>
+        <option value="0">Sin restricción</option>
+        <option value="13">+13</option>
+        <option value="18">+18</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="fechaEstreno">Fecha de estreno</label>
+      <input id="fechaEstreno" type="date" formControlName="fechaEstreno" />
+    </div>
+
+    <div class="campo">
+      <label for="precioBase">Precio base</label>
+      <input type="number" step="0.01" id="precioBase" formControlName="precioBase" placeholder="Ingresa el precio base">
+    </div>
+
+    <div class="campo">
+      <label for="precioVip">Precio VIP</label>
+      <input type="number" step="0.01" id="precioVip" formControlName="precioVip" placeholder="Ingresa el precio VIP">
+    </div>
+
+    <div class="campo">
+      <label for="precioPreventa">Precio preventa (opcional)</label>
+      <input type="number" step="0.01" id="precioPreventa" formControlName="precioPreventa" placeholder="Ingresa el precio de preventa">
+    </div>
+
+    <div class="campo">
+      <label for="diasPreventa">Días de preventa</label>
+      <input type="number" id="diasPreventa" formControlName="diasPreventa" placeholder="7">
+    </div>
+
+    @if (error()) {
+      <p class="error campo-ancho">{{ error() }}</p>
+    }
+
+    @if (guardadoOk()) {
+      <p class="exito campo-ancho">Película guardada con éxito.</p>
+    }
+
+    <button type="submit" class="campo-ancho" [disabled]="formPeliculas.invalid || cargando()">
+      @if (cargando()) {
+        Guardando...
+      } @else {
+        Guardar película
+      }
+    </button>
+
+  </form>
+</div>

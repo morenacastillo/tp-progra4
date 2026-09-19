@@ -1,9 +1,27 @@
-<p>navbar works!</p>
+@if (!estaEnHomeAdmin && !estaEnHomeEmpleado) {
+  <a [routerLink]="['/home-cliente']">Inicio</a>
+  <a [routerLink]="['/home-cliente/cartelera']">Películas</a>
+}
 
-<a *appEsAdmin="" [routerLink]="['/home-admin']">
-  Ingresar a menu administrativo
-</a>
+@if (!estaEnHomeAdmin) {
+  <a *appEsAdmin [routerLink]="['/home-admin']">
+    Ingresar a menu administrativo
+  </a>
+}
 
-<a *appEsEmpleado="" [routerLink]="['/home-empleado']">
-  Ingresar a menu empleados
-</a>
+@if (!estaEnHomeEmpleado) {
+  <a *appEsEmpleado [routerLink]="['/home-empleado']">
+    Ingresar a menu empleados
+  </a>
+}
+
+
+@if (estaEnHomeAdmin) {
+  <h2>CINEMA CLUB  -  ADMINISTRADOR</h2>
+  <a [routerLink]="['/home-cliente']">Inicio cliente</a>
+}
+
+@if (estaEnHomeEmpleado) {
+  <h2>CINEMA CLUB  -  EMPLEADO</h2>
+  <a [routerLink]="['/home-cliente']">Inicio cliente</a>
+}
