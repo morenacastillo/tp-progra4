@@ -38,7 +38,7 @@ export class Registro {
 
     const valores = this.formulario.getRawValue();
 
-    const { error } = await this.auth.registrarUsuario({
+    const { error } = await this.auth.signUp({
       email: valores.email,
       password: valores.password,
       nombre: valores.nombre,
@@ -57,6 +57,10 @@ export class Registro {
     }
 
     this.guardadoOk.set(true);
-    this.router.navigate(['/login']);
+    this.formulario.reset();
+
+    setTimeout(() => {
+      this.guardadoOk.set(false);
+    }, 2500);
   }
 }

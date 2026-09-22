@@ -4,11 +4,9 @@ import { Auth } from '../servicios/auth';
 
 export const roleAdmin: CanMatchFn = async (route, segments) => {
   const auth = inject(Auth);
-  await auth.listo;
+  const usuario = await auth.getCurrentUser();
 
-  const user = auth.usuarioActual();
-
-  if (!user || user.rol !== 'admin') {
+  if (!usuario || usuario.rol !== 'admin') {
     return false;
   }
   return true;

@@ -68,4 +68,8 @@
     <h4 class="campo-ancho">¿Ya tenes usuario?</h4>
     <button type="button" class="campo-ancho" [routerLink]="['/login']">Inicia sesion</button>
   </form>
+
+  @if (guardadoOk()) {
+    <p class="exito campo-ancho">Registro exitoso.</p>
+  }
 </div>

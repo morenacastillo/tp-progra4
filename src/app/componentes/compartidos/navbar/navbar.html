@@ -1,26 +1,29 @@
+<!-- ES CLIENTE Y ESTA EN HOME CLIENTE  -->
 @if (!estaEnHomeAdmin && !estaEnHomeEmpleado) {
   <a [routerLink]="['/home-cliente']">Inicio</a>
   <a [routerLink]="['/home-cliente/cartelera']">Películas</a>
 }
 
+<!-- NO ESTA EN HOME ADMIN  -->
 @if (!estaEnHomeAdmin) {
   <a *appEsAdmin [routerLink]="['/home-admin']">
     Ingresar a menu administrativo
   </a>
 }
 
+<!-- NO ESTA EN HOME EMPLEADO  -->
 @if (!estaEnHomeEmpleado) {
   <a *appEsEmpleado [routerLink]="['/home-empleado']">
     Ingresar a menu empleados
   </a>
 }
 
-
+<!-- ESTA EN HOME ADMIN -->
 @if (estaEnHomeAdmin) {
   <h2>CINEMA CLUB  -  ADMINISTRADOR</h2>
   <a [routerLink]="['/home-cliente']">Inicio cliente</a>
 }
-
+<!-- ESTA EN HOME EMPLEADO  -->
 @if (estaEnHomeEmpleado) {
   <h2>CINEMA CLUB  -  EMPLEADO</h2>
   <a [routerLink]="['/home-cliente']">Inicio cliente</a>

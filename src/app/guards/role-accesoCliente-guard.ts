@@ -2,12 +2,12 @@ import { inject } from '@angular/core';
 import { CanMatchFn } from '@angular/router';
 import { Auth } from '../servicios/auth';
 
-export const accesoCliente: CanMatchFn = async (route, segments) => {
+export const roleCliente: CanMatchFn = async (route, segments) => {
   const auth = inject(Auth);
-  await auth.listo;
+  const usuario = await auth.getCurrentUser();
 
-  if (auth.usuarioActual()) return true;
-  if (auth.ingresoAnonimo()) return true;
-
+  if (usuario !== null || auth.ingresoAnonimo()){
+    return true;
+  } 
   return false;
 };

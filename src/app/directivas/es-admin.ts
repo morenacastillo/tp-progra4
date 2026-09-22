@@ -6,6 +6,7 @@ import { Auth } from '../servicios/auth';
 })
 export class EsAdmin {
   constructor(private template: TemplateRef<any>, private viewContainer: ViewContainerRef, private auth: Auth) {
+    
     if (this.auth.usuarioActual()?.rol === 'admin') {
       this.viewContainer.createEmbeddedView(this.template);
     } else {

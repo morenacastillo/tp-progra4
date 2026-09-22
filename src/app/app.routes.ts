@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { accesoCliente } from './guards/role-accesoCliente-guard';
+import { roleCliente } from './guards/role-accesoCliente-guard';
 import { roleAdmin } from './guards/role-admin-guard';
 import { roleEmpleado } from './guards/role-empleado-guard';
 
@@ -46,7 +46,7 @@ export const routes: Routes = [
     {
       path: 'home-cliente',
       loadComponent: () => import('./componentes/compartidos/layout/layout').then(m => m.Layout),
-      canMatch: [accesoCliente],
+      canMatch: [roleCliente],
       children: [
         {
           path: '', loadComponent: () => import('./componentes/cliente/home-cliente/home-cliente').then(m => m.HomeCliente) 

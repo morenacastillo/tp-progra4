@@ -1,44 +1,44 @@
 import { Service, inject } from '@angular/core';
-import { Supabase } from './supabase';
+import { Auth } from './auth';
+import { DatosPelicula } from '../modelos/datos-pelicula';
 
 @Service()
 export class Peliculas {
-    private supabaseService = inject(Supabase);
+    private auth = inject(Auth);
 
     async obtenerPeliculas() {
-        const { data, error } = await this.supabaseService.supabase
-        .from('peliculas')
-        .select('*');
+        const { data, error } = await this.auth.client()
+            .from('peliculas')
+            .select('*');
+
+        if (error) {
+            console.error('Error trayendo las películas:', error);
+            return [];
+        }
 
         return data ?? [];
-    }
+        }
 
     async obtenerPeliculaPorId(id: string) {
-        const { data, error } = await this.supabaseService.supabase
+        const { data, error } = await this.auth.client()
             .from('peliculas')
             .select('*')
             .eq('id', id)
             .single();
 
-        return data;
-    }
+        if (error) {
+            console.error('Error trayendo la película:', error);
+            return null;
+        }
 
-    async crearPelicula(datos: {
-        nombre: string;
-        sinopsis: string;
-        imagen_url: string;
-        duracion_minutos: number;
-        restriccion_edad: number;
-        fecha_estreno: string;
-        precio_base: number;
-        precio_vip: number;
-        precio_preventa: number | null;
-        dias_preventa: number | null;
-        }) {
-        const { error } = await this.supabaseService.supabase
+        return data;
+        }
+
+    async crearPelicula(datos: DatosPelicula) {
+        const { error } = await this.auth.client()
             .from('peliculas')
             .insert(datos);
 
-        return { error };
+        return { error }; // si la insercion fue exitosa -> error: null
     }
 }
