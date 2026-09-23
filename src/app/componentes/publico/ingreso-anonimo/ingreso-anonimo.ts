@@ -17,8 +17,6 @@ export class IngresoAnonimo {
 
   error = signal('');
   cargando = signal(false);
-  guardadoOk = signal(false);
-
   constructor(private auth: Auth, private router: Router) {}
 
   async ingresar() {
@@ -28,12 +26,9 @@ export class IngresoAnonimo {
 
     this.cargando.set(true);
     this.error.set('');
-    this.guardadoOk.set(false);
 
     const valores = this.formAnonimo.getRawValue();
     this.auth.marcarIngresoAnonimo(valores.nombre, valores.apellido);
-
-    this.guardadoOk.set(true);
 
     await this.router.navigate(['/home-cliente']);
 

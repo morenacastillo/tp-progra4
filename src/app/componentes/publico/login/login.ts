@@ -17,7 +17,6 @@ export class Login {
 
   error = signal('');
   cargando = signal(false);
-  guardadoOk = signal(false);
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -28,7 +27,6 @@ export class Login {
 
     this.cargando.set(true);
     this.error.set('');
-    this.guardadoOk.set(false);
 
     const valores = this.formLogin.getRawValue();
 
@@ -41,7 +39,6 @@ export class Login {
     }
 
     this.cargando.set(false);
-    this.guardadoOk.set(true);
 
     this.router.navigate(['/home-cliente']);
   }

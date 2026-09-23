@@ -62,8 +62,8 @@
                         </td>
                         <td>
                             <select formControlName="estado">
-                                <option [ngValue]="true">Sí</option>
-                                <option [ngValue]="false">No</option>
+                                <option [ngValue]="true">Habilitada</option>
+                                <option [ngValue]="false">Deshabilitada</option>
                             </select>
                         </td>
                         <td class="acciones">
@@ -82,7 +82,7 @@
                         <td>{{sala.id}}</td>
                         <td>{{sala.nombre}}</td>
                         <td>{{sala.formato}}</td>
-                        <td>{{ sala.estado ? 'Sí' : 'No' }}</td>
+                        <td>{{ sala.estado ? 'Habilitada' : 'Deshabilitada' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(sala)" [disabled]="salaEditandoId() !== null">Modificar</button>
                         </td>

@@ -98,15 +98,16 @@ textarea {
 .gestionarPeliculas td:nth-child(3) {
   font-weight: 600;
 }
-.gestionarPeliculas th:nth-child(1) { width: 4%; } 
-.gestionarPeliculas th:nth-child(2) { width: 8%; }   
-.gestionarPeliculas th:nth-child(3) { width: 24%; } 
-.gestionarPeliculas th:nth-child(4) { width: 9%; }   
-.gestionarPeliculas th:nth-child(5) { width: 10%; }  
-.gestionarPeliculas th:nth-child(6) { width: 11%; } 
-.gestionarPeliculas th:nth-child(7) { width: 15%; } 
-.gestionarPeliculas th:nth-child(8) { width: 8%; }   
-.gestionarPeliculas th:nth-child(9) { width: 11%; }  
+.gestionarPeliculas th:nth-child(1) { width: 4%; }
+.gestionarPeliculas th:nth-child(2) { width: 7%; }
+.gestionarPeliculas th:nth-child(3) { width: 16%; }
+.gestionarPeliculas th:nth-child(4) { width: 8%; }
+.gestionarPeliculas th:nth-child(5) { width: 10%; }
+.gestionarPeliculas th:nth-child(6) { width: 10%; }
+.gestionarPeliculas th:nth-child(7) { width: 13%; }
+.gestionarPeliculas th:nth-child(8) { width: 12%; }
+.gestionarPeliculas th:nth-child(9) { width: 8%; }
+.gestionarPeliculas th:nth-child(10) { width: 12%; }
 
 .miniatura {
   display: block;
@@ -131,6 +132,7 @@ textarea {
 .gestionarPeliculas .acciones button {
   padding: 6px 12px;
   font-size: 13px;
+  white-space: nowrap;
   background: var(--color-btn);
   color: var(--text-on-dark);
 }
@@ -148,5 +150,10 @@ textarea {
   .gestionarPeliculas td {
     font-size: 12px;
     padding: 8px 4px;
+  }
+
+  .gestionarPeliculas .acciones button {
+    padding: 6px 8px;
+    font-size: 12px;
   }
 }

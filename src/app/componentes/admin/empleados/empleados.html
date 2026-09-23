@@ -66,10 +66,6 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    @if (guardadoOk()) {
-      <p class="exito campo-ancho">Usuario guardado con éxito.</p>
-    }
-
     <button type="submit" class="campo-ancho" [disabled]="formUsuarios.invalid || cargando()">
       @if (cargando()) {
         Guardando...
@@ -79,4 +75,8 @@
     </button>
 
   </form>
+
+  @if (guardadoOk()) {
+    <p class="exito campo-ancho">Usuario guardado con éxito.</p>
+  }
 </div>
