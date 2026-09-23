@@ -31,19 +31,25 @@ export const routes: Routes = [
       canMatch: [roleAdmin],
       children: [
         { 
-          path: '', loadComponent: () => import('./componentes/admin/home-admin/home-admin').then(m => m.HomeAdmin) 
+          path: '', 
+          loadComponent: () => import('./componentes/admin/home-admin/home-admin').then(m => m.HomeAdmin) 
         },
         {
-          path: 'empleados', loadComponent: () => import('./componentes/admin/empleados/empleados').then(m => m.Empleados) 
+          path: 'empleados', 
+          loadComponent: () => import('./componentes/admin/empleados/empleados').then(m => m.Empleados) 
         },
         {
-          path: 'peliculas', loadComponent: () => import('./componentes/admin/gestion-peliculas/gestion-peliculas').then(m => m.GestionPeliculas) 
+          path: 'peliculas', 
+          loadComponent: () => import('./componentes/admin/gestion-peliculas/gestion-peliculas').then(m => m.GestionPeliculas) 
         },
         {
-          path: 'funciones', loadComponent: () => import('./componentes/admin/gestion-funciones/gestion-funciones').then(m => m.GestionFunciones) 
+          path: 'funciones', 
+          loadComponent: () => import('./componentes/admin/gestion-funciones/gestion-funciones').then(m => m.GestionFunciones) 
         },
-
-
+        {
+          path: 'salas', 
+          loadComponent: () => import('./componentes/admin/gestion-salas/gestion-salas').then(m => m.GestionSalas) 
+        },
       ]
     },
 
@@ -76,7 +82,8 @@ export const routes: Routes = [
       loadComponent: () => import('./componentes/compartidos/layout/layout').then(m => m.Layout),
       canMatch: [roleEmpleado],
       children: [
-        { path: '', loadComponent: () => import('./componentes/empleado/home-empleado/home-empleado').then(m => m.HomeEmpleado) }
+        { path: '', 
+          loadComponent: () => import('./componentes/empleado/home-empleado/home-empleado').then(m => m.HomeEmpleado) }
       ]
     },
 

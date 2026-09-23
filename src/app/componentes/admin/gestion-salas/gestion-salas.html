@@ -1,0 +1,103 @@
+<div class="auth-card">
+    <h2>Alta de salas</h2>
+
+    <form [formGroup]="formSalas" (ngSubmit)="guardar()">
+
+    <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" formControlName="nombre" placeholder="Ingresa el nombre de la sala">
+    </div>
+
+    <div class="campo">
+        <label for="formato">Formato de la sala</label>
+        <select id="formato" formControlName="formato">
+            <option value="" disabled>Selecciona un formato</option>
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="4D">4D</option>
+            <option value="5D">5D</option>
+        </select>
+    </div>
+
+
+    @if (error()) {
+        <p class="error campo-ancho">{{ error() }}</p>
+    }
+
+    @if (guardadoOk()) {
+        <p class="exito campo-ancho">Película guardada con éxito.</p>
+    }
+
+    <button type="submit" class="campo-ancho" [disabled]="formSalas.invalid || cargando()">
+        @if (cargando()) {
+            Guardando...
+        } @else {
+            Guardar película
+        }
+    </button>
+
+    </form>
+</div>
+
+<div class="gestionarSalas">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Formato</th>
+                <th>Habilitada</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (sala of salas() ; track sala.id ) {
+                @if (salaEditandoId() === sala.id) {
+                    <tr class="editando" [formGroup]="formEdicion">
+                        <td>{{sala.id}}</td>
+                        <td><input type="text" formControlName="nombre"></td>
+                        <td>
+                            <select formControlName="formato">
+                                <option value="2D">2D</option>
+                                <option value="3D">3D</option>
+                                <option value="4D">4D</option>
+                                <option value="5D">5D</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select formControlName="habilitada">
+                                <option [ngValue]="true">Sí</option>
+                                <option [ngValue]="false">No</option>
+                            </select>
+                        </td>
+                        <td class="acciones">
+                            <button type="button" (click)="guardarEdicion(sala)" [disabled]="formEdicion.invalid || guardandoEdicion()">
+                                @if (guardandoEdicion()) {
+                                    Guardando...
+                                } @else {
+                                    Guardar
+                                }
+                            </button>
+                            <button type="button" class="secundario" (click)="cancelarEdicion()">Cancelar</button>
+                        </td>
+                    </tr>
+                } @else {
+                    <tr [class.deshabilitada]="!sala.habilitada">
+                        <td>{{sala.id}}</td>
+                        <td>{{sala.nombre}}</td>
+                        <td>{{sala.formato}}</td>
+                        <td>{{ sala.habilitada ? 'Sí' : 'No' }}</td>
+                        <td class="acciones">
+                            <button type="button" (click)="modificar(sala)" [disabled]="salaEditandoId() !== null">Modificar</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (errorEdicion()) {
+        <p class="error">{{ errorEdicion() }}</p>
+    }
+
+</div>

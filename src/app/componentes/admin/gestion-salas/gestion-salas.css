@@ -1,0 +1,122 @@
+:host {
+  display: block;
+  padding: 24px;
+}
+
+.auth-card {
+  margin: 0 auto;
+}
+
+
+.gestionarSalas {
+  max-width: 640px;
+  margin: 32px auto 0;
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 8px;
+  overflow-x: auto; 
+}
+
+.gestionarSalas table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-on-card);
+}
+
+.gestionarSalas th {
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  text-align: left;
+  padding: 12px 16px;
+}
+
+
+.gestionarSalas th:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.gestionarSalas th:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.gestionarSalas td {
+  padding: 12px 16px;
+  font-size: 15px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.gestionarSalas tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gestionarSalas tbody tr:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.gestionarSalas tr.deshabilitada td {
+  opacity: 0.5;
+}
+
+.gestionarSalas tr.deshabilitada td.acciones {
+  opacity: 1;
+}
+
+.gestionarSalas tr.editando {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.gestionarSalas td input,
+.gestionarSalas td select {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #1a1310;
+}
+
+.gestionarSalas .acciones {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.gestionarSalas .acciones button {
+  padding: 6px 12px;
+  font-size: 13px;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.gestionarSalas .acciones button + button {
+  margin-left: 6px;
+}
+
+.gestionarSalas .acciones button:hover:not(:disabled) {
+  background: var(--color-btn-hover);
+}
+
+.gestionarSalas .acciones button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gestionarSalas .acciones button.secundario {
+  background: transparent;
+  color: var(--text-on-card);
+  border: 1px solid var(--color-btn);
+}
+
+.gestionarSalas .error {
+  color: #7a0f14;
+  font-size: 14px;
+  margin: 10px 16px;
+}
+
+.gestionarSalas td:first-child {
+  width: 60px;
+  opacity: 0.7;
+}
