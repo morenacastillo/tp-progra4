@@ -39,6 +39,10 @@ export const routes: Routes = [
         {
           path: 'peliculas', loadComponent: () => import('./componentes/admin/gestion-peliculas/gestion-peliculas').then(m => m.GestionPeliculas) 
         },
+        {
+          path: 'funciones', loadComponent: () => import('./componentes/admin/gestion-funciones/gestion-funciones').then(m => m.GestionFunciones) 
+        },
+
 
       ]
     },
@@ -49,14 +53,20 @@ export const routes: Routes = [
       canMatch: [roleCliente],
       children: [
         {
-          path: '', loadComponent: () => import('./componentes/cliente/home-cliente/home-cliente').then(m => m.HomeCliente) 
+          path: '', 
+          loadComponent: () => import('./componentes/cliente/home-cliente/home-cliente').then(m => m.HomeCliente) 
         },
         {
-          path: 'cartelera', loadComponent: () => import('./componentes/cliente/cartelera/cartelera').then(m => m.Cartelera) 
+          path: 'cartelera', 
+          loadComponent: () => import('./componentes/cliente/cartelera/cartelera').then(m => m.Cartelera) 
         },
         {
-          path: 'pelicula/:id',
+          path: 'cartelera/:id',
           loadComponent: () => import('./componentes/cliente/detalle-pelicula/detalle-pelicula').then(m => m.DetallePelicula)
+        },
+        {
+          path: 'sala/:id',
+          loadComponent: () => import('./componentes/cliente/mapa-butacas/mapa-butacas').then(m => m.MapaButacas)
         },
       ]
     },

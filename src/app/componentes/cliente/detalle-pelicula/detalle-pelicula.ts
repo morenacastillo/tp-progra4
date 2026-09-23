@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Peliculas } from '../../../servicios/peliculas';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-detalle-pelicula',
   styleUrl: './detalle-pelicula.css',
   templateUrl: './detalle-pelicula.html',

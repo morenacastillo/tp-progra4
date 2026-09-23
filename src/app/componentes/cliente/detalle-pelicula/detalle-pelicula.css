@@ -5,19 +5,42 @@
 
 .detalle {
   display: flex;
-  gap: 32px;
+  gap: 40px;
   flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .detalle img {
-  width: 280px;
-  aspect-ratio: 2 / 3;
+  width: 560px;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 20px;
   background: var(--color-surface-light);
 }
 
 .info {
-  flex: 1;
-  min-width: 240px;
+  flex: 0 1 500px;
+  min-width: 300px;
+  padding-top: 4px;
+}
+
+.info h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.info .meta {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 18px;
+}
+
+.info .sinopsis {
+  max-width: 60ch;
+  font-size: 18px;
+  line-height: 1.7;
 }

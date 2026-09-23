@@ -3,10 +3,57 @@
   padding: 32px 24px;
 }
 
+.header-cartelera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #1a1310;
+  border-radius: 999px;
+  padding: 10px 18px;
+  flex: 0 1 360px;
+}
+
+.buscador svg {
+  flex-shrink: 0;
+  color: var(--color-bg);
+}
+
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  padding: 0;
+  background: none;
+  color: #1a1310;
+}
+
+.buscador input:focus {
+  outline: none;
+}
+
+.sin-resultados {
+  max-width: 1400px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--text-on-dark);
+  opacity: 0.8;
+}
+
 .grilla {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 28px;
   max-width: 1400px;
-  margin: 24px auto 0;
+  margin: 40px auto 0;
 }

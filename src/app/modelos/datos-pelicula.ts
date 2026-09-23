@@ -9,4 +9,5 @@ export interface DatosPelicula {
     precio_vip: number;
     precio_preventa: number | null;
     dias_preventa: number | null;
+    imagen_horizontal_url: string;
 }

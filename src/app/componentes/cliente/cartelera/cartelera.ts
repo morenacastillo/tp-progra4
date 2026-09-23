@@ -1,17 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
 import { CartaPelicula } from '../carta-pelicula/carta-pelicula';
+import { FiltroPipe } from '../pipes/filtro-pipe';
 
 @Component({
-  imports: [CartaPelicula],
+  imports: [CartaPelicula, FormsModule, FiltroPipe],
   selector: 'app-cartelera',
   styleUrl: './cartelera.css',
   templateUrl: './cartelera.html',
 })
-export class Cartelera {
+export class Cartelera implements OnInit {
     peliculas = signal<any[]>([]);
+    busqueda = signal('');
 
-    constructor(private peliculasService: Peliculas) {
+    constructor(private peliculasService: Peliculas) {}
+
+    ngOnInit() {
       this.cargarPeliculas();
     }
 

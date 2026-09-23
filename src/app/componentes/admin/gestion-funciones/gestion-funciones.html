@@ -1,0 +1,65 @@
+<div class="auth-card">
+    <h2>Alta de funciones</h2>
+
+    <form [formGroup]="formFunciones" (ngSubmit)="guardar()">
+
+        <div class="campo campo-ancho">
+        <label for="peliculaId">Película</label>
+        <select id="peliculaId" formControlName="peliculaId">
+            <option value="" disabled>Selecciona una película</option>
+            @for (pelicula of peliculas(); track pelicula.id) {
+            <option [value]="pelicula.id">{{ pelicula.nombre }}</option>
+            }
+        </select>
+        </div>
+
+        <div class="campo campo-ancho">
+        <label for="inicio">Fecha y hora de inicio</label>
+        <input id="inicio" type="datetime-local" formControlName="inicio">
+        </div>
+
+        <div class="campo">
+        <label for="formato">Formato</label>
+        <select id="formato" formControlName="formato">
+            <option value="" disabled>Selecciona el formato</option>
+            <option value="2d">2D</option>
+            <option value="3d">3D</option>
+            <option value="4d">4D</option>
+            <option value="5d">5D</option>
+        </select>
+        </div>
+
+        <div class="campo">
+        <label for="idioma">Idioma</label>
+        <select id="idioma" formControlName="idioma">
+            <option value="" disabled>Selecciona el idioma</option>
+            <option value="espanol">Español</option>
+            <option value="ingles">Inglés</option>
+        </select>
+        </div>
+
+        <div class="campo campo-ancho">
+        <label for="subtitulado">
+            <input id="subtitulado" type="checkbox" formControlName="subtitulado">
+            Subtitulado
+        </label>
+        </div>
+
+        @if (error()) {
+        <p class="error campo-ancho">{{ error() }}</p>
+        }
+
+        @if (guardadoOk()) {
+        <p class="exito campo-ancho">Función creada con éxito. Sala asignada automáticamente.</p>
+        }
+
+        <button type="submit" class="campo-ancho" [disabled]="formFunciones.invalid || cargando()">
+        @if (cargando()) {
+            Guardando...
+        } @else {
+            Crear función
+        }
+        </button>
+
+    </form>
+    </div>

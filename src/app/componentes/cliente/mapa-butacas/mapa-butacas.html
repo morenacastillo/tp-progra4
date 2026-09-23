@@ -1,0 +1,28 @@
+<div class="mapa">
+  <div class="pantalla">Pantalla</div>
+
+  @for (fila of filas; track fila) {
+    <div class="fila">
+      <span class="letra-fila">{{ fila }}</span>
+      <div class="butacas">
+        @for (butaca of butacasDeFila(fila); track butaca.id) {
+          <div
+            class="butaca"
+            [class.normal]="butaca.tipo === 'normal'"
+            [class.accesible]="butaca.tipo === 'accesible'"
+            [class.vip]="butaca.tipo === 'vip'"
+            [class.inactiva]="!butaca.activa"
+            [style.grid-column]="butaca.columna"
+            [title]="fila + butaca.columna">
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="leyenda">
+    <span><i class="normal"></i> Normal</span>
+    <span><i class="accesible"></i> Accesible</span>
+    <span><i class="vip"></i> VIP</span>
+  </div>
+</div>
