@@ -13,7 +13,7 @@
   @if (peliculas() | filtro: busqueda(); as peliculasFiltradas) {
     <div class="grilla">
       @for (pelicula of peliculasFiltradas; track pelicula.id) {
-        <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula. imagen_url" />
+        <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
       }
     </div>
 
