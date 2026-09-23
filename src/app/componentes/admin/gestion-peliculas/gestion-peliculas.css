@@ -36,3 +36,117 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+.gestionarPeliculas {
+  max-width: 1100px;
+  margin: 32px auto 0;
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.gestionarPeliculas table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: var(--text-on-card);
+}
+
+.gestionarPeliculas th {
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1.25;
+  letter-spacing: 0.5px;
+  text-align: left;
+  vertical-align: bottom;
+  padding: 12px 10px;
+}
+
+.gestionarPeliculas th:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.gestionarPeliculas th:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.gestionarPeliculas td {
+  padding: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  border-bottom: 1px solid var(--color-divider);
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.gestionarPeliculas tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gestionarPeliculas tbody tr:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.gestionarPeliculas td:first-child {
+  opacity: 0.7;
+}
+
+.gestionarPeliculas td:nth-child(3) {
+  font-weight: 600;
+}
+.gestionarPeliculas th:nth-child(1) { width: 4%; } 
+.gestionarPeliculas th:nth-child(2) { width: 8%; }   
+.gestionarPeliculas th:nth-child(3) { width: 24%; } 
+.gestionarPeliculas th:nth-child(4) { width: 9%; }   
+.gestionarPeliculas th:nth-child(5) { width: 10%; }  
+.gestionarPeliculas th:nth-child(6) { width: 11%; } 
+.gestionarPeliculas th:nth-child(7) { width: 15%; } 
+.gestionarPeliculas th:nth-child(8) { width: 8%; }   
+.gestionarPeliculas th:nth-child(9) { width: 11%; }  
+
+.miniatura {
+  display: block;
+  width: 48px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.gestionarPeliculas tr.deshabilitada td {
+  opacity: 0.5;
+}
+
+.gestionarPeliculas tr.deshabilitada td.acciones {
+  opacity: 1;
+}
+
+.gestionarPeliculas .acciones {
+  text-align: right;
+}
+
+.gestionarPeliculas .acciones button {
+  padding: 6px 12px;
+  font-size: 13px;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.gestionarPeliculas .acciones button:hover {
+  background: var(--color-btn-hover);
+}
+
+@media (max-width: 1000px) {
+  .gestionarPeliculas th {
+    font-size: 10px;
+    padding: 8px 4px;
+  }
+
+  .gestionarPeliculas td {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+}

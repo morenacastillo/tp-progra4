@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Peliculas } from '../../../servicios/peliculas';
+import { GetPelicula } from '../../../modelos/datos-pelicula';
 
 @Component({
   imports: [RouterLink],
@@ -10,7 +11,7 @@ import { Peliculas } from '../../../servicios/peliculas';
   templateUrl: './detalle-pelicula.html',
 })
 export class DetallePelicula implements OnInit, OnDestroy {
-  pelicula = signal<any | null>(null);
+  pelicula = signal<GetPelicula | null>(null);
   private suscripcion?: Subscription;
 
   constructor(private route: ActivatedRoute, private peliculasService: Peliculas) {}

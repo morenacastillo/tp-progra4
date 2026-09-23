@@ -22,10 +22,10 @@
         <label for="formato">Formato</label>
         <select id="formato" formControlName="formato">
             <option value="" disabled>Selecciona el formato</option>
-            <option value="2d">2D</option>
-            <option value="3d">3D</option>
-            <option value="4d">4D</option>
-            <option value="5d">5D</option>
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="4D">4D</option>
+            <option value="5D">5D</option>
         </select>
         </div>
 
@@ -48,11 +48,6 @@
         @if (error()) {
         <p class="error campo-ancho">{{ error() }}</p>
         }
-
-        @if (guardadoOk()) {
-        <p class="exito campo-ancho">Función creada con éxito. Sala asignada automáticamente.</p>
-        }
-
         <button type="submit" class="campo-ancho" [disabled]="formFunciones.invalid || cargando()">
         @if (cargando()) {
             Guardando...
@@ -60,6 +55,9 @@
             Crear función
         }
         </button>
-
+        @if (guardadoOk()) {
+            <p class="exito campo-ancho">Función creada con éxito. Sala asignada automáticamente.</p>
+        }
     </form>
+    
     </div>

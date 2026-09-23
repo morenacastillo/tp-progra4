@@ -10,7 +10,7 @@ import { Auth } from '../../../servicios/auth';
   templateUrl: './ingreso-anonimo.html',
 })
 export class IngresoAnonimo {
-  formulario = new FormGroup({
+  formAnonimo = new FormGroup({
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
@@ -22,7 +22,7 @@ export class IngresoAnonimo {
   constructor(private auth: Auth, private router: Router) {}
 
   async ingresar() {
-    if (this.formulario.invalid) {
+    if (this.formAnonimo.invalid) {
       return;
     }
 
@@ -30,7 +30,7 @@ export class IngresoAnonimo {
     this.error.set('');
     this.guardadoOk.set(false);
 
-    const valores = this.formulario.getRawValue();
+    const valores = this.formAnonimo.getRawValue();
     this.auth.marcarIngresoAnonimo(valores.nombre, valores.apellido);
 
     this.guardadoOk.set(true);

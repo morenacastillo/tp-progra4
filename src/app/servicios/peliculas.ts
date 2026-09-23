@@ -1,15 +1,16 @@
 import { Service, inject } from '@angular/core';
 import { Auth } from './auth';
-import { DatosPelicula } from '../modelos/datos-pelicula';
+import { AltaPelicula, GetPelicula } from '../modelos/datos-pelicula';
 
 @Service()
 export class Peliculas {
     private auth = inject(Auth);
 
-    async obtenerPeliculas() {
+    async obtenerPeliculas(): Promise<GetPelicula[]> {
         const { data, error } = await this.auth.client()
             .from('peliculas')
-            .select('*');
+            .select('*')
+            .order('id');
 
         if (error) {
             console.error('Error trayendo las películas:', error);
@@ -19,7 +20,7 @@ export class Peliculas {
         return data ?? [];
         }
 
-    async obtenerPeliculaPorId(id: string) {
+    async obtenerPeliculaPorId(id: string): Promise<GetPelicula | null> {
         const { data, error } = await this.auth.client()
             .from('peliculas')
             .select('*')
@@ -34,7 +35,7 @@ export class Peliculas {
         return data;
         }
 
-    async crearPelicula(datos: DatosPelicula) {
+    async crearPelicula(datos: AltaPelicula) {
         const { error } = await this.auth.client()
             .from('peliculas')
             .insert(datos);

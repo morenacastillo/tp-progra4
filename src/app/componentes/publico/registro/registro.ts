@@ -10,7 +10,7 @@ import { Auth } from '../../../servicios/auth';
   templateUrl: './registro.html',
 })
 export class Registro {
-  formulario = new FormGroup({
+  formRegistro = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -28,7 +28,7 @@ export class Registro {
   constructor(private auth: Auth, private router: Router) {}
 
   async registrar() {
-    if (this.formulario.invalid) {
+    if (this.formRegistro.invalid) {
       return;
     }
 
@@ -36,7 +36,7 @@ export class Registro {
     this.error.set('');
     this.guardadoOk.set(false);
 
-    const valores = this.formulario.getRawValue();
+    const valores = this.formRegistro.getRawValue();
 
     const { error } = await this.auth.signUp({
       email: valores.email,
@@ -57,7 +57,7 @@ export class Registro {
     }
 
     this.guardadoOk.set(true);
-    this.formulario.reset();
+    this.formRegistro.reset();
 
     setTimeout(() => {
       this.guardadoOk.set(false);

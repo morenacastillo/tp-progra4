@@ -1,12 +1,13 @@
 import { inject, Service } from '@angular/core';
 import { Auth } from './auth';
-import { DatosSalas } from '../modelos/datos-salas';
+import { AltaSala, GetSala } from '../modelos/datos-salas';
+import { altaButacas, getButacas } from '../modelos/datos-butacas';
 
 @Service()
 export class Salas {
     private auth = inject(Auth)
 
-    async obtenerSalas() {
+    async obtenerSalas(): Promise<GetSala[]> {
         const { data, error } = await this.auth.client()
             .from('salas')
             .select('*')
@@ -18,7 +19,7 @@ export class Salas {
         return data ?? [];
         }
 
-    async obtenerButacas(salaId: number) {
+    async obtenerButacas(salaId: number): Promise<getButacas[]> {
         const { data, error } = await this.auth.client()
             .from('butacas')
             .select('*')
@@ -34,16 +35,15 @@ export class Salas {
         return data ?? [];
         }
 
-    async crearSala(nombre: string, formato: string) {
-
+    async crearSala(datos: AltaSala) {
         const { data, error } = await this.auth.client()
             .from('salas')
-            .insert({ nombre, formato })
+            .insert(datos)
             .select()
             .single();
 
         if (error) {
-            return error;
+            return { error } ;
         }
 
         const butacas = this.generarButacas(data.id);
@@ -51,22 +51,22 @@ export class Salas {
         const { error: errorButacas } = await this.auth.client()
             .from('butacas')
             .insert(butacas);
-        return errorButacas; 
+        return { error: errorButacas }; 
     }
 
-    async actualizarSala(id: number, cambios: { nombre: string; formato: string; habilitada: boolean }) {
+    async actualizarSala(id: number, cambios: { nombre: string; formato: string; estado: boolean }) {
         const { error } = await this.auth.client()
             .from('salas')
             .update(cambios)
             .eq('id', id); 
-        return error;
+        return { error };
     }
 
     private generarButacas(salaId: number) {
         const filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
         const columnas = [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30];
         const columnasAccesibles = [2,3, 11,12,13,14,15,16,17,18,19,20, 28,29]; 
-        const butacas = [];
+        const butacas: altaButacas[] = [];
 
         for (const fila of filas) {
             for (const columna of columnas) {

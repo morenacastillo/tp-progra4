@@ -1,7 +1,7 @@
 <div class="auth-card">
   <h2>Ingresa como anonimo</h2>
 
-  <form [formGroup]="formulario" (ngSubmit)="ingresar()">
+  <form [formGroup]="formAnonimo" (ngSubmit)="ingresar()">
 
     <div class="campo">
       <label for="nombre">Nombre</label>
@@ -17,7 +17,7 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    <button type="submit" class="campo-ancho" [disabled]="formulario.invalid || cargando()">
+    <button type="submit" class="campo-ancho" [disabled]="formAnonimo.invalid || cargando()">
       @if (cargando()) {
         Ingresando...
       } @else {

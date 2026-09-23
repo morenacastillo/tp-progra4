@@ -1,9 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
+import { GetPelicula } from '../../../modelos/datos-pelicula';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe, DatePipe],
   selector: 'app-gestion-peliculas',
   styleUrl: './gestion-peliculas.css',
   templateUrl: './gestion-peliculas.html',
@@ -26,9 +28,14 @@ export class GestionPeliculas {
   error = signal('');
   cargando = signal(false);
   guardadoOk = signal(false);
+  peliculas = signal<GetPelicula[]>([]);
 
   constructor(private peliculasService: Peliculas) {}
 
+  ngOnInit() {
+    this.cargarPeliculas();
+  }
+  
   async guardar() {
     if (this.formPeliculas.invalid) {
       return;
@@ -37,6 +44,7 @@ export class GestionPeliculas {
     this.cargando.set(true);
     this.error.set('');
     this.guardadoOk.set(false);
+    
 
     const valores = this.formPeliculas.getRawValue();
 
@@ -63,5 +71,16 @@ export class GestionPeliculas {
 
     this.guardadoOk.set(true);
     this.formPeliculas.reset();
+    this.cargarPeliculas()
+    
+    setTimeout(() => {
+      this.guardadoOk.set(false);
+    }, 2500);
+  
+  }
+
+  private async cargarPeliculas() {
+    const datos = await this.peliculasService.obtenerPeliculas();
+    this.peliculas.set(datos);
   }
 }

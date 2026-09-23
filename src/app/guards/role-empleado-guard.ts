@@ -6,8 +6,8 @@ export const roleEmpleado: CanMatchFn = async (route, segments) => {
   const auth = inject(Auth);
   const usuario = await auth.getCurrentUser();
 
-  if (!usuario || usuario.rol !== 'empleado') {
-    return false;
+  if (usuario !== null && usuario.rol === 'empleado') {
+    return true;
   }
-  return true;
+  return false;
 };

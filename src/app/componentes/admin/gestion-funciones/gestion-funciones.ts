@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Funciones } from '../../../servicios/funciones';
 import { Peliculas } from '../../../servicios/peliculas';
 import { Salas } from '../../../servicios/salas';
+import { GetPelicula } from '../../../modelos/datos-pelicula';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -19,7 +20,7 @@ export class GestionFunciones implements OnInit {
     subtitulado: new FormControl(false, { nonNullable: true }),
   });
 
-  peliculas = signal<any[]>([]);
+  peliculas = signal<GetPelicula[]>([]);
   error = signal('');
   cargando = signal(false);
   guardadoOk = signal(false);
@@ -62,8 +63,8 @@ export class GestionFunciones implements OnInit {
     const funcionesExistentes = await this.funcionesService.obtenerFunciones()
 
     const salaLibre = salas.find(sala => {
-      const funcionesDeEstaSala = funcionesExistentes.filter((f: any) => f.sala_id === sala.id);
-      const choque = funcionesDeEstaSala.some((f: any) => {
+      const funcionesDeEstaSala = funcionesExistentes.filter(f => f.sala_id === sala.id);
+      const choque = funcionesDeEstaSala.some(f => {
         const otroInicio = new Date(f.inicio);
         const otroFinBloqueo = new Date(f.fin_bloqueo);
         return inicio < otroFinBloqueo && otroInicio < finBloqueo;
@@ -98,6 +99,10 @@ export class GestionFunciones implements OnInit {
       this.guardadoOk.set(true);
       this.formFunciones.reset({ subtitulado: false });
       
+      setTimeout(() => {
+        this.guardadoOk.set(false);
+      }, 2500);
+  
     }
 
 }

@@ -6,8 +6,8 @@ export const roleAdmin: CanMatchFn = async (route, segments) => {
   const auth = inject(Auth);
   const usuario = await auth.getCurrentUser();
 
-  if (!usuario || usuario.rol !== 'admin') {
-    return false;
+  if (usuario !== null && usuario.rol === 'admin') {
+    return true;
   }
-  return true;
+  return false;
 };

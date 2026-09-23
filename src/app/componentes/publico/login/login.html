@@ -1,7 +1,7 @@
 <div class="auth-card">
   <h2>Iniciar sesion</h2>
 
-  <form [formGroup]="formulario" (ngSubmit)="login()">
+  <form [formGroup]="formLogin" (ngSubmit)="login()">
 
     <div class="campo">
       <label for="email">Mail</label>
@@ -17,7 +17,7 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    <button type="submit" class="campo-ancho" [disabled]="formulario.invalid || cargando()">
+    <button type="submit" class="campo-ancho" [disabled]="formLogin.invalid || cargando()">
       @if (cargando()) {
         Ingresando...
       } @else {

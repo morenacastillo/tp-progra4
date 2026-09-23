@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Salas } from '../../../servicios/salas';
-import { DatosSalas } from '../../../modelos/datos-salas';
+import { GetSala } from '../../../modelos/datos-salas';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -11,10 +11,6 @@ import { DatosSalas } from '../../../modelos/datos-salas';
 })
 export class GestionSalas implements OnInit{
 
-  ngOnInit() {
-    this.cargarSalas();
-  }
-
   formSalas = new FormGroup({
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] })
@@ -23,12 +19,12 @@ export class GestionSalas implements OnInit{
   error = signal('');
   cargando = signal(false);
   guardadoOk = signal(false);
-  salas = signal<DatosSalas[]>([]);
+  salas = signal<GetSala[]>([]);
 
   formEdicion = new FormGroup({
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    habilitada: new FormControl(true, { nonNullable: true })
+    estado: new FormControl(true, { nonNullable: true })
   })
 
   salaEditandoId = signal<number | null>(null); 
@@ -37,6 +33,10 @@ export class GestionSalas implements OnInit{
 
   constructor(private salasService: Salas) {}
 
+  ngOnInit() {
+    this.cargarSalas();
+  }
+  
   async guardar() {
       if (this.formSalas.invalid) {
         return;
@@ -48,10 +48,10 @@ export class GestionSalas implements OnInit{
 
       const valores = this.formSalas.getRawValue();
 
-      const error = await this.salasService.crearSala(
-        valores.nombre,
-        valores.formato
-      );
+      const { error } = await this.salasService.crearSala({
+        nombre: valores.nombre,
+        formato: valores.formato
+      });
 
       this.cargando.set(false);
 
@@ -62,21 +62,26 @@ export class GestionSalas implements OnInit{
 
       this.guardadoOk.set(true);
       this.formSalas.reset();
-      this.cargarSalas()
+      this.cargarSalas();
+
+      setTimeout(() => {
+        this.guardadoOk.set(false);
+      }, 2500);
     }
+    
     
   private async cargarSalas() {
     const datos = await this.salasService.obtenerSalas();
     this.salas.set(datos);
   }
 
-  modificar(sala: DatosSalas) {
+  modificar(sala: GetSala) {
     this.errorEdicion.set('');
     this.salaEditandoId.set(sala.id);
     this.formEdicion.setValue({
       nombre: sala.nombre,
       formato: sala.formato,
-      habilitada: sala.habilitada
+      estado: sala.estado
     });
   }
 
@@ -85,7 +90,7 @@ export class GestionSalas implements OnInit{
     this.errorEdicion.set('');
   }
 
-  async guardarEdicion(sala: DatosSalas) {
+  async guardarEdicion(sala: GetSala) {
     if (this.formEdicion.invalid) {
       return;
     }
@@ -95,7 +100,7 @@ export class GestionSalas implements OnInit{
 
     const valores = this.formEdicion.getRawValue();
 
-    const error = await this.salasService.actualizarSala(sala.id, valores);
+    const { error } = await this.salasService.actualizarSala(sala.id, valores);
 
     this.guardandoEdicion.set(false);
 

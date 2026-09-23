@@ -1,6 +1,11 @@
-export interface DatosSalas {
-    id: number;
+export interface AltaSala {
     nombre: string;
     formato: string;
-    habilitada: boolean;
+}
+
+export interface GetSala {
+    id: number,
+    nombre: string;
+    formato: string;
+    estado: boolean;
 }

@@ -10,7 +10,7 @@ import { Auth } from '../../../servicios/auth';
   templateUrl: './login.html',
 })
 export class Login {
-  formulario = new FormGroup({
+  formLogin = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
   });
@@ -22,7 +22,7 @@ export class Login {
   constructor(private auth: Auth, private router: Router) {}
 
   async login() {
-    if (this.formulario.invalid) {
+    if (this.formLogin.invalid) {
       return;
     }
 
@@ -30,7 +30,7 @@ export class Login {
     this.error.set('');
     this.guardadoOk.set(false);
 
-    const valores = this.formulario.getRawValue();
+    const valores = this.formLogin.getRawValue();
 
     const { error } = await this.auth.signIn(valores.email, valores.password);
 

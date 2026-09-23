@@ -1,7 +1,7 @@
 <div class="auth-card">
   <h2>Crear cuenta</h2>
 
-  <form [formGroup]="formulario" (ngSubmit)="registrar()">
+  <form [formGroup]="formRegistro" (ngSubmit)="registrar()">
 
     <div class="campo">
       <label for="nombre">Nombre</label>
@@ -57,7 +57,7 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    <button type="submit" class="campo-ancho" [disabled]="formulario.invalid || cargando()">
+    <button type="submit" class="campo-ancho" [disabled]="formRegistro.invalid || cargando()">
       @if (cargando()) {
         Registrando...
       } @else {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
 import { CartaPelicula } from '../carta-pelicula/carta-pelicula';
 import { FiltroPipe } from '../pipes/filtro-pipe';
+import { GetPelicula } from '../../../modelos/datos-pelicula';
 
 @Component({
   imports: [CartaPelicula, FormsModule, FiltroPipe],
@@ -11,7 +12,7 @@ import { FiltroPipe } from '../pipes/filtro-pipe';
   templateUrl: './cartelera.html',
 })
 export class Cartelera implements OnInit {
-    peliculas = signal<any[]>([]);
+    peliculas = signal<GetPelicula[]>([]);
     busqueda = signal('');
 
     constructor(private peliculasService: Peliculas) {}

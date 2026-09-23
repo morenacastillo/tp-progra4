@@ -19,24 +19,20 @@
         </select>
     </div>
 
-
     @if (error()) {
         <p class="error campo-ancho">{{ error() }}</p>
     }
-
-    @if (guardadoOk()) {
-        <p class="exito campo-ancho">Película guardada con éxito.</p>
-    }
-
     <button type="submit" class="campo-ancho" [disabled]="formSalas.invalid || cargando()">
         @if (cargando()) {
             Guardando...
         } @else {
-            Guardar película
+            Guardar sala
         }
     </button>
-
     </form>
+    @if (guardadoOk()) {
+        <p class="exito campo-ancho">Sala guardada con éxito.</p>
+    }
 </div>
 
 <div class="gestionarSalas">
@@ -46,7 +42,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Formato</th>
-                <th>Habilitada</th>
+                <th>Estado</th>
                 <th></th>
             </tr>
         </thead>
@@ -65,7 +61,7 @@
                             </select>
                         </td>
                         <td>
-                            <select formControlName="habilitada">
+                            <select formControlName="estado">
                                 <option [ngValue]="true">Sí</option>
                                 <option [ngValue]="false">No</option>
                             </select>
@@ -82,11 +78,11 @@
                         </td>
                     </tr>
                 } @else {
-                    <tr [class.deshabilitada]="!sala.habilitada">
+                    <tr [class.deshabilitada]="!sala.estado">
                         <td>{{sala.id}}</td>
                         <td>{{sala.nombre}}</td>
                         <td>{{sala.formato}}</td>
-                        <td>{{ sala.habilitada ? 'Sí' : 'No' }}</td>
+                        <td>{{ sala.estado ? 'Sí' : 'No' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(sala)" [disabled]="salaEditandoId() !== null">Modificar</button>
                         </td>

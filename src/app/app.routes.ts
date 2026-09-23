@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { roleCliente } from './guards/role-accesoCliente-guard';
+import { roleCliente } from './guards/role-cliente-guard';
 import { roleAdmin } from './guards/role-admin-guard';
 import { roleEmpleado } from './guards/role-empleado-guard';
 

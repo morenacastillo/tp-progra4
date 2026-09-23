@@ -67,10 +67,6 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    @if (guardadoOk()) {
-      <p class="exito campo-ancho">Película guardada con éxito.</p>
-    }
-
     <button type="submit" class="campo-ancho" [disabled]="formPeliculas.invalid || cargando()">
       @if (cargando()) {
         Guardando...
@@ -79,5 +75,54 @@
       }
     </button>
 
+    @if (guardadoOk()) {
+      <p class="exito campo-ancho">Película guardada con éxito.</p>
+    }
+    
   </form>
+</div>
+
+<div class="gestionarPeliculas">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Duración</th>
+                <th>Restricción</th>
+                <th>Estreno</th>
+                <th>Precios</th>
+                <th>Etapa</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (pelicula of peliculas() ; track pelicula.id ) {
+              <tr [class.deshabilitada]="!pelicula.estado">
+                <td>{{pelicula.id}}</td>
+                <td>
+                  <img class="miniatura" [src]="pelicula.imagen_url" [alt]="pelicula.nombre">
+                </td>
+                <td>{{ pelicula.nombre }}</td>
+                <td>{{ pelicula.duracion_minutos }} min</td>
+                <td>{{ pelicula.restriccion_edad === 0 ? 'ATP' : '+' + pelicula.restriccion_edad }}</td>
+                <td>{{ pelicula.fecha_estreno | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <div>Base: {{ pelicula.precio_base | currency:'ARS':'symbol-narrow' }}</div>
+                    <div>VIP: {{ pelicula.precio_vip | currency:'ARS':'symbol-narrow' }}</div>
+                    <div>Preventa: {{ pelicula.precio_preventa | currency:'ARS':'symbol-narrow' }}</div>
+                </td>
+                <td>{{ pelicula.etapa }}</td>
+                <td>{{ pelicula.estado ? 'Activa' : 'Inactiva' }}</td>
+                <td class="acciones">
+                    <button type="button">Modificar</button>
+                </td>
+            </tr>
+          }
+            
+        </tbody>
+    </table>
+
 </div>
