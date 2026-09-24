@@ -5,8 +5,7 @@
       <h2>{{ p.nombre }}</h2>
       <p class="meta">Duración: {{ p.duracion_minutos }} min</p>
       <p class="sinopsis">{{ p.sinopsis }}</p>
+      <button type="button" class="btn-comprar" [routerLink]="['/home-cliente/sala', 1]">Comprar</button>
     </div>
   </div>
-
-  <button type="button" [routerLink]="['/home-cliente/sala', 1]">Comprar</button>
 }

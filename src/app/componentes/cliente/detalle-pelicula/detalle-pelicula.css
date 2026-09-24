@@ -44,3 +44,18 @@
   font-size: 18px;
   line-height: 1.7;
 }
+
+.btn-comprar {
+  margin-top: 24px;
+  padding: 12px 36px;
+  font-size: 18px;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.2s ease;
+}
+
+.btn-comprar:hover {
+  background: var(--color-btn-hover);
+}
