@@ -1,0 +1,72 @@
+.carta-candy {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 3px solid var(--color-header);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface-light);
+}
+
+.carta-candy img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.2s ease;
+}
+
+.overlay-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  text-align: center;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.carta-candy.hover-activo img {
+  filter: blur(4px);
+}
+
+.carta-candy.hover-activo .overlay-hover {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-hover span {
+  color: #ffffff;
+}
+
+.overlay-hover span:nth-of-type(1) {
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.overlay-hover span:nth-of-type(2) {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.overlay-hover span:nth-of-type(3) {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.overlay-hover button {
+  background: var(--color-accent);
+  color: #ffffff;
+  padding: 6px 18px;
+  font-size: 15px;
+}
+
+.overlay-hover button:hover {
+  background: var(--color-accent-hover);
+}

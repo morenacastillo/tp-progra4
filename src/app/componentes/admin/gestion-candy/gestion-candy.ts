@@ -58,7 +58,12 @@ export class GestionCandy implements OnInit{
     }
 
     nombreCategoria(categoriaId: number) {
-      return this.categorias().find(c => c.id === categoriaId)?.nombre ?? '-';
+      for (let categoria of this.categorias()) {
+        if (categoria.id === categoriaId) {
+          return categoria.nombre;
+        }
+      }
+      return '-';
     }
 
     async guardar() {
@@ -101,6 +106,7 @@ export class GestionCandy implements OnInit{
   modificar(producto: GetProducto) {
     this.errorEdicion.set('');
     this.productoEditandoId.set(producto.id);
+    
     this.formEdicion.setValue({
       categoria_id: producto.categoria_id,
       nombre: producto.nombre,

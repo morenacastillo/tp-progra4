@@ -7,10 +7,16 @@
 }
 
 a {
+  font-family: 'Rammetto One', var(--font-display);
+  font-weight: 400;
   color: var(--text-on-card);
-  font-weight: 600;
   text-decoration: none;
   font-size: 14px;
+}
+
+h2 {
+  font-family: 'Rammetto One', var(--font-display);
+  font-weight: 400;
 }
 
 a:hover {

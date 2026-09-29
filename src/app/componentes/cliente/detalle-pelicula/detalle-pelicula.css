@@ -53,9 +53,38 @@
   gap: 28px;
 }
 
-.columna h3 {
-  font-size: 22px;
+.dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--color-surface-light);
+}
+
+.dia {
+  padding: 10px 26px;
+  font-size: 18px;
+  background: transparent;
+  color: var(--text-on-dark);
+  border: 2px solid var(--color-surface-light);
+  border-radius: 10px;
+}
+
+.dia.activo {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.grupo {
+  border: 2px solid var(--color-surface-light);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+.grupo h3 {
+  font-size: 20px;
   margin-bottom: 14px;
+  text-transform: uppercase;
 }
 
 .opciones {
@@ -102,4 +131,24 @@
 .btn-comprar:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.aviso-combo {
+  max-width: 1400px;
+  margin: 32px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border: 2px solid var(--color-accent);
+  border-radius: 12px;
+  background: rgba(63, 145, 66, 0.15);
+}
+
+.aviso-combo button {
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
 }

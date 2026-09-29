@@ -79,8 +79,12 @@ export const routes: Routes = [
           loadComponent: () => import('./componentes/cliente/detalle-pelicula/detalle-pelicula').then(m => m.DetallePelicula)
         },
         {
-          path: 'sala/:id',
+          path: 'butacas/:id',
           loadComponent: () => import('./componentes/cliente/mapa-butacas/mapa-butacas').then(m => m.MapaButacas)
+        },
+        {
+          path: 'candy',
+          loadComponent: () => import('./componentes/cliente/compra-candy/compra-candy').then(m => m.CompraCandy)
         },
       ]
     },

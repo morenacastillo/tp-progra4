@@ -89,3 +89,15 @@
 .leyenda i.normal { background: var(--color-surface-light); }
 .leyenda i.accesible { background: #4a90d9; }
 .leyenda i.vip { background: #d4af37; }
+
+.butaca.ocupada {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.btn-prueba {
+  margin-top: 24px;
+  padding: 12px 28px;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}

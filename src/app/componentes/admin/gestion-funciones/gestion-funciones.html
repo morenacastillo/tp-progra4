@@ -105,7 +105,7 @@
                                 Guardar
                             }
                         </button>
-                        <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
+                        <button type="button" class="secundario desactivar" (click)="cancelarEdicion()">Cancelar</button>
                     </td>
                 </tr>
                 } @else {
@@ -120,7 +120,7 @@
                     <td class="acciones">
                         <button type="button" (click)="modificar(funcion)" [disabled]="funcionEditandoId() !== null">Modificar</button>
                         @if (funcion.estado) {
-                        <button type="button" class="peligro" (click)="desactivar(funcion)" [disabled]="funcionEditandoId() !== null">Desactivar</button>
+                        <button type="button" class="desactivar" (click)="desactivar(funcion)" [disabled]="funcionEditandoId() !== null">Desactivar</button>
                         } @else {
                         <button type="button" class="confirmar" (click)="activar(funcion)" [disabled]="funcionEditandoId() !== null">Activar</button>
                         }

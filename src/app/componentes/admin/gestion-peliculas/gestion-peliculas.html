@@ -160,7 +160,7 @@
                               Guardar
                           }
                       </button>
-                      <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
+                      <button type="button" class="secundario desactivar" (click)="cancelarEdicion()">Cancelar</button>
                   </td>
               </tr>
               } @else {
@@ -183,7 +183,7 @@
                   <td class="acciones">
                       <button type="button" (click)="modificar(pelicula)" [disabled]="peliculaEditandoId() !== null">Modificar</button>
                     @if (pelicula.estado) {
-                      <button type="button" class="peligro" (click)="desactivar(pelicula)" [disabled]="peliculaEditandoId() !== null">Desactivar</button>
+                      <button type="button" class="desactivar" (click)="desactivar(pelicula)" [disabled]="peliculaEditandoId() !== null">Desactivar</button>
                     } @else {
                       <button type="button" class="confirmar" (click)="activar(pelicula)" [disabled]="peliculaEditandoId() !== null">Activar</button>
                     }

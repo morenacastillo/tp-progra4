@@ -23,3 +23,18 @@
         }
 </div>
 <hr>
+
+<h3>COMBOS DESTACADOS</h3>
+<div class="grilla">
+  @for (combo of combosDestacados(); track combo.id) {
+    <div class="puesto">
+      <app-carta-candy
+        [nombre]="combo.nombre"
+        [imagen]="combo.imagen_url"
+        [descripcion]="combo.descripcion"
+        [precio]="combo.precio"
+        textoBoton="Comprar"
+        (elegido)="comprarCombo(combo)" />
+    </div>
+  }
+</div>

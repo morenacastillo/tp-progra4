@@ -1,33 +1,28 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Peliculas } from '../../../servicios/peliculas';
-import { GetPelicula } from '../../../modelos/datos-pelicula';
-import { GetFuncion } from '../../../modelos/datos-funciones';
-import { Funciones } from '../../../servicios/funciones';
 import { DatePipe } from '@angular/common';
+import { Peliculas } from '../../../servicios/peliculas';
+import { Funciones } from '../../../servicios/funciones';
+import { Carrito } from '../../../servicios/carrito';
+import { GetPelicula } from '../../../modelos/datos-pelicula';
+import { GetFuncion, GrupoFunciones } from '../../../modelos/datos-funciones';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, DatePipe],
+  imports: [DatePipe],
   selector: 'app-detalle-pelicula',
   styleUrl: './detalle-pelicula.css',
   templateUrl: './detalle-pelicula.html',
 })
+
 export class DetallePelicula implements OnInit, OnDestroy {
   pelicula = signal<GetPelicula | null>(null);
   funcionPorPelicula = signal<GetFuncion[]>([]);
+  diaElegido = signal<string | null>(null);
+  funcionElegida = signal<GetFuncion | null>(null);
   private suscripcion?: Subscription;
 
-
-  formPeliculaDisponibles = new FormGroup({
-    formato: new FormControl<string | null>(null, { validators: [Validators.required] }),
-    idioma: new FormControl<string | null>(null, { validators: [Validators.required] }),
-    funcionId: new FormControl<number | null>(null, { validators: [Validators.required] }),
-  });
-
-
-  constructor(private route: ActivatedRoute, private peliculasService: Peliculas, private funcionesService: Funciones) {}
+  constructor(private route: ActivatedRoute, private router: Router, private peliculasService: Peliculas, private funcionesService: Funciones, private carrito: Carrito) {}
 
   ngOnInit() {
     this.suscripcion = this.route.paramMap.subscribe(params => {
@@ -49,48 +44,77 @@ export class DetallePelicula implements OnInit, OnDestroy {
   }
 
   private async cargarFuncionPorId(id: string) {
-    const datos = await this.funcionesService.obtenerFuncionesPorPelicula(id)
-    this.funcionPorPelicula.set(datos)
+    const datos = await this.funcionesService.obtenerFuncionesPorPelicula(id);
+    this.funcionPorPelicula.set(datos);
+    
   }
 
-  formatosDisponibles() {
-    return [...new Set(this.funcionPorPelicula().map(f => f.formato))];
+  diaDe(funcion: GetFuncion) {
+    const fecha = new Date(funcion.inicio);
+    return fecha.getDate() + '/' + (fecha.getMonth() + 1);
+    //convierto el texto del inicio de pelicula UTC a una fecha legible
   }
 
-  idiomasDisponibles() {
-    const formato = this.formPeliculaDisponibles.controls.formato.value;
-    return [...new Set(
-      this.funcionPorPelicula()
-        .filter(f => f.formato === formato)
-        .map(f => f.idioma)
-    )];
+  diasDisponibles() {
+    let dias: string[] = [];
+    for (let funcion of this.funcionPorPelicula()) {
+      const dia = this.diaDe(funcion);
+      if (!dias.includes(dia)) {
+        dias.push(dia);
+      }
+    }
+    return dias;
   }
 
-  funcionPorPeliculaDisponibles() {
-    const formato = this.formPeliculaDisponibles.controls.formato.value;
-    const idioma = this.formPeliculaDisponibles.controls.idioma.value;
-    return this.funcionPorPelicula().filter(f => f.formato === formato && f.idioma === idioma);
+  // filtra las funciones del día elegido y manda cada una a su grupo con agregarAGrupo
+  gruposDelDia() {
+    let grupos: GrupoFunciones[] = [];
+    for (let funcion of this.funcionPorPelicula()) {
+      if (this.diaDe(funcion) === this.diaElegido()) {
+        this.agregarAGrupo(grupos, funcion);
+      }
+    }
+    return grupos;
+  } 
+
+  // agregarAGrupo compara la nueva funcion a agregar, si el formato y idioma ya existen en una caja, agrego el nuevo horario a esa misma; si no existe todavia una caja con ese idioma y formato, creo una y agrego el horario
+  private agregarAGrupo(grupos: GrupoFunciones[], funcion: GetFuncion) {
+    for (let grupo of grupos) {
+      if (grupo.formato === funcion.formato && grupo.idioma === funcion.idioma) {
+        grupo.funciones.push(funcion);
+        return;
+      }
+    }
+    grupos.push({ formato: funcion.formato, idioma: funcion.idioma, funciones: [funcion] });
+  } 
+
+
+  elegirDia(dia: string) {
+    this.diaElegido.set(dia);
+    this.funcionElegida.set(null);
   }
 
-  elegirFormato(formato: string) {
-    this.formPeliculaDisponibles.controls.formato.setValue(formato);
-    this.formPeliculaDisponibles.controls.idioma.setValue(null);
-    this.formPeliculaDisponibles.controls.funcionId.setValue(null);
+  elegirFuncion(funcion: GetFuncion) {
+    this.funcionElegida.set(funcion);
   }
 
-  elegirIdioma(idioma: string) {
-    this.formPeliculaDisponibles.controls.idioma.setValue(idioma);
-    this.formPeliculaDisponibles.controls.funcionId.setValue(null);
+  comboElegido() {
+    return this.carrito.combo();
   }
 
-  elegirFuncion(funcionId: number) {
-    this.formPeliculaDisponibles.controls.funcionId.setValue(funcionId);
+  cancelarCombo() {
+    this.carrito.cancelarCombo();
   }
 
-  funcionSeleccionada() {
-    const id = this.formPeliculaDisponibles.controls.funcionId.value;
-    return this.funcionPorPelicula().find(f => f.id === id) ?? null;
+  comprar() {
+    const funcion = this.funcionElegida();
+    const pelicula = this.pelicula();
+
+    if (!funcion || !pelicula) {
+      return;
+    }
+
+    this.carrito.iniciar(funcion, pelicula);
+    this.router.navigate(['/home-cliente/butacas', funcion.id]);
   }
-  
 }
-

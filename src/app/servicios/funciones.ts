@@ -20,12 +20,28 @@ export class Funciones {
         return data ?? [];
     }
 
+    async obtenerFuncionPorId(id: string): Promise<GetFuncion | null> {
+        const { data, error } = await this.auth.client()
+            .from('funciones')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            console.error('Error trayendo la función:', error);
+            return null;
+        }
+        return data;
+    }
+
     async obtenerFuncionesPorPelicula(peliculaId: string): Promise<GetFuncion[]> {
         const { data, error } = await this.auth.client()
             .from('funciones')
             .select('*')
             .eq('pelicula_id', peliculaId)
-            .eq('estado', true);
+            .eq('estado', true)
+            .order('inicio');
+            
 
         if (error) {
             console.error('Error trayendo las funciones de la película:', error);
@@ -57,6 +73,26 @@ export class Funciones {
             .update({ estado: activo })
             .eq('id', id);
         return { error };
+    }
+
+    async obtenerButacasOcupadas(funcionId: number): Promise<number[]> {
+        const { data, error } = await this.auth.client()
+            .from('entradas')
+            .select('butaca_id, estado')
+            .eq('funcion_id', funcionId);
+
+        if (error) {
+            console.error('Error trayendo las butacas ocupadas:', error);
+            return [];
+        }
+
+        let ocupadas: number[] = [];
+        for (let entrada of data ?? []) {
+            if (entrada.estado !== 'cancelada') {
+                ocupadas.push(entrada.butaca_id);
+            }
+        }
+        return ocupadas;
     }
 
 }

@@ -4,7 +4,7 @@ import { Auth } from './auth';
 
 @Service()
 export class Combos {
-    auth = inject(Auth)
+    private auth = inject(Auth)
     
     async obtenerCombos(): Promise<GetCombo[]> {
         const { data, error } = await this.auth.client()
@@ -47,7 +47,7 @@ export class Combos {
         return { error };
     }
 
-    async actualizarCombo(id: number, cambios: { nombre: string; descripcion: string; precio: number; estado: boolean }) {
+    async actualizarCombo(id: number, cambios: { nombre: string; descripcion: string; precio: number; imagen_url: string | null; estado: boolean }) {
         const { error } = await this.auth.client()
             .from('combos')
             .update(cambios)

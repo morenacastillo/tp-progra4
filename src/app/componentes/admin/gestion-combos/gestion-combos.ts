@@ -25,6 +25,7 @@ export class GestionCombos implements OnInit {
     descripcion: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] }),
     precio: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     cantidad_entradas: new FormControl('0', { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
+    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.pattern('^https?://.+')] }),
   })
 
   formItem = new FormGroup({
@@ -36,7 +37,8 @@ export class GestionCombos implements OnInit {
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     descripcion: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] }),
     precio: new FormControl(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
-    estado: new FormControl(true, { nonNullable: true })
+    estado: new FormControl(true, { nonNullable: true }),
+    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.pattern('^https?://.+')] }),
   })
 
   comboEditandoId = signal<number | null>(null);
@@ -67,7 +69,7 @@ export class GestionCombos implements OnInit {
     }
 
     const valores = this.formItem.getRawValue();
-    const producto = this.productos().find(p => p.id === Number(valores.producto_id));
+    const producto = this.productos().find(p => p.id === Number(valores.producto_id)); //recorre la tabla hasta que el id del prod ingresado matchee con una fila
 
     if (!producto) {
       return;
@@ -77,17 +79,17 @@ export class GestionCombos implements OnInit {
       this.error.set('Ese producto ya está en el combo. Quitalo y volvelo a agregar con otra cantidad.');
       return;
     }
-
     this.error.set('');
+
     this.itemsCombo.set([
-      ...this.itemsCombo(),
+      ...this.itemsCombo(), //arma una lista nueva con todo lo que ya habia + lo nuevo agregado
       { producto_id: producto.id, nombre: producto.nombre, cantidad: Number(valores.cantidad) }
     ]);
     this.formItem.reset();
   }
 
   quitarItem(productoId: number) {
-    this.itemsCombo.set(this.itemsCombo().filter(i => i.producto_id !== productoId));
+    this.itemsCombo.set(this.itemsCombo().filter(i => i.producto_id !== productoId)); // arma lista nueva con todos los productos menos el del id seleccionado
   }
 
 
@@ -107,6 +109,7 @@ export class GestionCombos implements OnInit {
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
       cantidad_entradas: Number(valores.cantidad_entradas),
+      imagen_url: valores.imagen_url || null,
     });
 
     if (error || !data) {
@@ -150,7 +153,8 @@ export class GestionCombos implements OnInit {
       nombre: combo.nombre,
       descripcion: combo.descripcion,
       precio: combo.precio,
-      estado: combo.estado
+      estado: combo.estado,
+      imagen_url: combo.imagen_url ?? '',
     });
   }
 
@@ -173,7 +177,8 @@ export class GestionCombos implements OnInit {
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
-      estado: valores.estado
+      estado: valores.estado,
+      imagen_url: valores.imagen_url || null,
     });
 
     this.guardandoEdicion.set(false);

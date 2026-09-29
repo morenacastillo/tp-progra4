@@ -1,6 +1,11 @@
 <div class="mapa">
   <div class="pantalla">Pantalla</div>
 
+  @if (comboElegido(); as combo) {
+    <p class="aviso-combo">{{ combo.nombre }}</p>
+    <p class="aviso-combo">Seleccioná {{ combo.cantidad_entradas }} butacas.</p>
+  }
+
   @for (fila of filas; track fila) {
     <div class="fila">
       <span class="letra-fila">{{ fila }}</span>
@@ -11,9 +16,11 @@
             [class.normal]="butaca.tipo === 'normal'"
             [class.accesible]="butaca.tipo === 'accesible'"
             [class.vip]="butaca.tipo === 'vip'"
-            [class.inactiva]="!butaca.activa"
             [style.grid-column]="butaca.columna"
-            [title]="fila + butaca.columna">
+            [title]="fila + butaca.columna"
+            [class.inactiva]="!butaca.activa"
+            [class.ocupada]="estaOcupada(butaca)">
+            
           </div>
         }
       </div>
@@ -25,4 +32,8 @@
     <span><i class="accesible"></i> Accesible</span>
     <span><i class="vip"></i> VIP</span>
   </div>
+  
+  <button type="button" class="btn-prueba" (click)="elegirButacasDePrueba()">
+    Elegir {{ cantidadAElegir() }} butacas de prueba
+  </button>
 </div>

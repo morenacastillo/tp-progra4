@@ -1,3 +1,4 @@
+
 @if (pelicula(); as p) {
   <div class="detalle">
     <img [src]="p.imagen_horizontal_url" [alt]="p.nombre" />
@@ -8,45 +9,45 @@
     </div>
   </div>
 
-  @if (funcionPorPelicula().length > 0) {
+  @if (comboElegido(); as combo) {
+    <div class="aviso-combo">
+      <span>Estás comprando el <strong>{{ combo.nombre }}</strong>: elegí la función y después {{ combo.cantidad_entradas }} butacas.</span>
+      <button type="button" (click)="cancelarCombo()">Cancelar combo</button>
+    </div>
+  }
+
+    @if (funcionPorPelicula().length > 0) {
     <div class="eleccion-funcion">
-      <div class="columna">
-        <h3>Formato</h3>
-        <div class="opciones">
-          @for (formato of formatosDisponibles(); track formato) {
-            <button type="button" class="pildora" [class.activo]="formPeliculaDisponibles.controls.formato.value === formato" (click)="elegirFormato(formato)">
-              {{ formato }}
-            </button>
-          }
-        </div>
+      <div class="dias">
+        @for (dia of diasDisponibles(); track dia) {
+          <button type="button" class="dia" [class.activo]="diaElegido() === dia" (click)="elegirDia(dia)">
+            {{ dia }}
+          </button>
+        }
       </div>
+      @if (!diaElegido()) {
+        <p>Elegí un día para ver los horarios.</p>
+      }
 
-      <div class="columna">
-        <h3>Idioma</h3>
-        <div class="opciones">
-          @for (idioma of idiomasDisponibles(); track idioma) {
-            <button type="button" class="pildora" [class.activo]="formPeliculaDisponibles.controls.idioma.value === idioma" (click)="elegirIdioma(idioma)">
-              {{ idioma === 'castellano' ? 'Castellano' : 'Subtitulada' }}
-            </button>
-          }
-        </div>
-      </div>
-
-      @if (formPeliculaDisponibles.controls.idioma.value) {
-        <div class="columna columna-ancha">
-          <h3>Fecha y horario</h3>
+      @for (grupo of gruposDelDia(); track grupo.formato + grupo.idioma) {
+        <div class="grupo">
+          <h3>{{ grupo.formato }} · {{ grupo.idioma }}</h3>
           <div class="opciones">
-            @for (funcion of funcionPorPeliculaDisponibles(); track funcion.id) {
-              <button type="button" class="pildora" [class.activo]="formPeliculaDisponibles.controls.funcionId.value === funcion.id" (click)="elegirFuncion(funcion.id)">
-                {{ funcion.inicio | date:'dd/MM - HH:mm' }}
+            @for (funcion of grupo.funciones; track funcion.id) {
+              <button type="button" class="pildora" [class.activo]="funcionElegida()?.id === funcion.id" (click)="elegirFuncion(funcion)">
+                {{ funcion.inicio | date:'HH:mm' }}
               </button>
             }
           </div>
         </div>
       }
 
-      <button type="button" class="btn-comprar" [disabled]="formPeliculaDisponibles.invalid" [routerLink]="['/home-cliente/sala', funcionSeleccionada()?.sala_id]">
-        Comprar entradas
+      <button type="button" class="btn-comprar" [disabled]="!funcionElegida()" (click)="comprar()">
+        @if (comboElegido()) {
+          Continuar con el combo
+        } @else {
+          Comprar entradas
+        }
       </button>
       
     </div>

@@ -1,0 +1,55 @@
+<aside class="resumen">
+    <h3>Resumen de compra</h3>
+
+    @if (carrito.pelicula(); as pelicula) {
+        <div class="bloque">
+            <p class="titulo-peli">{{ pelicula.nombre }}</p>
+            @if (carrito.funcion(); as funcion) {
+                <p class="detalle">{{ funcion.inicio | date:'dd/MM - HH:mm' }} · {{ funcion.formato }} · {{ funcion.idioma }}</p>
+            }
+
+            @if (carrito.combo(); as combo) {
+                <div class="linea entradas">
+                    <span> {{ combo.nombre }}</span>
+                    <span>{{ combo.precio | currency }}</span>
+                </div>
+                <p class="detalle">{{ combo.descripcion }}</p>
+            }
+
+            @else {
+                <div class="linea entradas">
+                    <span>{{ carrito.butacas().length }} entradas</span>
+                    <span>{{ carrito.totalEntradas() | currency }}</span>
+                </div>
+            }
+            <p class="detalle">Butacas: {{ nombresButacas() }}</p>
+            
+        </div>
+
+        <div class="bloque">
+            <p class="subtitulo">Candy</p>
+            @for (item of carrito.candy(); track item.tipo + item.id) {
+                <div class="linea">
+                    <span>{{ item.cantidad }} x {{ item.nombre }}</span>
+                    <span>
+                        {{ item.precio * item.cantidad | currency }}
+                        <button type="button" class="quitar" (click)="carrito.quitarCandy(item.tipo, item.id)">✕</button>
+                    </span>
+                </div>
+            } 
+            
+            @if (carrito.candy().length === 0) {
+                <p class="detalle">Todavía no agregaste nada.</p>
+            }
+        </div>
+
+        <div class="linea total">
+            <span>Total</span>
+            <span>{{ carrito.total() | currency }}</span>
+        </div>
+
+        <button type="button" class="btn-continuar" disabled>Continuar al pago</button>
+        } @else {
+            <p class="detalle">No hay una función elegida. Elegí una película en la cartelera.</p>
+        }
+</aside>

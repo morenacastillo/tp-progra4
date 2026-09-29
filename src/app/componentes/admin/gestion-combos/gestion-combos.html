@@ -21,7 +21,15 @@
             <label for="cantidad_entradas">Cantidad de entradas</label>
             <input type="number" min="0" id="cantidad_entradas" formControlName="cantidad_entradas">
         </div>
+        
+        <div class="campo campo-ancho">
+            <label for="imagen_url">Imagen en URL</label>
+            <input type="url" id="imagen_url" formControlName="imagen_url" placeholder="Ingresa la imagen URL del combo (opcional)">
+        </div>
     </form>
+
+    
+
 
     <h3>Productos del combo</h3>
 
@@ -75,6 +83,7 @@
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Entradas</th>
+                <th>Imagen</th>
                 <th>Estado</th>
                 <th></th>
             </tr>
@@ -88,6 +97,7 @@
                         <td><input type="text" formControlName="descripcion"></td>
                         <td><input type="number" step="0.01" formControlName="precio"></td>
                         <td>{{ combo.cantidad_entradas }}</td>
+                        <td><input type="url" formControlName="imagen_url"></td>
                         <td>
                             <select formControlName="estado">
                                 <option [ngValue]="true">Activo</option>
@@ -102,7 +112,7 @@
                                     Guardar
                                 }
                             </button>
-                            <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
+                            <button type="button" class="secundario desactivar" (click)="cancelarEdicion()">Cancelar</button>
                         </td>
                     </tr>
                 } @else {
@@ -112,11 +122,18 @@
                         <td>{{ combo.descripcion }}</td>
                         <td>{{ combo.precio }}</td>
                         <td>{{ combo.cantidad_entradas }}</td>
+                        <td>
+                            @if (combo.imagen_url) {
+                                <img class="miniatura" [src]="combo.imagen_url" [alt]="combo.nombre">
+                            } @else {
+                                -
+                            }
+                        </td>
                         <td>{{ combo.estado ? 'Activo' : 'Inactivo' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(combo)" [disabled]="comboEditandoId() !== null">Modificar</button>
                             @if (combo.estado) {
-                                <button type="button" class="peligro" (click)="desactivar(combo)" [disabled]="comboEditandoId() !== null">Desactivar</button>
+                                <button type="button" class="desactivar" (click)="desactivar(combo)" [disabled]="comboEditandoId() !== null">Desactivar</button>
                             } @else {
                                 <button type="button" class="confirmar" (click)="activar(combo)" [disabled]="comboEditandoId() !== null">Activar</button>
                             }

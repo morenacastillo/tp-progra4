@@ -20,3 +20,9 @@ export interface GetFuncion {
     creado_en: string;
     estado: boolean;
 }
+
+export interface GrupoFunciones {
+    formato: string;
+    idioma: string;
+    funciones: GetFuncion[];
+}

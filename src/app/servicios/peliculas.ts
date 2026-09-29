@@ -101,9 +101,9 @@ export class Peliculas {
                 .eq('estado', true);
 
         if (error) {
-            console.error('Error trayendo las más vendidas:', error);
+            console.error('Error trayendo los proximos estrenos:', error);
             return [];
         }
-        return data 
+        return data ?? []
         }
 }

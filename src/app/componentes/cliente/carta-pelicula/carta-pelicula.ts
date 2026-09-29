@@ -1,9 +1,9 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CarteleraComprar } from '../directivas/cartelera-comprar';
+import { CardComprar } from '../directivas/card-comprar';
 
 @Component({
-  imports: [CarteleraComprar, RouterLink],
+  imports: [CardComprar, RouterLink],
   selector: 'app-carta-pelicula',
   styleUrl: './carta-pelicula.css',
   templateUrl: './carta-pelicula.html',

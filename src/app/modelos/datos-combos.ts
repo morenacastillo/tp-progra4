@@ -4,6 +4,7 @@ export interface GetCombo {
     descripcion: string;
     precio: number;
     cantidad_entradas: number;
+    imagen_url: string | null;
     estado: boolean;
 }
 
@@ -12,6 +13,7 @@ export interface AltaCombo {
     descripcion: string;
     precio: number;
     cantidad_entradas: number;
+    imagen_url: string | null;
 }
 
 

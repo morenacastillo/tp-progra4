@@ -1,0 +1,77 @@
+<div class="pagina">
+  <div class="catalogo">
+    <h3>Combos</h3>
+        <div class="grilla">
+            @for (combo of combosCandy(); track combo.id) {
+                <app-carta-candy
+                    [nombre]="combo.nombre"
+                    [imagen]="combo.imagen_url"
+                    [descripcion]="combo.descripcion"
+                    [precio]="combo.precio" 
+                    (elegido)="agregarCombo(combo)" />
+            }
+        </div>
+
+
+        <h3>Productos</h3>
+        <div class="grilla">
+            <h5>Bebidas</h5>
+            <div>
+                @for (producto of productosCandy(); track producto.id) {
+                    @if (producto.categoria_id === 1) {
+                        <app-carta-candy
+                            [nombre]="producto.nombre"
+                            [imagen]="producto.imagen_url"
+                            [descripcion]="producto.descripcion"
+                            [precio]="producto.precio" 
+                            (elegido)="agregarProducto(producto)" />
+                    }
+                }
+            </div>
+
+            <h5>Pochoclos</h5>
+            <div>
+            @for (producto of productosCandy(); track producto.id) {
+                    @if (producto.categoria_id === 2) {
+                        <app-carta-candy
+                            [nombre]="producto.nombre"
+                            [imagen]="producto.imagen_url"
+                            [descripcion]="producto.descripcion"
+                            [precio]="producto.precio"
+                            (elegido)="agregarProducto(producto)" />
+                    }
+                }
+            </div>
+
+            <h5>Golosinas</h5>
+            <div>
+            @for (producto of productosCandy(); track producto.id) {
+                    @if (producto.categoria_id === 3) {
+                        <app-carta-candy
+                            [nombre]="producto.nombre"
+                            [imagen]="producto.imagen_url"
+                            [descripcion]="producto.descripcion"
+                            [precio]="producto.precio"
+                            (elegido)="agregarProducto(producto)" />
+                    }
+                }
+            </div>
+
+            <h5>Snacks</h5>
+            <div>
+            @for (producto of productosCandy(); track producto.id) {
+                    @if (producto.categoria_id === 4) {
+                        <app-carta-candy
+                            [nombre]="producto.nombre"
+                            [imagen]="producto.imagen_url"
+                            [descripcion]="producto.descripcion"
+                            [precio]="producto.precio" 
+                            (elegido)="agregarProducto(producto)" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+<app-resumen-carrito class="lateral" />
+</div>

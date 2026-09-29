@@ -172,10 +172,12 @@
 }
 
 .gestionarCombos .acciones {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  gap: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.gestionarCombos .acciones button + button {
+  margin-left: 8px;
 }
 
 .gestionarCombos .acciones button {
@@ -203,15 +205,15 @@
   background: var(--color-accent-hover);
 }
 
-.gestionarCombos .acciones button.peligro {
+.gestionarCombos .acciones button.desactivar {
   background: var(--color-danger);
 }
 
-.gestionarCombos .acciones button.peligro:hover:not(:disabled) {
+.gestionarCombos .acciones button.desactivar:hover:not(:disabled) {
   background: var(--color-danger-hover);
 }
 
-.gestionarCombos .acciones button.secundario.peligro {
+.gestionarCombos .acciones button.secundario.desactivar {
   background: transparent;
   color: var(--color-danger);
   border: 1px solid var(--color-danger);
@@ -226,4 +228,16 @@
 .gestionarCombos td:first-child {
   width: 60px;
   opacity: 0.7;
+}
+
+.miniatura {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.campo-ancho {
+  grid-column: 1 / -1;
 }

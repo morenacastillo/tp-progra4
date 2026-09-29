@@ -1,0 +1,11 @@
+<div class="carta-candy" appCardComprar>
+    @if (imagen()) {
+        <img [src]="imagen()" [alt]="nombre()" />
+    }
+    <div class="overlay-hover">
+        <span>{{ nombre() }}</span>
+        <span>{{ descripcion() }}</span>
+        <span>{{ precio() | currency }}</span>
+        <button type="button" (click)="elegido.emit()">{{ textoBoton() }}</button>
+    </div>
+</div>
