@@ -149,3 +149,10 @@
   font-size: 14px;
   margin: 10px 16px;
 }
+
+
+@media (max-width: 600px) {
+  .gestionarFunciones table {
+    min-width: 720px;
+  }
+}

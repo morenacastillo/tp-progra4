@@ -101,3 +101,35 @@
   background: var(--color-btn);
   color: var(--text-on-dark);
 }
+
+@media (max-width: 600px) {
+  .mapa {
+    padding: 16px 8px;
+  }
+
+  .fila {
+    gap: 4px;
+  }
+
+  .letra-fila {
+    width: 12px;
+    font-size: 10px;
+  }
+
+  .butacas {
+    grid-template-columns: repeat(30, 9px);
+    gap: 2px;
+  }
+
+  .butaca {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+  }
+
+  .leyenda {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+}

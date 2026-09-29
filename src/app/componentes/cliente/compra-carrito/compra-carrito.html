@@ -1,0 +1,118 @@
+@if (codigoCompra(); as codigo) {
+    <div class="confirmacion">
+        <h2>¡Compra confirmada!</h2>
+        <p>Presentá este código en el cine para ingresar y retirar tu candy:</p>
+        <p class="codigo">{{ codigo }}</p>
+        <button type="button" class="btn-confirmar" routerLink="/home-cliente">Volver al inicio</button>
+    </div>
+    } @else {
+    @if (carrito.pelicula(); as pelicula) {
+        <div class="carrito">
+
+        <section class="tarjeta">
+            <h2>Detalle de tu compra</h2>
+            <p class="titulo-peli">{{ pelicula.nombre }}</p>
+            @if (carrito.funcion(); as funcion) {
+            <p class="dato">{{ funcion.inicio | date:'dd/MM - HH:mm' }} · {{ funcion.formato }} · {{ funcion.idioma }}</p>
+            }
+
+            @if (carrito.combo(); as combo) {
+            <div class="aviso-combo">
+                <strong>{{ combo.nombre }}</strong>
+                <span>{{ combo.descripcion }}</span>
+            </div>
+            }
+
+            <h3>Entradas</h3>
+            @for (butaca of carrito.butacas(); track butaca.id) {
+            <div class="linea entrada" [class.vip]="butaca.tipo === 'vip'">
+                <span class="butaca">{{ butaca.fila }}{{ butaca.columna }}</span>
+                <span class="tipo">{{ nombreTipo(butaca.tipo) }}</span>
+                @if (carrito.combo()) {
+                    <span>Incluida en el combo</span>
+                } @else {
+                    <span>{{ carrito.precioButaca(butaca) | currency }}</span>
+                }
+            </div>
+            }
+
+            <h3>Candy</h3>
+            @for (item of carrito.candy(); track item.tipo + item.id) {
+                <div class="linea">
+                    <span>{{ item.cantidad }} x {{ item.nombre }}</span>
+                    <span>{{ item.precio * item.cantidad | currency }}</span>
+                </div>
+            }
+            @if (carrito.candy().length === 0) {
+                @if (carrito.combo()) {
+                    <p class="dato">Incluido en el combo.</p>
+                } @else {
+                    <p class="dato">No agregaste candy.</p>
+                }
+            }
+
+            <button type="button" class="btn-volver" (click)="volver()">← Volver</button>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Total</h2>
+            <div class="linea">
+                @if (carrito.combo()) {
+                    <span>Combo</span>
+                } @else {
+                    <span>Entradas</span>
+                }
+                <span>{{ carrito.totalEntradas() | currency }}</span>
+            </div>
+
+            <div class="linea">
+                <span>Candy</span>
+                <span>{{ carrito.totalCandy() | currency }}</span>
+            </div>
+
+            <div class="linea descuento">
+                <span>Descuento</span>
+                <span>{{ 0 | currency }}</span>
+            </div>
+
+            <div class="linea total-final">
+                <span>TOTAL</span>
+                <span>{{ carrito.total() | currency }}</span>
+            </div>
+
+            <h3>Cupón de descuento</h3>
+            <div class="cupon">
+                <input type="text" placeholder="Ingresá tu código" />
+                <button type="button" disabled>Aplicar</button>
+            </div>
+
+            <h3>Método de pago</h3>
+            <div class="metodos">
+                @for (metodo of metodosPago; track metodo) {
+                    <button type="button" class="pildora" [class.activo]="metodoPago() === metodo" (click)="metodoPago.set(metodo)">
+                    {{ metodo }}
+                    </button>
+            }
+            </div>
+
+            @if (error()) {
+                <p class="error">{{ error() }}</p>
+            }
+
+            <button type="button" class="btn-confirmar" [disabled]="!metodoPago() || procesando()" (click)="confirmarCompra()">
+            @if (procesando()) {
+                Procesando...
+            } @else {
+                Confirmar compra
+            }
+            </button>
+        </section>
+
+        </div>
+    } @else {
+        <div class="vacio">
+            <p>No hay ninguna compra en curso.</p>
+            <button type="button" class="btn-confirmar" routerLink="/home-cliente/cartelera">Ir a la cartelera</button>
+        </div>
+    }
+}

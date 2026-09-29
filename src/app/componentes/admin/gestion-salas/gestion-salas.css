@@ -151,3 +151,10 @@
   width: 60px;
   opacity: 0.7;
 }
+
+
+@media (max-width: 600px) {
+  .gestionarSalas table {
+    min-width: 640px;
+  }
+}

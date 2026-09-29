@@ -57,3 +57,11 @@
   max-width: 1400px;
   margin: 40px auto 0;
 }
+
+
+@media (max-width: 600px) {
+  .grilla {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}

@@ -81,6 +81,14 @@ h3 {
 }
 
 @media (max-width: 600px) {
+  h1 {
+    font-size: 40px;
+  }
+
+  h3 {
+    font-size: 22px;
+  }
+
   .grilla,
   .grilla:nth-of-type(2) {
     gap: 20px;

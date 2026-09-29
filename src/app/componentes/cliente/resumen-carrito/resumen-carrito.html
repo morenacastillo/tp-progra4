@@ -8,20 +8,11 @@
                 <p class="detalle">{{ funcion.inicio | date:'dd/MM - HH:mm' }} · {{ funcion.formato }} · {{ funcion.idioma }}</p>
             }
 
-            @if (carrito.combo(); as combo) {
-                <div class="linea entradas">
-                    <span> {{ combo.nombre }}</span>
-                    <span>{{ combo.precio | currency }}</span>
-                </div>
-                <p class="detalle">{{ combo.descripcion }}</p>
-            }
-
-            @else {
-                <div class="linea entradas">
-                    <span>{{ carrito.butacas().length }} entradas</span>
-                    <span>{{ carrito.totalEntradas() | currency }}</span>
-                </div>
-            }
+            <div class="linea entradas">
+                <span>{{ carrito.butacas().length }} entradas</span>
+                <span>{{ carrito.totalEntradas() | currency }}</span>
+            </div>
+            
             <p class="detalle">Butacas: {{ nombresButacas() }}</p>
             
         </div>
@@ -48,7 +39,7 @@
             <span>{{ carrito.total() | currency }}</span>
         </div>
 
-        <button type="button" class="btn-continuar" disabled>Continuar al pago</button>
+        <button type="button" class="btn-continuar" routerLink="/home-cliente/carrito">Continuar al pago</button>
         } @else {
             <p class="detalle">No hay una función elegida. Elegí una película en la cartelera.</p>
         }

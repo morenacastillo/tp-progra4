@@ -225,3 +225,14 @@ textarea {
     font-size: 12px;
   }
 }
+
+
+@media (max-width: 600px) {
+  .gestionarPeliculas {
+    overflow-x: auto;
+  }
+
+  .gestionarPeliculas table {
+    min-width: 900px;
+  }
+}

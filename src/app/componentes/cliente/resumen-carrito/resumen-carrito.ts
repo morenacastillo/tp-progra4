@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Carrito } from '../../../servicios/carrito';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
-  imports: [CurrencyPipe, DatePipe],
+  imports: [CurrencyPipe, DatePipe, RouterLink],
   selector: 'app-resumen-carrito',
   styleUrl: './resumen-carrito.css',
   templateUrl: './resumen-carrito.html',
