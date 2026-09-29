@@ -67,24 +67,29 @@
                             </select>
                         </td>
                         <td class="acciones">
-                            <button type="button" (click)="guardarEdicion(sala)" [disabled]="formEdicion.invalid || guardandoEdicion()">
+                            <button type="button" class="confirmar" (click)="guardarEdicion(sala)" [disabled]="formEdicion.invalid || guardandoEdicion()">
                                 @if (guardandoEdicion()) {
                                     Guardando...
                                 } @else {
                                     Guardar
                                 }
                             </button>
-                            <button type="button" class="secundario" (click)="cancelarEdicion()">Cancelar</button>
+                            <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
                         </td>
                     </tr>
                 } @else {
-                    <tr [class.deshabilitada]="!sala.estado">
+                    <tr [class.deshabilitada]="!sala.estado" [class.bloqueada]="salaEditandoId() !== null && salaEditandoId() !== sala.id">
                         <td>{{sala.id}}</td>
                         <td>{{sala.nombre}}</td>
                         <td>{{sala.formato}}</td>
                         <td>{{ sala.estado ? 'Habilitada' : 'Deshabilitada' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(sala)" [disabled]="salaEditandoId() !== null">Modificar</button>
+                            @if (sala.estado) {
+                            <button type="button" class="peligro" (click)="desactivar(sala)" [disabled]="salaEditandoId() !== null">Desactivar</button>
+                            } @else {
+                            <button type="button" class="confirmar" (click)="activar(sala)" [disabled]="salaEditandoId() !== null">Activar</button>
+                            }
                         </td>
                     </tr>
                 }

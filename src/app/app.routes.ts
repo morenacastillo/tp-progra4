@@ -50,6 +50,14 @@ export const routes: Routes = [
           path: 'salas', 
           loadComponent: () => import('./componentes/admin/gestion-salas/gestion-salas').then(m => m.GestionSalas) 
         },
+        {
+          path: 'candy', 
+          loadComponent: () => import('./componentes/admin/gestion-candy/gestion-candy').then(m => m.GestionCandy) 
+        },
+        {
+          path: 'combos', 
+          loadComponent: () => import('./componentes/admin/gestion-combos/gestion-combos').then(m => m.GestionCombos) 
+        },
       ]
     },
 

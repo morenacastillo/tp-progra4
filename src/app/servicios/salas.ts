@@ -35,33 +35,6 @@ export class Salas {
         return data ?? [];
         }
 
-    async crearSala(datos: AltaSala) {
-        const { data, error } = await this.auth.client()
-            .from('salas')
-            .insert(datos)
-            .select()
-            .single();
-
-        if (error) {
-            return { error } ;
-        }
-
-        const butacas = this.generarButacas(data.id);
-
-        const { error: errorButacas } = await this.auth.client()
-            .from('butacas')
-            .insert(butacas);
-        return { error: errorButacas }; 
-    }
-
-    async actualizarSala(id: number, cambios: { nombre: string; formato: string; estado: boolean }) {
-        const { error } = await this.auth.client()
-            .from('salas')
-            .update(cambios)
-            .eq('id', id); 
-        return { error };
-    }
-
     private generarButacas(salaId: number) {
         const filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
         const columnas = [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30];
@@ -94,4 +67,42 @@ export class Salas {
 
         return butacas;
     }
+
+    async crearSala(datos: AltaSala) {
+        const { data, error } = await this.auth.client()
+            .from('salas')
+            .insert(datos)
+            .select()
+            .single();
+
+        if (error) {
+            return { error } ;
+        }
+
+        const butacas = this.generarButacas(data.id);
+
+        const { error: errorButacas } = await this.auth.client()
+            .from('butacas')
+            .insert(butacas);
+        return { error: errorButacas }; 
+    }
+
+    async actualizarSala(id: number, cambios: { nombre: string; formato: string; estado: boolean }) {
+        const { error } = await this.auth.client()
+            .from('salas')
+            .update(cambios)
+            .eq('id', id); 
+        return { error };
+    }
+
+
+    async cambiarEstadoSala(id: number, activo: boolean) {
+        const { error } = await this.auth.client()
+            .from('salas')
+            .update({ estado: activo })
+            .eq('id', id);
+        return { error };
+    }
+
+
 }

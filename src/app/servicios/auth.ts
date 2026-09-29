@@ -64,7 +64,7 @@ export class Auth {
 
     async signOut() {
         const resultado = await this.supabase.auth.signOut(); // salgo de la sesion
-        await this.actualizarUsuarioLogueado(); // llamo a getCurrentUser, al ser null, corta el flujo y acualiza UsuarioLogueado a false y usuarioActual a null
+        await this.actualizarUsuarioLogueado(); // llamo a getCurrentUser, al ser null, corta el flujo y actualiza UsuarioLogueado a false y usuarioActual a null
         return resultado;
         }
 

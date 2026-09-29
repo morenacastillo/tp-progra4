@@ -38,7 +38,7 @@ textarea {
 }
 
 .gestionarPeliculas {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 32px auto 0;
   background: var(--color-card);
   border-radius: 16px;
@@ -98,16 +98,43 @@ textarea {
 .gestionarPeliculas td:nth-child(3) {
   font-weight: 600;
 }
-.gestionarPeliculas th:nth-child(1) { width: 4%; }
-.gestionarPeliculas th:nth-child(2) { width: 7%; }
-.gestionarPeliculas th:nth-child(3) { width: 16%; }
-.gestionarPeliculas th:nth-child(4) { width: 8%; }
-.gestionarPeliculas th:nth-child(5) { width: 10%; }
+.gestionarPeliculas th:nth-child(1) { width: 2%; }
+.gestionarPeliculas th:nth-child(2) { width: 5%; }
+.gestionarPeliculas th:nth-child(3) { width: 18%; }
+.gestionarPeliculas th:nth-child(4) { width: 7%; }
+.gestionarPeliculas th:nth-child(5) { width: 12%; }
 .gestionarPeliculas th:nth-child(6) { width: 10%; }
 .gestionarPeliculas th:nth-child(7) { width: 13%; }
 .gestionarPeliculas th:nth-child(8) { width: 12%; }
-.gestionarPeliculas th:nth-child(9) { width: 8%; }
-.gestionarPeliculas th:nth-child(10) { width: 12%; }
+.gestionarPeliculas th:nth-child(9) { width: 7%; }
+.gestionarPeliculas th:nth-child(10) { width: 14%; }
+
+.gestionarPeliculas tr.editando input,
+.gestionarPeliculas tr.editando select {
+  width: 100%;
+  font-size: 13px;
+  padding: 4px 6px;
+}
+
+.precios-edicion div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.precios-edicion div:last-child {
+  margin-bottom: 0;
+}
+
+.precios-edicion span {
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.precios-edicion input {
+  width: 80px;
+}
 
 .miniatura {
   display: block;
@@ -126,7 +153,10 @@ textarea {
 }
 
 .gestionarPeliculas .acciones {
-  text-align: right;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .gestionarPeliculas .acciones button {
@@ -139,6 +169,42 @@ textarea {
 
 .gestionarPeliculas .acciones button:hover {
   background: var(--color-btn-hover);
+}
+
+.gestionarPeliculas .acciones button.confirmar {
+  background: var(--color-accent);
+}
+
+.gestionarPeliculas .acciones button.confirmar:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.gestionarPeliculas .acciones button.peligro {
+  background: var(--color-danger);
+}
+
+.gestionarPeliculas .acciones button.peligro:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+}
+
+.gestionarPeliculas .acciones button.secundario {
+  background: transparent;
+  color: var(--text-on-card);
+  border: 1px solid var(--color-btn);
+}
+
+.gestionarPeliculas .acciones button.secundario.peligro {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.gestionarPeliculas tr.bloqueada td {
+  opacity: 0.5;
+}
+
+.gestionarPeliculas tr.bloqueada td.acciones {
+  opacity: 1;
 }
 
 @media (max-width: 1000px) {

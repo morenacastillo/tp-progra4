@@ -33,16 +33,9 @@
         <label for="idioma">Idioma</label>
         <select id="idioma" formControlName="idioma">
             <option value="" disabled>Selecciona el idioma</option>
-            <option value="espanol">Español</option>
-            <option value="ingles">Inglés</option>
+            <option value="castellano">Castellano</option>
+            <option value="subtitulada">Subtitulada</option>
         </select>
-        </div>
-
-        <div class="campo campo-ancho">
-        <label for="subtitulado">
-            <input id="subtitulado" type="checkbox" formControlName="subtitulado">
-            Subtitulado
-        </label>
         </div>
 
         @if (error()) {
@@ -60,5 +53,87 @@
     @if (guardadoOk()) {
         <p class="exito campo-ancho">Función creada con éxito. Sala asignada automáticamente.</p>
     }
-    
-    </div>
+</div>
+
+<div class="gestionarFunciones">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Película</th>
+                <th>Sala</th>
+                <th>Inicio</th>
+                <th>Formato</th>
+                <th>Idioma</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (funcion of funciones() ; track funcion.id ) {
+                @if (funcionEditandoId() === funcion.id) {
+                    <tr class="editando" [formGroup]="formEdicion">
+                    <td>{{funcion.id}}</td>
+                    <td>{{ nombrePelicula(funcion.pelicula_id) }}</td>
+                    <td>{{ nombreSala(funcion.sala_id) }}</td>
+                    <td><input type="datetime-local" formControlName="inicio"></td>
+                    <td>
+                        <select formControlName="formato">
+                            <option value="2D">2D</option>
+                            <option value="3D">3D</option>
+                            <option value="4D">4D</option>
+                            <option value="5D">5D</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select formControlName="idioma">
+                            <option value="castellano">Castellano</option>
+                            <option value="subtitulada">Subtitulada</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select formControlName="estado">
+                            <option [ngValue]="true">Activa</option>
+                            <option [ngValue]="false">Inactiva</option>
+                        </select>
+                    </td>
+                    <td class="acciones">
+                        <button type="button" class="confirmar" (click)="guardarEdicion(funcion)" [disabled]="formEdicion.invalid || guardandoEdicion()">
+                            @if (guardandoEdicion()) {
+                                Guardando...
+                            } @else {
+                                Guardar
+                            }
+                        </button>
+                        <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
+                    </td>
+                </tr>
+                } @else {
+                    <tr [class.deshabilitada]="!funcion.estado" [class.bloqueada]="funcionEditandoId() !== null && funcionEditandoId() !== funcion.id">
+                    <td>{{funcion.id}}</td>
+                    <td>{{ nombrePelicula(funcion.pelicula_id) }}</td>
+                    <td>{{ nombreSala(funcion.sala_id) }}</td>
+                    <td>{{ funcion.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ funcion.formato }}</td>
+                    <td>{{ funcion.idioma === 'castellano' ? 'Castellano' : 'Subtitulada' }}</td>
+                    <td>{{ funcion.estado ? 'Activa' : 'Inactiva' }}</td>
+                    <td class="acciones">
+                        <button type="button" (click)="modificar(funcion)" [disabled]="funcionEditandoId() !== null">Modificar</button>
+                        @if (funcion.estado) {
+                        <button type="button" class="peligro" (click)="desactivar(funcion)" [disabled]="funcionEditandoId() !== null">Desactivar</button>
+                        } @else {
+                        <button type="button" class="confirmar" (click)="activar(funcion)" [disabled]="funcionEditandoId() !== null">Activar</button>
+                        }
+                    </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+    @if (errorEdicion()) {
+        <p class="error">{{ errorEdicion() }}</p>
+    }
+
+</div>

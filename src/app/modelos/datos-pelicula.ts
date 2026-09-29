@@ -10,6 +10,7 @@ export interface AltaPelicula {
     precio_preventa: number | null;
     dias_preventa: number | null;
     imagen_horizontal_url: string;
+    etapa: string;
 }
 
 export interface GetPelicula {

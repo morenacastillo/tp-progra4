@@ -1,0 +1,133 @@
+<div class="auth-card">
+    <h2>Alta de productos</h2>
+
+    <form [formGroup]="formProductos" (ngSubmit)="guardar()">
+        <div class="campo">
+            <label for="categoria_id">Categoria</label>
+            <select id="categoria_id" formControlName="categoria_id">
+                <option value="" disabled>Selecciona la categoria del producto</option>
+                @for (cat of categorias(); track cat.id) {
+                    <option [value]="cat.id">{{ cat.nombre }}</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" placeholder="Ingresa el nombre del producto">
+        </div>
+
+        <div class="campo">
+            <label for="descripcion">Descripcion</label>
+            <input type="text" id="descripcion" formControlName="descripcion" placeholder="Ingresa la descripcion del producto">
+        </div>
+
+        <div class="campo">
+            <label for="precio">Precio</label>
+            <input type="number" step="0.01" id="precio" formControlName="precio" placeholder="Ingresa el precio">
+        </div>
+
+        <div class="campo campo-ancho">
+            <label for="imagen_url">Imagen en URL</label>
+            <input type="url" id="imagen_url" formControlName="imagen_url" placeholder="Ingresa la imagen URL del producto">
+        </div>
+
+        @if (error()) {
+            <p class="error campo-ancho">{{ error() }}</p>
+            }
+
+            <button type="submit" class="campo-ancho" [disabled]="formProductos.invalid || cargando()">
+            @if (cargando()) {
+                Guardando...
+            } @else {
+                Guardar producto
+            }
+            </button>
+
+    </form>
+
+    @if (guardadoOk()) {
+        <p class="exito campo-ancho">Producto guardado con éxito.</p>
+    }
+</div>
+
+<div class="gestionarProductos">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categoría</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (producto of productos(); track producto.id) {
+                @if (productoEditandoId() === producto.id) {
+                    <tr class="editando" [formGroup]="formEdicion">
+                        <td>{{ producto.id }}</td>
+                        <td>
+                            <select formControlName="categoria_id">
+                                @for (cat of categorias(); track cat.id) {
+                                    <option [ngValue]="cat.id">{{ cat.nombre }}</option>
+                                }
+                            </select>
+                        </td>
+                        <td><input type="text" formControlName="nombre"></td>
+                        <td><input type="text" formControlName="descripcion"></td>
+                        <td><input type="number" step="0.01" formControlName="precio"></td>
+                        <td><input type="url" formControlName="imagen_url"></td>
+                        <td>
+                            <select formControlName="activo">
+                                <option [ngValue]="true">Activo</option>
+                                <option [ngValue]="false">Inactivo</option>
+                            </select>
+                        </td>
+                        <td class="acciones">
+                            <button type="button" class="confirmar" (click)="guardarEdicion(producto)" [disabled]="formEdicion.invalid || guardandoEdicion()">
+                                @if (guardandoEdicion()) {
+                                    Guardando...
+                                } @else {
+                                    Guardar
+                                }
+                            </button>
+                            <button type="button" class="secundario peligro" (click)="cancelarEdicion()">Cancelar</button>
+                        </td>
+                    </tr>
+                } @else {
+                    <tr [class.deshabilitada]="!producto.estado" [class.bloqueada]="productoEditandoId() !== null && productoEditandoId() !== producto.id">
+                        <td>{{ producto.id }}</td>
+                        <td>{{ nombreCategoria(producto.categoria_id) }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.precio }}</td>
+                        <td>
+                            @if (producto.imagen_url) {
+                                <img class="miniatura" [src]="producto.imagen_url" [alt]="producto.nombre">
+                            } @else {
+                                -
+                            }
+                        </td>
+                        <td>{{ producto.estado ? 'Activo' : 'Inactivo' }}</td>
+                        <td class="acciones">
+                            <button type="button" (click)="modificar(producto)" [disabled]="productoEditandoId() !== null">Modificar</button>
+                            @if (producto.estado) {
+                                <button type="button" class="peligro" (click)="desactivar(producto)" [disabled]="productoEditandoId() !== null">Desactivar</button>
+                            } @else {
+                                <button type="button" class="confirmar" (click)="activar(producto)" [disabled]="productoEditandoId() !== null">Activar</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (errorEdicion()) {
+        <p class="error">{{ errorEdicion() }}</p>
+    }
+</div>

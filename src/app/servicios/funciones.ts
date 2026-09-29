@@ -6,11 +6,11 @@ import { Auth } from './auth';
 export class Funciones {
     private auth = inject(Auth)
 
-
     async obtenerFunciones(): Promise<GetFuncion[]> {
         const { data, error } = await this.auth.client()
             .from('funciones')
-            .select('*');
+            .select('*')
+            .order('id');
 
         if (error) {
                 console.error('Error trayendo las funciones:', error);
@@ -20,12 +20,43 @@ export class Funciones {
         return data ?? [];
     }
 
+    async obtenerFuncionesPorPelicula(peliculaId: string): Promise<GetFuncion[]> {
+        const { data, error } = await this.auth.client()
+            .from('funciones')
+            .select('*')
+            .eq('pelicula_id', peliculaId)
+            .eq('estado', true);
+
+        if (error) {
+            console.error('Error trayendo las funciones de la película:', error);
+            return [];
+        }
+        return data ?? [];
+    }
+    
+
     async crearFuncion(datos: AltaFuncion) {
         const { error } = await this.auth.client()
         .from('funciones')
         .insert(datos);
 
+    return { error };
+    }
+
+    async actualizarFuncion(id: number, cambios: { inicio: string, fin: string, fin_bloqueo: string, formato: string, idioma: string, estado: boolean }) {
+        const { error } = await this.auth.client()
+            .from('funciones')
+            .update(cambios)
+            .eq('id', id);
         return { error };
     }
-}
 
+    async cambiarEstadoFuncion(id: number, activo: boolean) {
+        const { error } = await this.auth.client()
+            .from('funciones')
+            .update({ estado: activo })
+            .eq('id', id);
+        return { error };
+    }
+
+}

@@ -6,7 +6,6 @@ export interface AltaFuncion {
     fin_bloqueo: string;
     formato: string;
     idioma: string;
-    subtitulado: boolean;
 }
 
 export interface GetFuncion {
@@ -18,6 +17,6 @@ export interface GetFuncion {
     fin_bloqueo: string;
     formato: string;
     idioma: string;
-    subtitulado: boolean;
     creado_en: string;
+    estado: boolean;
 }

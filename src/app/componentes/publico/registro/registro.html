@@ -43,14 +43,22 @@
       <input id="diasVacacionesAnio" type="number" formControlName="diasVacacionesAnio" />
     </div>
 
-    <div class="campo">
+    <div class="campo campo-ancho">
       <label for="email">Mail</label>
       <input id="email" type="email" formControlName="email" placeholder="Ingresa un correo electronico" />
     </div>
 
-    <div class="campo">
+    <div class="campo campo-ancho">
       <label for="password">Contraseña</label>
       <input id="password" type="password" formControlName="password" placeholder="Ingresa una contraseña"/>
+    </div>
+
+    <div class="campo campo-ancho">
+      <label for="confirmPassword">Confirmar contraseña</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Ingresa nuevamente tu contraseña"/>
+      @if (formRegistro.hasError('passwordNoCoincide') && formRegistro.get('confirmPassword')?.touched) {
+        <p class="error">Las contraseñas no coinciden.</p>
+      }
     </div>
 
     @if (error()) {

@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../servicios/auth';
+import { PasswordValidator } from '../validators/password-validator';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -13,13 +14,14 @@ export class Registro {
   formRegistro = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
+    confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     tipoSangre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     colorOjos: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     diasVacacionesAnio: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
-  });
+  }, PasswordValidator);
 
   error = signal('');
   cargando = signal(false);

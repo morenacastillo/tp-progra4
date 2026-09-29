@@ -4,9 +4,22 @@
 
 <h3>LAS 3 PELICULAS MAS VENDIDAS</h3>
 
-
+<div class="grilla">
+  @for (pelicula of masVendidas(); track pelicula.id; let i = $index) {
+    <div class="puesto">
+      <span class="numero">{{ i + 1 }}</span>
+      <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+    </div>
+  }
+</div>
 
 <hr>
 <h3>PROXIMOS ESTRENOS</h3>
-
+<div class="grilla">
+    @for (pelicula of proximosEstrenos(); track pelicula.id; let i = $index) {
+        <div class="puesto">
+            <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+        </div>
+        }
+</div>
 <hr>

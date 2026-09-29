@@ -1,16 +1,98 @@
 :host {
   display: block;
   min-height: 100%;
-  padding: 48px 24px;
+  padding: 28px 0 40px;
 }
 
 h1 {
-  font-size: clamp(40px, 8vw, 72px);
-  line-height: 1.05;
+  font-family: 'Rammetto One', var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 1;
+  text-align: center;
+  margin: 0 16px 20px;
 }
 
 p {
   margin-top: 12px;
   font-size: 16px;
   color: var(--color-header);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-divider);
+  margin: 0;
+}
+
+h3 {
+  font-family: 'Rammetto One', var(--font-display);
+  font-weight: 400;
+  font-size: 35px;
+  text-align: center;
+  margin: 28px 16px 20px;
+}
+
+.grilla {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 56px;
+  max-width: 1400px;
+  margin: 0 auto 32px;
+  padding: 0 16px;
+}
+
+.grilla:nth-of-type(2) {
+  gap: 28px;
+  flex-wrap: nowrap;
+  max-width: none;     
+  padding: 0 40px;
+}
+
+.puesto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 240px;
+}
+
+
+.grilla:nth-of-type(2) .puesto {
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 280px;
+}
+
+.puesto app-carta-pelicula {
+  display: block;
+  width: 100%;
+}
+
+.numero {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-header);
+}
+
+@media (max-width: 600px) {
+  .grilla,
+  .grilla:nth-of-type(2) {
+    gap: 20px;
+  }
+
+  .grilla:nth-of-type(2) {
+    flex-wrap: wrap;
+  }
+
+  .puesto,
+  .grilla:nth-of-type(2) .puesto {
+    flex: none;
+    width: 150px;
+    max-width: none;
+  }
 }

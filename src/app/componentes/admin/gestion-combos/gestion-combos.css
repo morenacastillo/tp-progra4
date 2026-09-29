@@ -1,0 +1,229 @@
+:host {
+  display: block;
+  padding: 24px;
+}
+
+
+.auth-card {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.auth-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 480px) {
+  .auth-card form {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.auth-card h3 {
+  font-size: 18px;
+  margin: 24px 0 10px;
+  color: var(--text-on-card);
+}
+
+.armado {
+  display: grid;
+  grid-template-columns: 1fr 90px auto;
+  gap: 10px;
+  align-items: center;
+}
+
+
+.armado button {
+  width: auto;
+  margin-top: 0;
+  padding: 10px 18px;
+}
+
+.items-combo {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius);
+}
+
+.items-combo li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.items-combo li:last-child {
+  border-bottom: none;
+}
+
+.items-combo .quitar {
+  width: auto;
+  margin-top: 0;
+  padding: 4px 12px;
+  font-size: 13px;
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.items-combo .quitar:hover:not(:disabled) {
+  background: var(--color-danger);
+  color: var(--text-on-dark);
+}
+
+.sin-items {
+  margin: 14px 0 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.btn-guardar {
+  margin-top: 22px;
+}
+
+@media (max-width: 480px) {
+  .armado {
+    grid-template-columns: 1fr 80px;
+  }
+
+  .armado button {
+    grid-column: 1 / -1;
+  }
+}
+
+
+.gestionarCombos {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 8px;
+  overflow-x: auto;
+}
+
+.gestionarCombos table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-on-card);
+}
+
+.gestionarCombos th {
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  text-align: left;
+  padding: 12px 16px;
+}
+
+.gestionarCombos th:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.gestionarCombos th:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.gestionarCombos td {
+  padding: 12px 16px;
+  font-size: 15px;
+  border-bottom: 1px solid var(--color-divider);
+  vertical-align: middle;
+}
+
+.gestionarCombos tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gestionarCombos tbody tr:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.gestionarCombos tr.deshabilitada td,
+.gestionarCombos tr.bloqueada td {
+  opacity: 0.5;
+}
+
+.gestionarCombos tr.deshabilitada td.acciones,
+.gestionarCombos tr.bloqueada td.acciones {
+  opacity: 1;
+}
+
+.gestionarCombos tr.editando {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.gestionarCombos td input,
+.gestionarCombos td select {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #1a1310;
+}
+
+.gestionarCombos .acciones {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.gestionarCombos .acciones button {
+  padding: 6px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.gestionarCombos .acciones button:hover:not(:disabled) {
+  background: var(--color-btn-hover);
+}
+
+.gestionarCombos .acciones button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gestionarCombos .acciones button.confirmar {
+  background: var(--color-accent);
+}
+
+.gestionarCombos .acciones button.confirmar:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.gestionarCombos .acciones button.peligro {
+  background: var(--color-danger);
+}
+
+.gestionarCombos .acciones button.peligro:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+}
+
+.gestionarCombos .acciones button.secundario.peligro {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.gestionarCombos .error {
+  color: #7a0f14;
+  font-size: 14px;
+  margin: 10px 16px;
+}
+
+.gestionarCombos td:first-child {
+  width: 60px;
+  opacity: 0.7;
+}
