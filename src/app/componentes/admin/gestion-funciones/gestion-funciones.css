@@ -156,3 +156,16 @@
     min-width: 720px;
   }
 }
+
+.fecha-hora {
+  white-space: nowrap;
+}
+
+.fecha-hora input {
+  width: 100px;
+}
+
+.fecha-hora input + input {
+  width: 64px;
+  margin-left: 6px;
+}

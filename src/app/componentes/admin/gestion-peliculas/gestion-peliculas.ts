@@ -1,11 +1,14 @@
+import { RouterLink } from '@angular/router';
 import { Component, signal, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
 import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
+const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
+
 @Component({
-  imports: [ReactiveFormsModule, CurrencyPipe, DatePipe],
+  imports: [ReactiveFormsModule, CurrencyPipe, DatePipe, RouterLink],
   selector: 'app-gestion-peliculas',
   styleUrl: './gestion-peliculas.css',
   templateUrl: './gestion-peliculas.html',
@@ -20,7 +23,7 @@ export class GestionPeliculas implements OnInit{
     restriccionEdad: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     etapa: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
     precioBase: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioVip: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioPreventa: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
@@ -36,7 +39,7 @@ export class GestionPeliculas implements OnInit{
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     duracion: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(600)] }),
     restriccionEdad: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
-    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
     precioBase: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioVip: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioPreventa: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(1)] }),
@@ -59,6 +62,16 @@ export class GestionPeliculas implements OnInit{
     this.peliculas.set(datos);
   }
   
+  private aFechaBase(fecha: string) {
+    const partes = fecha.split('/');
+    return partes[2] + '-' + partes[1] + '-' + partes[0];
+  }
+
+  private aFechaTexto(fecha: string) {
+    const partes = fecha.slice(0, 10).split('-');
+    return partes[2] + '/' + partes[1] + '/' + partes[0];
+  }
+
   async guardar() {
     if (this.formPeliculas.invalid) {
       return;
@@ -78,7 +91,7 @@ export class GestionPeliculas implements OnInit{
       imagen_horizontal_url: valores.imagenHorizontal,
       duracion_minutos: Number(valores.duracion),
       restriccion_edad: Number(valores.restriccionEdad),
-      fecha_estreno: valores.fechaEstreno,
+      fecha_estreno: this.aFechaBase(valores.fechaEstreno),
       precio_base: Number(valores.precioBase),
       precio_vip: Number(valores.precioVip),
       precio_preventa: valores.precioPreventa ? Number(valores.precioPreventa) : null,
@@ -110,7 +123,7 @@ export class GestionPeliculas implements OnInit{
         nombre: pelicula.nombre,
         duracion: pelicula.duracion_minutos,
         restriccionEdad: pelicula.restriccion_edad,
-        fechaEstreno: pelicula.fecha_estreno,
+        fechaEstreno: this.aFechaTexto(pelicula.fecha_estreno),
         precioBase: pelicula.precio_base,
         precioVip: pelicula.precio_vip,
         precioPreventa: pelicula.precio_preventa ?? 0,
@@ -135,7 +148,7 @@ export class GestionPeliculas implements OnInit{
       nombre: valores.nombre,
       duracion: valores.duracion,
       restriccion_edad: valores.restriccionEdad,
-      fecha_estreno: valores.fechaEstreno,
+      fecha_estreno: this.aFechaBase(valores.fechaEstreno),
       precio_base: valores.precioBase,
       precio_vip: valores.precioVip,
       precio_preventa: valores.precioPreventa,

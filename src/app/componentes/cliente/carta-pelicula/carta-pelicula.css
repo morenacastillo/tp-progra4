@@ -1,7 +1,7 @@
 .carta-pelicula {
   position: relative;
   aspect-ratio: 2 / 3;
-  border-radius: 50% 50% 8px 8px / 20% 20% 8px 8px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--color-surface-light);
 }

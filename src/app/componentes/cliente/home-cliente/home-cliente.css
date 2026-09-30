@@ -10,74 +10,143 @@ h1 {
   font-size: clamp(56px, 10vw, 120px);
   line-height: 1;
   text-align: center;
-  margin: 0 16px 20px;
+  margin: 0 16px 32px;
 }
 
-p {
-  margin-top: 12px;
-  font-size: 16px;
-  color: var(--color-header);
+.seccion {
+  margin-bottom: 40px;
+  padding: 0 48px;
 }
 
-hr {
-  border: none;
-  border-top: 1px solid var(--color-divider);
-  margin: 0;
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
-h3 {
+.titulo-seccion h3 {
   font-family: 'Rammetto One', var(--font-display);
   font-weight: 400;
-  font-size: 35px;
-  text-align: center;
-  margin: 28px 16px 20px;
+  font-size: 26px;
+  margin: 0;
+  padding-left: 12px;
+  border-left: 5px solid var(--color-accent);
 }
 
-.grilla {
+.titulo-seccion a {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-header);
+  text-decoration: none;
+}
+
+.titulo-seccion a:hover {
+  text-decoration: underline;
+}
+
+.fila {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 56px;
-  max-width: 1400px;
-  margin: 0 auto 32px;
-  padding: 0 16px;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 12px;
 }
 
-.grilla:nth-of-type(2) {
-  gap: 28px;
-  flex-wrap: nowrap;
-  max-width: none;     
-  padding: 0 40px;
+.puesto-fila {
+  position: relative;
+  flex: none;
+  width: 200px;
 }
 
-.puesto {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  width: 240px;
-}
-
-
-.grilla:nth-of-type(2) .puesto {
-  width: auto;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 280px;
-}
-
-.puesto app-carta-pelicula,
-.puesto app-carta-candy {
+.puesto-fila app-carta-pelicula,
+.puesto-top app-carta-pelicula,
+.puesto-combo app-carta-candy {
   display: block;
   width: 100%;
 }
 
-.numero {
-  font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 600;
+.carrusel {
+  position: relative;
+}
+
+.carrusel .fila {
+  scrollbar-width: none;
+}
+
+.carrusel .fila::-webkit-scrollbar {
+  display: none;
+}
+
+.flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 30px;
   line-height: 1;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text-on-dark);
+}
+
+.flecha:hover {
+  background: var(--color-accent);
+}
+
+.flecha.izquierda {
+  left: -40px;
+}
+
+.flecha.derecha {
+  right: -40px;
+}
+
+.estreno {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--text-on-dark);
+  border-radius: 8px;
+}
+
+.fila.top {
+  gap: 48px;
+  overflow: visible;
+}
+
+.puesto-top {
+  display: flex;
+  align-items: flex-end;
+  flex: none;
+}
+
+.puesto-top .numero {
+  position: relative;
+  z-index: 0;
+  margin-right: -28px;
+  font-family: 'Rammetto One', var(--font-display);
+  font-size: 160px;
+  line-height: 0.8;
   color: var(--color-header);
+}
+
+.puesto-top app-carta-pelicula {
+  position: relative;
+  z-index: 1;
+  width: 200px;
+}
+
+.puesto-combo {
+  flex: none;
+  width: 240px;
 }
 
 @media (max-width: 600px) {
@@ -85,23 +154,41 @@ h3 {
     font-size: 40px;
   }
 
-  h3 {
-    font-size: 22px;
+  .seccion {
+    padding: 0 16px;
   }
 
-  .grilla,
-  .grilla:nth-of-type(2) {
-    gap: 20px;
+  .titulo-seccion h3 {
+    font-size: 18px;
   }
 
-  .grilla:nth-of-type(2) {
-    flex-wrap: wrap;
+  .titulo-seccion a {
+    font-size: 13px;
   }
 
-  .puesto,
-  .grilla:nth-of-type(2) .puesto {
-    flex: none;
-    width: 150px;
-    max-width: none;
+  .fila {
+    gap: 14px;
+  }
+
+  .puesto-fila,
+  .puesto-top app-carta-pelicula {
+    width: 140px;
+  }
+
+  .puesto-top .numero {
+    font-size: 110px;
+    margin-right: -20px;
+  }
+
+  .fila.top {
+    gap: 28px;
+  }
+
+  .puesto-combo {
+    width: 170px;
+  }
+
+  .flecha {
+    display: none;
   }
 }

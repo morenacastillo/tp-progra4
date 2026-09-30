@@ -6,6 +6,7 @@ import { CartaCandy } from '../carta-candy/carta-candy';
 import { Combos } from '../../../servicios/combos';
 import { Carrito } from '../../../servicios/carrito';
 import { ResumenCarrito } from '../resumen-carrito/resumen-carrito';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [CartaCandy, ResumenCarrito],
@@ -18,7 +19,7 @@ export class CompraCandy implements OnInit{
   productosCandy = signal<GetProducto[]>([]);
   combosCandy = signal<GetCombo[]>([]);
 
-  constructor(private candyServices: Candy, private combosServices: Combos, private carrito: Carrito) {}
+  constructor(private candyServices: Candy, private combosServices: Combos, private carrito: Carrito, private router: Router) {}
 
   ngOnInit() {
     this.cargarCandyProductos();
@@ -41,5 +42,14 @@ export class CompraCandy implements OnInit{
 
   agregarCombo(combo: GetCombo) {
     this.carrito.agregarCandy({ tipo: 'combo', id: combo.id, nombre: combo.nombre, precio: combo.precio, cantidad: 1 });
+  }
+
+  volver() {
+    const funcion = this.carrito.funcion();
+    if (funcion) {
+      this.router.navigate(['/home-cliente/butacas', funcion.id]);
+    } else {
+      this.router.navigate(['/home-cliente/cartelera']);
+    }
   }
 }

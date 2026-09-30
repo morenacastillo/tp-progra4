@@ -1,3 +1,5 @@
+<button type="button" class="btn-volver arriba" routerLink="/home-admin">← Volver al panel</button>
+
 <div class="auth-card">
     <h2>Alta de funciones</h2>
 
@@ -13,9 +15,14 @@
         </select>
         </div>
 
-        <div class="campo campo-ancho">
-        <label for="inicio">Fecha y hora de inicio</label>
-        <input id="inicio" type="datetime-local" formControlName="inicio">
+        <div class="campo">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" type="text" formControlName="fecha" placeholder="dd/mm/aaaa" maxlength="10">
+        </div>
+
+        <div class="campo">
+        <label for="hora">Hora</label>
+        <input id="hora" type="text" formControlName="hora" placeholder="hh:mm" maxlength="5">
         </div>
 
         <div class="campo">
@@ -76,7 +83,10 @@
                     <td>{{funcion.id}}</td>
                     <td>{{ nombrePelicula(funcion.pelicula_id) }}</td>
                     <td>{{ nombreSala(funcion.sala_id) }}</td>
-                    <td><input type="datetime-local" formControlName="inicio"></td>
+                    <td class="fecha-hora">
+                        <input type="text" formControlName="fecha" placeholder="dd/mm/aaaa" maxlength="10">
+                        <input type="text" formControlName="hora" placeholder="hh:mm" maxlength="5">
+                    </td>
                     <td>
                         <select formControlName="formato">
                             <option value="2D">2D</option>

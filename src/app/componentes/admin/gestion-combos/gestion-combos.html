@@ -1,3 +1,5 @@
+<button type="button" class="btn-volver arriba" routerLink="/home-admin">← Volver al panel</button>
+
 <div class="auth-card">
     <h2>Alta de combos</h2>
 
@@ -120,7 +122,7 @@
                         <td>{{ combo.id }}</td>
                         <td>{{ combo.nombre }}</td>
                         <td>{{ combo.descripcion }}</td>
-                        <td>{{ combo.precio }}</td>
+                        <td>{{ combo.precio | currency }}</td>
                         <td>{{ combo.cantidad_entradas }}</td>
                         <td>
                             @if (combo.imagen_url) {

@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Carrito } from '../../../servicios/carrito';
 import { Compras } from '../../../servicios/compras';
+import { PdfCompra } from '../../../servicios/pdf-compras';
 
 @Component({
   imports: [CurrencyPipe, DatePipe, RouterLink],
@@ -18,7 +19,7 @@ export class CompraCarrito{
   error = signal('')
   codigoCompra = signal<string | null>(null);
 
-  constructor(public carrito: Carrito, private comprasService : Compras, private router: Router) {}
+  constructor(public carrito: Carrito, private comprasService: Compras, private pdfService: PdfCompra,private router: Router) {}
 
   nombreTipo(tipo: string) {
     if (tipo === 'vip') {
@@ -50,17 +51,18 @@ export class CompraCarrito{
 
     const compra = await this.comprasService.crearCompra(metodo)
 
-    this.procesando.set(false)
-
-    if(!compra) {
-      this.error.set('No se pudo confirmar la compra. Intenta nuevamente')
-      return
+    if (!compra) {
+      this.procesando.set(false);
+      this.error.set('No se pudo confirmar la compra. Intenta nuevamente');
+      return;
     }
 
-    this.codigoCompra.set(compra.qr_code)
-    this.carrito.vaciar()
-  }
+    await this.pdfService.generar(compra.qr_code, metodo);
 
+    this.procesando.set(false);
+    this.codigoCompra.set(compra.qr_code);
+    this.carrito.vaciar();
+  }
 
 
 

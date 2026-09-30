@@ -1,11 +1,13 @@
+import { RouterLink } from '@angular/router';
 import { Component, OnInit, signal } from '@angular/core';
 import { GetCategoria, GetProducto } from '../../../modelos/datos-candy';
 import { Candy } from '../../../servicios/candy';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe, RouterLink],
   selector: 'app-gestion-candy',
   styleUrl: './gestion-candy.css',
   templateUrl: './gestion-candy.html',

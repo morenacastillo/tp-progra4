@@ -1,14 +1,16 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { Salas } from '../../../servicios/salas';
 import { Funciones } from '../../../servicios/funciones';
-import { Peliculas } from '../../../servicios/peliculas';
 import { Carrito } from '../../../servicios/carrito';
 import { getButacas } from '../../../modelos/datos-butacas';
+import { ResaltarButaca } from '../directivas/resaltar-butaca';
+
 
 @Component({
-  imports: [],
+  imports: [CurrencyPipe, ResaltarButaca],
   selector: 'app-mapa-butacas',
   styleUrl: './mapa-butacas.css',
   templateUrl: './mapa-butacas.html',
@@ -17,11 +19,11 @@ export class MapaButacas implements OnInit, OnDestroy {
   butacas = signal<getButacas[]>([]);
   filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
   ocupadas = signal<number[]>([]);
+  seleccionadas = signal<getButacas[]>([]);
 
   private suscripcion?: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router, private salasService: Salas,
-              private funcionesService: Funciones, private peliculasService: Peliculas, private carrito: Carrito) {}
+  constructor(private route: ActivatedRoute, private router: Router, private salasService: Salas, private funcionesService: Funciones, public carrito: Carrito) {}
 
   ngOnInit() {
     this.suscripcion = this.route.paramMap.subscribe(params => {
@@ -42,19 +44,13 @@ export class MapaButacas implements OnInit, OnDestroy {
       return;
     }
 
-    // si se recargó la página, el carrito está vacío: lo vuelvo a armar matcheando la funcion -> pelicula
-    if (this.carrito.funcion()?.id !== funcion.id) {
-      const pelicula = await this.peliculasService.obtenerPeliculaPorId(String(funcion.pelicula_id));
-      if (pelicula) {
-        this.carrito.iniciar(funcion, pelicula);
-      }
-    }
-
     const butacas = await this.salasService.obtenerButacas(funcion.sala_id);
     this.butacas.set(butacas);
 
     const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
     this.ocupadas.set(ocupadas);
+
+    this.seleccionadas.set(this.carrito.butacas());
   }
 
   butacasDeFila(fila: string) {
@@ -65,23 +61,84 @@ export class MapaButacas implements OnInit, OnDestroy {
     return this.ocupadas().includes(butaca.id);
   }
 
+  estaSeleccionada(butaca: getButacas) {
+    for (let elegida of this.seleccionadas()) {
+      if (elegida.id === butaca.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   comboElegido() {
     return this.carrito.combo();
   }
 
-  cantidadAElegir() {
+  cantidadCombo() {
     const combo = this.carrito.combo();
     if (combo) {
       return combo.cantidad_entradas;
     }
-    return 2;
+    return 0;
   }
 
-  elegirButacasDePrueba() {
-    const libres = this.butacas().filter(b => b.activa && !this.estaOcupada(b));
-    const elegidas = libres.slice(0, this.cantidadAElegir());
+  tocarButaca(butaca: getButacas) {
+    if (!butaca.activa || this.estaOcupada(butaca)) {
+      return;
+    }
 
-    this.carrito.elegirButacas(elegidas);
+    if (this.estaSeleccionada(butaca)) {
+      this.seleccionadas.set(this.seleccionadas().filter(b => b.id !== butaca.id));
+      return;
+    }
+
+    if (this.carrito.combo() && this.seleccionadas().length >= this.cantidadCombo()) {
+      return;
+    }
+
+    this.seleccionadas.set([...this.seleccionadas(), butaca]);
+  }
+
+  nombreTipo(tipo: string) {
+    if (tipo === 'vip') {
+      return 'VIP';
+    }
+    if (tipo === 'accesible') {
+      return 'Accesible';
+    }
+    return 'Normal';
+  }
+
+  nombresSeleccionadas() {
+    let nombres: string[] = [];
+    for (let butaca of this.seleccionadas()) {
+      nombres.push(butaca.fila + butaca.columna);
+    }
+    return nombres.join(', ');
+  }
+
+  totalSeleccion() {
+    let total = 0;
+    for (let butaca of this.seleccionadas()) {
+      total = total + this.carrito.precioButaca(butaca);
+    }
+    return total;
+  }
+
+  puedeContinuar() {
+    const cantidad = this.seleccionadas().length;
+    if (this.carrito.combo()) {
+      return cantidad === this.cantidadCombo();
+    }
+    return cantidad > 0;
+  }
+
+  continuar() {
+    if (!this.puedeContinuar()) {
+      return;
+    }
+
+    this.carrito.elegirButacas(this.seleccionadas());
 
     if (this.carrito.combo()) {
       this.router.navigate(['/home-cliente/carrito']);
@@ -90,5 +147,12 @@ export class MapaButacas implements OnInit, OnDestroy {
     }
   }
 
-
+  volver() {
+    const pelicula = this.carrito.pelicula();
+    if (pelicula) {
+      this.router.navigate(['/home-cliente/cartelera', pelicula.id]);
+    } else {
+      this.router.navigate(['/home-cliente/cartelera']);
+    }
+  }
 }

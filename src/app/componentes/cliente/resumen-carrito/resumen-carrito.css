@@ -78,3 +78,35 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cantidad-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  border-radius: 50%;
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.cantidad-btn:hover {
+  background: var(--color-btn-hover);
+}
+
+.cantidad {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.precio {
+  min-width: 90px;
+  text-align: right;
+}

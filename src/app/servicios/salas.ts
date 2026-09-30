@@ -19,6 +19,20 @@ export class Salas {
         return data ?? [];
         }
 
+    async obtenerSalaPorId(id: number): Promise<GetSala | null> {
+        const { data, error } = await this.auth.client()
+            .from('salas')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            console.error('Error trayendo la sala:', error);
+            return null;
+        }
+        return data;
+    }
+    
     async obtenerButacas(salaId: number): Promise<getButacas[]> {
         const { data, error } = await this.auth.client()
             .from('butacas')

@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { roleCliente } from './guards/role-cliente-guard';
 import { roleAdmin } from './guards/role-admin-guard';
 import { roleEmpleado } from './guards/role-empleado-guard';
+import { butacasElegidas } from './guards/butacas-elegidas';
+import { funcionElegida } from './guards/funcion-elegida';
 
 export const routes: Routes = [
     {   
@@ -80,15 +82,18 @@ export const routes: Routes = [
         },
         {
           path: 'butacas/:id',
-          loadComponent: () => import('./componentes/cliente/mapa-butacas/mapa-butacas').then(m => m.MapaButacas)
+          loadComponent: () => import('./componentes/cliente/mapa-butacas/mapa-butacas').then(m => m.MapaButacas),
+          canActivate: [funcionElegida]
         },
         {
           path: 'candy',
-          loadComponent: () => import('./componentes/cliente/compra-candy/compra-candy').then(m => m.CompraCandy)
+          loadComponent: () => import('./componentes/cliente/compra-candy/compra-candy').then(m => m.CompraCandy),
+          canActivate: [butacasElegidas]
         },
         {
           path: 'carrito',
-          loadComponent: () => import('./componentes/cliente/compra-carrito/compra-carrito').then(m => m.CompraCarrito)
+          loadComponent: () => import('./componentes/cliente/compra-carrito/compra-carrito').then(m => m.CompraCarrito),
+          canActivate: [butacasElegidas]
         },
       ]
     },

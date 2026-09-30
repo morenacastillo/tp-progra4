@@ -8,6 +8,9 @@ import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { GetSala } from '../../../modelos/datos-salas';
 import { GetFuncion } from '../../../modelos/datos-funciones';
 
+const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
+const PATRON_HORA = '^([01][0-9]|2[0-3]):[0-5][0-9]$';
+
 @Component({
   imports: [ReactiveFormsModule, DatePipe],
   selector: 'app-gestion-funciones',
@@ -17,7 +20,8 @@ import { GetFuncion } from '../../../modelos/datos-funciones';
 export class GestionFunciones implements OnInit {
   formFunciones = new FormGroup({
     peliculaId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    inicio: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_HORA)] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     idioma: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
@@ -31,7 +35,8 @@ export class GestionFunciones implements OnInit {
   guardadoOk = signal(false);
 
   formEdicion = new FormGroup({
-    inicio: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_HORA)] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     idioma: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl<boolean>(true, { nonNullable: true }),
@@ -72,10 +77,32 @@ export class GestionFunciones implements OnInit {
     return this.salas().find(s => s.id === salaId)?.nombre ?? '—';
   }
 
-  private aInputDatetime(fechaIso: string): string {
+  private armarInicio(fecha: string, hora: string) {
+    const partes = fecha.split('/');
+    const partesHora = hora.split(':');
+    const dia = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const anio = Number(partes[2]);
+    const inicio = new Date(anio, mes - 1, dia, Number(partesHora[0]), Number(partesHora[1]));
+
+    if (inicio.getDate() !== dia) {
+      return null;
+    }
+    return inicio;
+  }
+
+  private dosDigitos(numero: number) {
+    return numero.toString().padStart(2, '0');
+  }
+
+  private aFechaTexto(fechaIso: string) {
     const fecha = new Date(fechaIso);
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${fecha.getFullYear()}-${pad(fecha.getMonth() + 1)}-${pad(fecha.getDate())}T${pad(fecha.getHours())}:${pad(fecha.getMinutes())}`;
+    return this.dosDigitos(fecha.getDate()) + '/' + this.dosDigitos(fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+  }
+
+  private aHoraTexto(fechaIso: string) {
+    const fecha = new Date(fechaIso);
+    return this.dosDigitos(fecha.getHours()) + ':' + this.dosDigitos(fecha.getMinutes());
   }
 
   async guardar() {
@@ -96,13 +123,28 @@ export class GestionFunciones implements OnInit {
       return;
     }
 
-    const inicio = new Date(valores.inicio);
+    const inicio = this.armarInicio(valores.fecha, valores.hora);
+    if (!inicio) {
+      this.error.set('Esa fecha no existe.');
+      this.cargando.set(false);
+      return;
+    }
+
+    if (inicio < new Date()) {
+      this.error.set('No se puede crear una función en una fecha u hora que ya pasó.');
+      this.cargando.set(false);
+      return;
+    }
+
     const fin = new Date(inicio.getTime() + pelicula.duracion_minutos * 60000);
     const finBloqueo = new Date(fin.getTime() + 30 * 60000);
 
     const funcionesExistentes = await this.funcionesService.obtenerFunciones();
 
     const salaLibre = this.salas().find(sala => {
+      if (!sala.estado || sala.formato !== valores.formato) {
+        return false;
+      }
       const funcionesDeEstaSala = funcionesExistentes.filter(f => f.sala_id === sala.id);
       const choque = funcionesDeEstaSala.some(f => {
         const otroInicio = new Date(f.inicio);
@@ -113,7 +155,7 @@ export class GestionFunciones implements OnInit {
     });
 
     if (!salaLibre) {
-      this.error.set('No hay salas disponibles en ese horario.');
+      this.error.set('No hay salas ' + valores.formato + ' disponibles en ese horario.');
       this.cargando.set(false);
       return;
     }
@@ -148,7 +190,8 @@ export class GestionFunciones implements OnInit {
     this.errorEdicion.set('');
     this.funcionEditandoId.set(funcion.id);
     this.formEdicion.setValue({
-      inicio: this.aInputDatetime(funcion.inicio),
+      fecha: this.aFechaTexto(funcion.inicio),
+      hora: this.aHoraTexto(funcion.inicio),
       formato: funcion.formato,
       idioma: funcion.idioma,
       estado: funcion.estado,
@@ -177,7 +220,13 @@ export class GestionFunciones implements OnInit {
     }
 
     const valores = this.formEdicion.getRawValue();
-    const inicio = new Date(valores.inicio);
+    const inicio = this.armarInicio(valores.fecha, valores.hora);
+    if (!inicio) {
+      this.errorEdicion.set('Esa fecha no existe.');
+      this.guardandoEdicion.set(false);
+      return;
+    }
+
     const fin = new Date(inicio.getTime() + pelicula.duracion_minutos * 60000);
     const finBloqueo = new Date(fin.getTime() + 30 * 60000);
 

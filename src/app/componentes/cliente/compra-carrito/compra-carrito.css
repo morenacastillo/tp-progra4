@@ -71,11 +71,22 @@
   flex: 1;
 }
 
-.entrada.vip {
+.entrada {
   padding: 6px 10px;
-  margin: 8px -10px;
+  margin: 6px -10px;
   border-radius: 8px;
-  background: rgba(255, 215, 0, 0.35);
+}
+
+.entrada.normal {
+  background: rgba(201, 208, 216, 0.6);
+}
+
+.entrada.accesible {
+  background: rgba(74, 144, 217, 0.45);
+}
+
+.entrada.vip {
+  background: rgba(212, 175, 55, 0.6);
   font-weight: 600;
 }
 
@@ -128,13 +139,6 @@
   cursor: not-allowed;
 }
 
-.btn-volver {
-  margin-top: 24px;
-  padding: 10px 20px;
-  background: transparent;
-  color: var(--text-on-card);
-  border: 1px solid var(--text-on-card);
-}
 
 .error {
   margin-top: 14px;
@@ -218,4 +222,7 @@
     font-size: 20px;
     letter-spacing: 1px;
   }
+}
+.btn-volver {
+  margin-top: 24px;
 }

@@ -13,14 +13,16 @@
         @for (butaca of butacasDeFila(fila); track butaca.id) {
           <div
             class="butaca"
+            appResaltarButaca
             [class.normal]="butaca.tipo === 'normal'"
             [class.accesible]="butaca.tipo === 'accesible'"
             [class.vip]="butaca.tipo === 'vip'"
             [style.grid-column]="butaca.columna"
             [title]="fila + butaca.columna"
             [class.inactiva]="!butaca.activa"
-            [class.ocupada]="estaOcupada(butaca)">
-            
+            [class.ocupada]="estaOcupada(butaca)"
+            [class.seleccionada]="estaSeleccionada(butaca)"
+            (click)="tocarButaca(butaca)">
           </div>
         }
       </div>
@@ -31,9 +33,41 @@
     <span><i class="normal"></i> Normal</span>
     <span><i class="accesible"></i> Accesible</span>
     <span><i class="vip"></i> VIP</span>
+    <span><i class="ocupada"></i> Ocupada</span>
+    <span><i class="seleccionada"></i> Tu selección</span>
   </div>
+
+    <div class="seleccion">
+    @if (seleccionadas().length === 0) {
+      <p>Tocá las butacas que quieras elegir.</p>
+    } @else {
+      <h3>BUTACAS SELECCIONADAS</h3>
+      @for (butaca of seleccionadas(); track butaca.id) {
+          <div class="linea-butaca"
+          [class.normal]="butaca.tipo === 'normal'"
+          [class.accesible]="butaca.tipo === 'accesible'"
+          [class.vip]="butaca.tipo === 'vip'">
+          <span class="nombre">{{ butaca.fila }}{{ butaca.columna }}</span>
+          <span class="tipo">{{ nombreTipo(butaca.tipo) }}</span>
+          @if (comboElegido()) {
+            <span>Incluida en el combo</span>
+          } @else {
+            <span>{{ carrito.precioButaca(butaca) | currency }}</span>
+          }
+        </div>
+      }
+
+      @if (comboElegido()) {
+        <p class="total">{{ seleccionadas().length }} de {{ cantidadCombo() }} butacas del combo</p>
+      } @else {
+        <p class="total">Total: {{ totalSeleccion() | currency }}</p>
+      }
+    }
+
+    <button type="button" class="btn-continuar" [disabled]="!puedeContinuar()" (click)="continuar()">
+      Continuar
+    </button>
+    <button type="button" class="btn-volver" (click)="volver()">← Volver</button>
   
-  <button type="button" class="btn-prueba" (click)="elegirButacasDePrueba()">
-    Elegir {{ cantidadAElegir() }} butacas de prueba
-  </button>
+  </div>
 </div>

@@ -1,12 +1,14 @@
+import { RouterLink } from '@angular/router';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Combos } from '../../../servicios/combos';
 import { Candy } from '../../../servicios/candy';
 import { GetCombo, ItemCombo } from '../../../modelos/datos-combos';
 import { GetProducto } from '../../../modelos/datos-candy';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe, RouterLink],
   selector: 'app-gestion-combos',
   styleUrl: './gestion-combos.css',
   templateUrl: './gestion-combos.html',

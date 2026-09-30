@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Salas } from '../../../servicios/salas';
 import { GetSala } from '../../../modelos/datos-salas';
+import { Funciones } from '../../../servicios/funciones'
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -31,13 +32,11 @@ export class GestionSalas implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private salasService: Salas) {}
+  constructor(private salasService: Salas, private funcionesService: Funciones) {}
 
   ngOnInit() {
     this.cargarSalas();
   }
-  
-  
   
   private async cargarSalas() {
     const datos = await this.salasService.obtenerSalas();
@@ -115,26 +114,41 @@ export class GestionSalas implements OnInit{
   }
   
   async desactivar(sala: GetSala) {
-      const { error } = await this.salasService.cambiarEstadoSala(sala.id, false);
-  
-      if (error) {
-        this.errorEdicion.set(error.message);
-        return;
+    const funciones = await this.funcionesService.obtenerFunciones();
+    const ahora = new Date();
+    let futuras = 0;
+    for (let funcion of funciones) {
+      if (funcion.sala_id === sala.id && funcion.estado && new Date(funcion.inicio) > ahora) {
+        futuras = futuras + 1;
       }
-  
-      this.cargarSalas();
     }
-  
-    async activar(sala: GetSala) {
-      const { error } = await this.salasService.cambiarEstadoSala(sala.id, true);
-  
-      if (error) {
-        this.errorEdicion.set(error.message);
-        return;
-      }
-  
-      this.cargarSalas();
+
+    if (futuras > 0) {
+      this.errorEdicion.set('No se puede desactivar la ' + sala.nombre + ': tiene ' + futuras + ' funciones programadas. Primero desactivalas desde la gestión de funciones.');
+      return;
     }
+
+    this.errorEdicion.set('');
+    const { error } = await this.salasService.cambiarEstadoSala(sala.id, false);
+
+    if (error) {
+      this.errorEdicion.set(error.message);
+      return;
+    }
+
+    this.cargarSalas();
+  }
+  
+  async activar(sala: GetSala) {
+    const { error } = await this.salasService.cambiarEstadoSala(sala.id, true);
+
+    if (error) {
+      this.errorEdicion.set(error.message);
+      return;
+    }
+
+    this.cargarSalas();
+  }
 
 }
 

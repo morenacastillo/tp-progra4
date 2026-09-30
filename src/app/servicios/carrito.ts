@@ -44,7 +44,22 @@ export class Carrito {
         this.candy.set([...this.candy(), item]); // si no existe, lo agrega a la lista
     }
 
-    quitarCandy(tipo: string, id: number) {
+    restarCandy(tipo: string, id: number) {
+        const existente = this.candy().find(i => i.tipo === tipo && i.id === id);
+        if (!existente) {
+            return;
+        }
+
+        if (existente.cantidad > 1) {
+            existente.cantidad = existente.cantidad - 1;
+            this.candy.set([...this.candy()]);
+            return;
+        }
+
+        this.candy.set(this.candy().filter(i => !(i.tipo === tipo && i.id === id)));
+    }
+
+    sumarProductoCandy(tipo: string, id: number) {
         this.candy.set(this.candy().filter(i => !(i.tipo === tipo && i.id === id))); // revisar
     }
 

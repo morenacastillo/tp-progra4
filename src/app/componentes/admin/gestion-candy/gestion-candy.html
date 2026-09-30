@@ -1,3 +1,5 @@
+<button type="button" class="btn-volver arriba" routerLink="/home-admin">← Volver al panel</button>
+
 <div class="auth-card">
     <h2>Alta de productos</h2>
 
@@ -104,7 +106,7 @@
                         <td>{{ nombreCategoria(producto.categoria_id) }}</td>
                         <td>{{ producto.nombre }}</td>
                         <td>{{ producto.descripcion }}</td>
-                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.precio | currency }}</td>
                         <td>
                             @if (producto.imagen_url) {
                                 <img class="miniatura" [src]="producto.imagen_url" [alt]="producto.nombre">

@@ -1,40 +1,71 @@
 <h1>CINEMA CLUB</h1>
-
 <hr>
+<br>
+<section class="seccion">
+  <div class="titulo-seccion">
+    <h3>Las más vistas</h3>
+  </div>
+  <div class="fila top">
+    @for (pelicula of masVendidas(); track pelicula.id; let i = $index) {
+      <div class="puesto-top">
+        <span class="numero">{{ i + 1 }}</span>
+        <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+      </div>
+    }
+  </div>
+</section>
 
-<h3>LAS 3 PELICULAS MAS VENDIDAS</h3>
+<section class="seccion">
+  <div class="titulo-seccion">
+    <h3>PELICULAS EN CARTELERA</h3>
+    <a routerLink="/home-cliente/cartelera">Ver todas</a>
+  </div>
+      <div class="carrusel">
+        <button type="button" class="flecha izquierda" aria-label="Anterior"
+          (click)="fila.scrollBy({ left: -fila.clientWidth, behavior: 'smooth' })">‹</button>
 
-<div class="grilla">
-  @for (pelicula of masVendidas(); track pelicula.id; let i = $index) {
-    <div class="puesto">
-      <span class="numero">{{ i + 1 }}</span>
-      <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
-    </div>
-  }
-</div>
-
-<hr>
-<h3>PROXIMOS ESTRENOS</h3>
-<div class="grilla">
-    @for (pelicula of proximosEstrenos(); track pelicula.id; let i = $index) {
-        <div class="puesto">
-            <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+        <div class="fila" #fila>
+          @for (pelicula of enCartelera(); track pelicula.id) {
+            <div class="puesto-fila">
+              <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+            </div>
+          }
         </div>
-        }
-</div>
-<hr>
 
-<h3>COMBOS DESTACADOS</h3>
-<div class="grilla">
-  @for (combo of combosDestacados(); track combo.id) {
-    <div class="puesto">
-      <app-carta-candy
-        [nombre]="combo.nombre"
-        [imagen]="combo.imagen_url"
-        [descripcion]="combo.descripcion"
-        [precio]="combo.precio"
-        textoBoton="Comprar"
-        (elegido)="comprarCombo(combo)" />
-    </div>
-  }
-</div>
+        <button type="button" class="flecha derecha" aria-label="Siguiente"
+          (click)="fila.scrollBy({ left: fila.clientWidth, behavior: 'smooth' })">›</button>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="titulo-seccion">
+    <h3>Próximos estrenos</h3>
+  </div>
+  <div class="fila">
+    @for (pelicula of proximosEstrenos(); track pelicula.id) {
+      <div class="puesto-fila">
+        <span class="estreno">{{ pelicula.fecha_estreno | date:'dd/MM':'UTC' }}</span>
+        <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
+      </div>
+    }
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="titulo-seccion">
+    <h3>Combos destacados</h3>
+  </div>
+  <div class="fila">
+    @for (combo of combosDestacados(); track combo.id) {
+      <div class="puesto-combo">
+        <app-carta-candy
+          [nombre]="combo.nombre"
+          [imagen]="combo.imagen_url"
+          [descripcion]="combo.descripcion"
+          [precio]="combo.precio"
+          textoBoton="Comprar"
+          (elegido)="comprarCombo(combo)" />
+      </div>
+    }
+  </div>
+</section>

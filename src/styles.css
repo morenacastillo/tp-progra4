@@ -131,3 +131,20 @@ input, select {
   font-size: 14px;
   margin-top: 10px;
 }
+
+.btn-volver {
+  margin-top: 12px;
+  padding: 8px 20px;
+  font-size: 14px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+}
+
+.btn-volver:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-volver.arriba {
+  margin: 24px 0 0 24px;
+}

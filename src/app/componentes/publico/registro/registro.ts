@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../servicios/auth';
 import { PasswordValidator } from '../validators/password-validator';
 
+const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
+
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-registro',
@@ -17,7 +19,7 @@ export class Registro {
     confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
     tipoSangre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     colorOjos: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     diasVacacionesAnio: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
@@ -40,12 +42,30 @@ export class Registro {
 
     const valores = this.formRegistro.getRawValue();
 
+    const partes = valores.fechaNacimiento.split('/');
+    const dia = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const anio = Number(partes[2]);
+    const fecha = new Date(anio, mes - 1, dia);
+
+    if (fecha.getDate() !== dia) {
+      this.cargando.set(false);
+      this.error.set('La fecha de nacimiento no existe.');
+      return;
+    }
+
+    if (fecha > new Date()) {
+      this.cargando.set(false);
+      this.error.set('La fecha de nacimiento no puede ser futura.');
+      return;
+    }
+
     const { error } = await this.auth.signUp({
       email: valores.email,
       password: valores.password,
       nombre: valores.nombre,
       apellido: valores.apellido,
-      fechaNacimiento: valores.fechaNacimiento,
+      fechaNacimiento: partes[2] + '-' + partes[1] + '-' + partes[0],
       tipoSangre: valores.tipoSangre,
       colorOjos: valores.colorOjos,
       diasVacacionesAnio: valores.diasVacacionesAnio,
