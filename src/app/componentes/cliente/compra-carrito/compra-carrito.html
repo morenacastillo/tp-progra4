@@ -29,6 +29,8 @@
                         [class.normal]="butaca.tipo === 'normal'"
                         [class.accesible]="butaca.tipo === 'accesible'"
                         [class.vip]="butaca.tipo === 'vip'">
+                        <span class="butaca">{{ butaca.fila }}{{ butaca.columna }}</span>
+                        <span class="tipo">{{ nombreTipo(butaca.tipo) }}</span>
                         @if (carrito.combo()) {
                             <span>Incluida en el combo</span>
                         } @else {

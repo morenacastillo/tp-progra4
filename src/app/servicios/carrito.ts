@@ -59,9 +59,6 @@ export class Carrito {
         this.candy.set(this.candy().filter(i => !(i.tipo === tipo && i.id === id)));
     }
 
-    sumarProductoCandy(tipo: string, id: number) {
-        this.candy.set(this.candy().filter(i => !(i.tipo === tipo && i.id === id))); // revisar
-    }
 
     precioButaca(butaca: getButacas) {
         const pelicula = this.pelicula();

@@ -109,14 +109,6 @@ export class MapaButacas implements OnInit, OnDestroy {
     return 'Normal';
   }
 
-  nombresSeleccionadas() {
-    let nombres: string[] = [];
-    for (let butaca of this.seleccionadas()) {
-      nombres.push(butaca.fila + butaca.columna);
-    }
-    return nombres.join(', ');
-  }
-
   totalSeleccion() {
     let total = 0;
     for (let butaca of this.seleccionadas()) {
