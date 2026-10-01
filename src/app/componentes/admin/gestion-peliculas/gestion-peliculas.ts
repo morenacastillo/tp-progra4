@@ -142,6 +142,9 @@ export class GestionPeliculas implements OnInit{
       return;
     }
 
+    this.guardandoEdicion.set(true);
+    this.errorEdicion.set('');
+
     const valores = this.formEdicion.getRawValue();
 
     const { error } = await this.peliculasService.actualizarPelicula(pelicula.id, {

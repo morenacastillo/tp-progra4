@@ -14,6 +14,8 @@
 
 .tarjeta {
   background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   color: var(--text-on-card);
   border-radius: 16px;
   padding: 28px;
@@ -109,7 +111,7 @@
   font-size: 16px;
   text-align: left;
   border-radius: 999px;
-  background: var(--color-surface-light);
+  background: var(--color-bg-suave);
   color: var(--text-on-card);
   border: 2px solid transparent;
 }
@@ -152,6 +154,8 @@
   padding: 36px 28px;
   text-align: center;
   background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   color: var(--text-on-card);
   border-radius: 16px;
 }
@@ -163,7 +167,7 @@
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 2px;
-  background: var(--text-on-dark);
+  background: var(--color-bg-suave);
   border-radius: 10px;
 }
 

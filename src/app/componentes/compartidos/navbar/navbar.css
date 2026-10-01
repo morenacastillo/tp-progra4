@@ -23,6 +23,26 @@ a:hover {
   text-decoration: underline;
 }
 
+.mi-perfil {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.mi-perfil svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mi-perfil:hover {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 @media (max-width: 600px) {
   :host {
     flex-wrap: wrap;

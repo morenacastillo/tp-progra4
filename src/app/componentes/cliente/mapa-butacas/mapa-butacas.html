@@ -1,49 +1,52 @@
 <div class="mapa">
-  <div class="pantalla">Pantalla</div>
+  <div class="sala">
+    <div class="pantalla">Pantalla</div>
 
-  @if (comboElegido(); as combo) {
-    <p class="aviso-combo">{{ combo.nombre }}</p>
-    <p class="aviso-combo">Seleccioná {{ combo.cantidad_entradas }} butacas.</p>
-  }
-
-  @for (fila of filas; track fila) {
-    <div class="fila">
-      <span class="letra-fila">{{ fila }}</span>
-      <div class="butacas">
-        @for (butaca of butacasDeFila(fila); track butaca.id) {
-          <div
-            class="butaca"
-            appResaltarButaca
-            [class.normal]="butaca.tipo === 'normal'"
-            [class.accesible]="butaca.tipo === 'accesible'"
-            [class.vip]="butaca.tipo === 'vip'"
-            [style.grid-column]="butaca.columna"
-            [title]="fila + butaca.columna"
-            [class.inactiva]="!butaca.activa"
-            [class.ocupada]="estaOcupada(butaca)"
-            [class.seleccionada]="estaSeleccionada(butaca)"
-            (click)="tocarButaca(butaca)">
-          </div>
-        }
+    @for (fila of filas; track fila) {
+      <div class="fila">
+        <span class="letra-fila">{{ fila }}</span>
+        <div class="butacas">
+          @for (butaca of butacasDeFila(fila); track butaca.id) {
+            <div
+              class="butaca"
+              appResaltarButaca
+              [class.normal]="butaca.tipo === 'normal'"
+              [class.accesible]="butaca.tipo === 'accesible'"
+              [class.vip]="butaca.tipo === 'vip'"
+              [style.grid-column]="butaca.columna"
+              [title]="fila + butaca.columna"
+              [class.inactiva]="!butaca.activa"
+              [class.ocupada]="estaOcupada(butaca)"
+              [class.seleccionada]="estaSeleccionada(butaca)"
+              [class.bloqueada]="comboElegido() && butaca.tipo === 'vip'"
+              (click)="tocarButaca(butaca)">
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  <div class="leyenda">
-    <span><i class="normal"></i> Normal</span>
-    <span><i class="accesible"></i> Accesible</span>
-    <span><i class="vip"></i> VIP</span>
-    <span><i class="ocupada"></i> Ocupada</span>
-    <span><i class="seleccionada"></i> Tu selección</span>
+    <div class="leyenda">
+      <span><i class="normal"></i> Normal</span>
+      <span><i class="accesible"></i> Accesible</span>
+      <span><i class="vip"></i> VIP</span>
+      <span><i class="ocupada"></i> Ocupada</span>
+      <span><i class="seleccionada"></i> Tu selección</span>
+    </div>
   </div>
 
-    <div class="seleccion">
+  <aside class="seleccion">
+    @if (comboElegido(); as combo) {
+      <p class="aviso-combo"><strong>{{ combo.nombre }}</strong></p>
+      <p class="aviso-combo">Seleccioná {{ combo.cantidad_entradas }} butacas normales o accesibles (el combo no incluye butacas VIP).</p>
+    }
+
     @if (seleccionadas().length === 0) {
       <p>Tocá las butacas que quieras elegir.</p>
     } @else {
       <h3>BUTACAS SELECCIONADAS</h3>
       @for (butaca of seleccionadas(); track butaca.id) {
-          <div class="linea-butaca"
+        <div class="linea-butaca"
           [class.normal]="butaca.tipo === 'normal'"
           [class.accesible]="butaca.tipo === 'accesible'"
           [class.vip]="butaca.tipo === 'vip'">
@@ -64,10 +67,13 @@
       }
     }
 
+    @if (esVip()) {
+      <p class="mensaje">{{ esVip() }}</p>
+    }
+
     <button type="button" class="btn-continuar" [disabled]="!puedeContinuar()" (click)="continuar()">
       Continuar
     </button>
     <button type="button" class="btn-volver" (click)="volver()">← Volver</button>
-  
-  </div>
+  </aside>
 </div>

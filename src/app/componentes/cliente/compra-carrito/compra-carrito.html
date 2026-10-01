@@ -75,7 +75,7 @@
 
                 <div class="linea descuento">
                     <span>Descuento</span>
-                    <span>{{ 0 | currency }}</span>
+                    <span>{{ carrito.descuento() | currency }}</span>
                 </div>
 
                 <div class="linea total-final">
@@ -84,10 +84,20 @@
                 </div>
 
                 <h3>Cupón de descuento</h3>
-                <div class="cupon">
-                    <input type="text" placeholder="Ingresá tu código" />
-                    <button type="button" disabled>Aplicar</button>
-                </div>
+                @if (carrito.cupon(); as cupon) {
+                    <div class="linea">
+                        <span>{{ cupon.codigo }} (-{{ cupon.porcentaje_descuento }}%)</span>
+                        <button type="button" class="btn-volver" (click)="carrito.quitarCupon()">Quitar</button>
+                    </div>
+                } @else {
+                    <div class="cupon">
+                        <input type="text" placeholder="Ingresá tu código" #codigoCupon />
+                        <button type="button" (click)="aplicarCupon(codigoCupon.value)">Aplicar</button>
+                    </div>
+                }
+                @if (errorCupon()) {
+                    <p class="error">{{ errorCupon() }}</p>
+                }
 
                 <h3>Método de pago</h3>
                 <div class="metodos">

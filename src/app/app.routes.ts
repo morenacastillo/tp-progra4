@@ -60,6 +60,10 @@ export const routes: Routes = [
           path: 'combos', 
           loadComponent: () => import('./componentes/admin/gestion-combos/gestion-combos').then(m => m.GestionCombos) 
         },
+        {
+          path: 'cupones', 
+          loadComponent: () => import('./componentes/admin/gestion-cupones/gestion-cupones').then(m => m.GestionCupones) 
+        },
       ]
     },
 
@@ -94,6 +98,11 @@ export const routes: Routes = [
           path: 'carrito',
           loadComponent: () => import('./componentes/cliente/compra-carrito/compra-carrito').then(m => m.CompraCarrito),
           canActivate: [butacasElegidas]
+        },
+        {
+          path: 'mi-perfil',
+          loadComponent: () => import('./componentes/cliente/mi-perfil/mi-perfil').then(m => m.MiPerfil)
+          
         },
       ]
     },

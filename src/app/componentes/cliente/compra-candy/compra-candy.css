@@ -30,7 +30,7 @@ h3:first-of-type {
   font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--color-header);
+  color: var(--color-btn);
 }
 
 .grilla h5:first-child {

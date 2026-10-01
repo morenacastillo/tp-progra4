@@ -4,6 +4,7 @@ import { GetPelicula } from '../modelos/datos-pelicula';
 import { getButacas } from '../modelos/datos-butacas';
 import { ItemCandyCarrito } from '../modelos/datos-carrito';
 import { GetCombo } from '../modelos/datos-combos';
+import { GetCupon } from '../modelos/datos-cupones';
 
 @Service()
 export class Carrito {
@@ -12,6 +13,7 @@ export class Carrito {
     butacas = signal<getButacas[]>([]);
     candy = signal<ItemCandyCarrito[]>([]);
     combo = signal<GetCombo | null>(null);
+    cupon = signal<GetCupon | null>(null);
 
     iniciar(funcion: GetFuncion, pelicula: GetPelicula) {
         this.pelicula.set(pelicula);
@@ -30,6 +32,14 @@ export class Carrito {
 
     cancelarCombo() {
         this.combo.set(null);
+    }
+
+    ingresarCupon(cupon: GetCupon) {
+        this.cupon.set(cupon)
+    }
+
+    quitarCupon() {
+        this.cupon.set(null)
     }
 
     agregarCandy(item: ItemCandyCarrito) {
@@ -92,8 +102,20 @@ export class Carrito {
         return total;
     }
 
+    subtotal() {
+    return this.totalEntradas() + this.totalCandy();
+    }
+
+    descuento() {
+        const cupon = this.cupon();
+        if (!cupon) {
+            return 0;
+        }
+        return this.subtotal() * cupon.porcentaje_descuento / 100;
+    }
+
     total() {
-        return this.totalEntradas() + this.totalCandy();
+        return this.subtotal() - this.descuento();
     }
 
     vaciar() {
@@ -102,6 +124,7 @@ export class Carrito {
         this.combo.set(null);
         this.butacas.set([]);
         this.candy.set([]);
+        this.cupon.set(null);
     }
 
 }

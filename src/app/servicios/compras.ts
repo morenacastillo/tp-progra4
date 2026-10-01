@@ -22,7 +22,7 @@ export class Compras {
             .from('compras')
             .insert({
                 usuario_id: this.auth.usuarioActual()?.id ?? null,
-                subtotal: this.carrito.total(),
+                subtotal: this.carrito.subtotal(),
                 total: this.carrito.total(),
                 metodo_pago: metodoPago,
                 qr_code: 'CC-' + Date.now(),

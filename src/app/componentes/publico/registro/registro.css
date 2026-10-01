@@ -4,27 +4,56 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background-image: linear-gradient(rgba(43, 10, 12, 0.85), rgba(43, 10, 12, 0.85)), var(--img-splash);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: var(--color-bg);
 }
 
 .auth-card {
-  max-width: 520px;
+  max-width: 760px;
+  padding: 48px 44px;
+  border: 2px solid #e3a9b1;
+  box-shadow: 0 12px 32px rgba(161, 88, 93, 0.22);
+}
+
+.auth-card h2 {
+  font-size: 34px;
+  margin-bottom: 20px;
 }
 
 .auth-card form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 16px;
+  gap: 0 24px;
+}
+
+.auth-card label {
+  font-size: 15px;
+  margin-top: 18px;
+}
+
+.auth-card input,
+.auth-card select {
+  padding: 13px 16px;
+  font-size: 16px;
+}
+
+.auth-card button {
+  padding: 14px;
+  font-size: 16px;
 }
 
 .campo-ancho {
   grid-column: 1 / -1;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 32px 24px;
+  }
+
+  .auth-card h2 {
+    font-size: 28px;
+  }
+
   .auth-card form {
     grid-template-columns: 1fr;
   }

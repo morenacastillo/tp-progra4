@@ -58,25 +58,28 @@
   flex-wrap: wrap;
   gap: 10px;
   padding-bottom: 14px;
-  border-bottom: 2px solid var(--color-surface-light);
+  border-bottom: 2px solid var(--color-borde);
 }
 
 .dia {
   padding: 10px 26px;
   font-size: 18px;
-  background: transparent;
-  color: var(--text-on-dark);
-  border: 2px solid var(--color-surface-light);
+  background: #ffffff;
+  color: var(--text-page);
+  border: 2px solid var(--color-borde);
   border-radius: 10px;
 }
 
 .dia.activo {
   background: var(--color-accent);
   border-color: var(--color-accent);
+  color: var(--text-on-dark);
 }
 
 .grupo {
-  border: 2px solid var(--color-surface-light);
+  background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   border-radius: 14px;
   padding: 20px 24px;
 }
@@ -97,19 +100,20 @@
   padding: 12px 26px;
   font-size: 17px;
   border-radius: 999px;
-  background: var(--color-surface-light);
-  color: var(--text-on-dark);
+  background: var(--color-bg-suave);
+  color: var(--text-page);
   border: 2px solid transparent;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .pildora:hover:not(.activo) {
-  background: var(--color-btn-hover);
+  background: var(--color-borde);
 }
 
 .pildora.activo {
   background: var(--color-accent);
   border-color: var(--color-accent);
+  color: var(--text-on-dark);
 }
 
 .btn-comprar {

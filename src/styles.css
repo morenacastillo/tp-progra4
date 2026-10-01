@@ -1,8 +1,8 @@
 
 :root {
-  --color-bg: #2b0a0c;
+  --color-bg: #fdf1f3;
   --color-header: #bc7278;
-  --color-card: #c17c81;
+  --color-card: #ffffff;
   --color-btn: #a1585d;
   --color-btn-hover: #8f4b50;
   --color-accent: #3f9142;
@@ -11,13 +11,17 @@
   --color-danger-hover: #8c2b26;
   --color-surface-light: #c9d0d8;
   --color-label-bg: #000000;
-  --color-divider: #8a4a4f;
+  --color-divider: #ecc6cc;
+  --color-bg-suave: #f8e1e5;
+  --color-borde: #ecc6cc;
+  --text-page: #201512;
+  --text-muted: #8a6b6e;
+  --sombra: 0 2px 10px rgba(161, 88, 93, 0.08);
   --text-on-dark: #ffffff;
   --text-on-card: #201512;
   --font-display: 'Fredoka', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --radius: 10px;
-  --img-splash: url('img/cine-pd3pa9h5eo0v69kv.jpg');
 }
 
 * {
@@ -28,14 +32,13 @@ html, body {
   margin: 0;
   min-height: 100%;
   background: var(--color-bg);
-  color: var(--text-on-dark);
+  color: var(--text-page);
   font-family: var(--font-body);
 }
 
 h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
 }
@@ -53,13 +56,15 @@ input, select {
   font-family: var(--font-body);
   font-size: 15px;
   border-radius: var(--radius);
-  border: none;
+  border: 1px solid var(--color-borde);
   padding: 10px 14px;
 }
 
 .auth-card {
   background: var(--color-card);
   color: var(--text-on-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   padding: 32px 28px;
   border-radius: 16px;
   max-width: 380px;
@@ -67,7 +72,7 @@ input, select {
 }
 
 .auth-card h2 {
-  color: var(--text-on-card);
+  color: var(--color-btn);
   margin-bottom: 20px;
   font-size: 28px;
   text-align: center;
@@ -110,13 +115,12 @@ input, select {
 }
 
 .auth-card button:disabled {
-  background: var(--color-divider);
-  color: rgba(255, 255, 255, 0.7);
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .auth-card .error {
-  color: #ffb4b4;
+  color: var(--color-danger);
   font-size: 13px;
   margin-top: 10px;
 }
@@ -142,7 +146,7 @@ input, select {
 }
 
 .btn-volver:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-bg-suave);
 }
 
 .btn-volver.arriba {

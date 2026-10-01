@@ -14,8 +14,9 @@ h1 {
 }
 
 .seccion {
-  margin-bottom: 40px;
-  padding: 0 48px;
+  max-width: 1720px;
+  margin: 0 auto 40px;
+  padding: 0 80px;
 }
 
 .titulo-seccion {
@@ -37,7 +38,7 @@ h1 {
 .titulo-seccion a {
   font-size: 16px;
   font-weight: 600;
-  color: var(--color-header);
+  color: var(--color-btn);
   text-decoration: none;
 }
 
@@ -50,6 +51,14 @@ h1 {
   gap: 24px;
   overflow-x: auto;
   padding-bottom: 12px;
+}
+
+.seccion > .fila > :first-child {
+  margin-left: auto;
+}
+
+.seccion > .fila > :last-child {
+  margin-right: auto;
 }
 
 .puesto-fila {
@@ -112,12 +121,13 @@ h1 {
   padding: 4px 10px;
   font-size: 13px;
   font-weight: 600;
-  background: var(--color-bg);
+  background: var(--color-btn);
   color: var(--text-on-dark);
   border-radius: 8px;
 }
 
 .fila.top {
+  justify-content: center;
   gap: 48px;
   overflow: visible;
 }
@@ -181,6 +191,7 @@ h1 {
   }
 
   .fila.top {
+    justify-content: flex-start;
     gap: 28px;
   }
 

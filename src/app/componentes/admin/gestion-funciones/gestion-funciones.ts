@@ -7,12 +7,13 @@ import { Salas } from '../../../servicios/salas';
 import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { GetSala } from '../../../modelos/datos-salas';
 import { GetFuncion } from '../../../modelos/datos-funciones';
+import { RouterLink } from '@angular/router';
 
 const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
 const PATRON_HORA = '^([01][0-9]|2[0-3]):[0-5][0-9]$';
 
 @Component({
-  imports: [ReactiveFormsModule, DatePipe],
+  imports: [ReactiveFormsModule, DatePipe, RouterLink],
   selector: 'app-gestion-funciones',
   styleUrl: './gestion-funciones.css',
   templateUrl: './gestion-funciones.html',

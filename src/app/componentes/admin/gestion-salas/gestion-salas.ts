@@ -3,9 +3,10 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Salas } from '../../../servicios/salas';
 import { GetSala } from '../../../modelos/datos-salas';
 import { Funciones } from '../../../servicios/funciones'
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-gestion-salas',
   styleUrl: './gestion-salas.css',
   templateUrl: './gestion-salas.html',

@@ -41,6 +41,8 @@ textarea {
   max-width: 1400px;
   margin: 32px auto 0;
   background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   border-radius: 16px;
   padding: 8px;
 }
@@ -88,7 +90,7 @@ textarea {
 }
 
 .gestionarPeliculas tbody tr:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-bg-suave);
 }
 
 .gestionarPeliculas td:first-child {

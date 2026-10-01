@@ -11,6 +11,8 @@
   max-width: 1100px;
   margin: 32px auto 0;
   background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   border-radius: 16px;
   padding: 8px;
   overflow-x: auto;
@@ -58,7 +60,7 @@
 }
 
 .gestionarFunciones tbody tr:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-bg-suave);
 }
 
 .gestionarFunciones tr.deshabilitada td {
@@ -78,7 +80,7 @@
 }
 
 .gestionarFunciones tr.editando {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-bg-suave);
 }
 
 .gestionarFunciones td input,

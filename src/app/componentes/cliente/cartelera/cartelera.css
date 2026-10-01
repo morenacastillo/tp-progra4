@@ -19,6 +19,8 @@
   gap: 10px;
   background: #ffffff;
   color: #1a1310;
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   border-radius: 999px;
   padding: 10px 18px;
   flex: 0 1 360px;
@@ -26,7 +28,7 @@
 
 .buscador svg {
   flex-shrink: 0;
-  color: var(--color-bg);
+  color: var(--color-btn);
 }
 
 .buscador input {
@@ -46,8 +48,7 @@
   max-width: 1400px;
   margin: 40px auto 0;
   text-align: center;
-  color: var(--text-on-dark);
-  opacity: 0.8;
+  color: var(--text-muted);
 }
 
 .grilla {

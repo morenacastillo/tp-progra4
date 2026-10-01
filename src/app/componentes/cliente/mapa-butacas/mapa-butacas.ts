@@ -20,6 +20,7 @@ export class MapaButacas implements OnInit, OnDestroy {
   filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
   ocupadas = signal<number[]>([]);
   seleccionadas = signal<getButacas[]>([]);
+  esVip = signal('');
 
   private suscripcion?: Subscription;
 
@@ -92,10 +93,16 @@ export class MapaButacas implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.carrito.combo() && butaca.tipo === 'vip') {
+      this.esVip.set('Las entradas del combo son para butacas normales o accesibles.');
+      return;
+    }
+
     if (this.carrito.combo() && this.seleccionadas().length >= this.cantidadCombo()) {
       return;
     }
 
+    this.esVip.set('');
     this.seleccionadas.set([...this.seleccionadas(), butaca]);
   }
 

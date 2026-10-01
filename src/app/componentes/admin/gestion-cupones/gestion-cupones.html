@@ -1,0 +1,145 @@
+<button type="button" class="btn-volver arriba" routerLink="/home-admin">← Volver al panel</button>
+
+<div class="auth-card">
+    <h2>Alta de cupones</h2>
+
+    <form [formGroup]="formCupones" (ngSubmit)="guardar()">
+        <div class="campo">
+            <label for="codigo">Código</label>
+            <input type="text" id="codigo" formControlName="codigo" placeholder="Ej: BIENVENIDA20">
+        </div>
+
+        <div class="campo">
+            <label for="porcentaje_descuento">Porcentaje de descuento</label>
+            <input type="number" min="1" max="100" id="porcentaje_descuento" formControlName="porcentaje_descuento">
+        </div>
+
+        <div class="campo campo-ancho">
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" formControlName="descripcion" placeholder="Ingresá la descripción del cupón">
+        </div>
+
+        <div class="campo">
+            <label for="solo_primera_compra">¿Solo para la primera compra?</label>
+            <select id="solo_primera_compra" formControlName="solo_primera_compra">
+                <option [ngValue]="true">Sí</option>
+                <option [ngValue]="false">No</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="edad_minima">Edad mínima (0 = sin restricción)</label>
+            <input type="number" min="0" max="120" id="edad_minima" formControlName="edad_minima">
+        </div>
+
+        <div class="campo">
+            <label for="valido_desde">Válido desde</label>
+            <input type="text" id="valido_desde" formControlName="valido_desde" placeholder="dd/mm/aaaa" maxlength="10">
+        </div>
+
+        <div class="campo">
+            <label for="valido_hasta">Válido hasta</label>
+            <input type="text" id="valido_hasta" formControlName="valido_hasta" placeholder="dd/mm/aaaa" maxlength="10">
+        </div>
+
+        @if (error()) {
+            <p class="error campo-ancho">{{ error() }}</p>
+        }
+
+        <button type="submit" class="campo-ancho" [disabled]="formCupones.invalid || cargando()">
+            @if (cargando()) {
+                Guardando...
+            } @else {
+                Guardar cupón
+            }
+        </button>
+    </form>
+
+    @if (guardadoOk()) {
+        <p class="exito">Cupón guardado con éxito.</p>
+    }
+</div>
+
+<div class="gestionarCupones">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Descuento</th>
+                <th>Primera compra</th>
+                <th>Edad mínima</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (cupon of cupones(); track cupon.id) {
+                @if (cuponEditandoId() === cupon.id) {
+                    <tr class="editando" [formGroup]="formEdicion">
+                        <td>{{ cupon.id }}</td>
+                        <td><input type="text" formControlName="codigo"></td>
+                        <td class="descripcion"><input type="text" formControlName="descripcion"></td>
+                        <td><input type="number" min="1" max="100" formControlName="porcentaje_descuento"></td>
+                        <td>
+                            <select formControlName="solo_primera_compra">
+                                <option [ngValue]="true">Sí</option>
+                                <option [ngValue]="false">No</option>
+                            </select>
+                        </td>
+                        <td><input type="number" min="0" max="120" formControlName="edad_minima"></td>
+                        <td><input type="text" formControlName="valido_desde" placeholder="dd/mm/aaaa" maxlength="10"></td>
+                        <td><input type="text" formControlName="valido_hasta" placeholder="dd/mm/aaaa" maxlength="10"></td>
+                        <td>
+                            <select formControlName="activo">
+                                <option [ngValue]="true">Activo</option>
+                                <option [ngValue]="false">Inactivo</option>
+                            </select>
+                        </td>
+                        <td class="acciones">
+                            <button type="button" class="confirmar" (click)="guardarEdicion(cupon)" [disabled]="formEdicion.invalid || guardandoEdicion()">
+                                @if (guardandoEdicion()) {
+                                    Guardando...
+                                } @else {
+                                    Guardar
+                                }
+                            </button>
+                            <button type="button" class="secundario desactivar" (click)="cancelarEdicion()">Cancelar</button>
+                        </td>
+                    </tr>
+                } @else {
+                    <tr [class.deshabilitada]="!cupon.activo">
+                        <td>{{ cupon.id }}</td>
+                        <td>{{ cupon.codigo }}</td>
+                        <td class="descripcion">{{ cupon.descripcion }}</td>
+                        <td>{{ cupon.porcentaje_descuento }}%</td>
+                        <td>{{ cupon.solo_primera_compra ? 'Sí' : 'No' }}</td>
+                        <td>{{ cupon.edad_minima > 0 ? cupon.edad_minima + '+' : 'Sin restricción' }}</td>
+                        <td>{{ cupon.valido_desde | date:'dd/MM/yyyy':'UTC' }}</td>
+                        <td>{{ cupon.valido_hasta ? (cupon.valido_hasta | date:'dd/MM/yyyy':'UTC') : '-' }}</td>
+                        <td>{{ cupon.activo ? 'Activo' : 'Inactivo' }}</td>
+                        <td class="acciones">
+                            <button type="button" (click)="modificar(cupon)" [disabled]="cuponEditandoId() !== null">Modificar</button>
+                            @if (cupon.activo) {
+                                <button type="button" class="desactivar" (click)="desactivar(cupon)" [disabled]="cuponEditandoId() !== null">Desactivar</button>
+                            } @else {
+                                <button type="button" class="confirmar" (click)="activar(cupon)" [disabled]="cuponEditandoId() !== null">Activar</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            } @empty {
+                <tr>
+                    <td colspan="10">Todavía no hay cupones cargados.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (errorEdicion()) {
+        <p class="error">{{ errorEdicion() }}</p>
+    }
+</div>

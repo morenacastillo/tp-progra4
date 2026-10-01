@@ -46,7 +46,7 @@
   list-style: none;
   padding: 0;
   margin: 14px 0 0;
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--color-bg-suave);
   border-radius: var(--radius);
 }
 
@@ -102,6 +102,8 @@
   max-width: 1200px;
   margin: 32px auto 0;
   background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
   border-radius: 16px;
   padding: 8px;
   overflow-x: auto;
@@ -145,7 +147,7 @@
 }
 
 .gestionarCombos tbody tr:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-bg-suave);
 }
 
 .gestionarCombos tr.deshabilitada td,
@@ -159,7 +161,7 @@
 }
 
 .gestionarCombos tr.editando {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-bg-suave);
 }
 
 .gestionarCombos td input,

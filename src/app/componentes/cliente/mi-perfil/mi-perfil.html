@@ -1,0 +1,139 @@
+<div class="perfil">
+
+    <aside class="lateral">
+        @if (datosPerfil(); as datos) {
+            <div class="saludo">
+                <div class="avatar">{{ datos.nombre.charAt(0) }}{{ datos.apellido.charAt(0) }}</div>
+                <div>
+                    <small>¡Hola!</small>
+                    <strong>{{ datos.nombre }}!</strong>
+                </div>
+            </div>
+        }
+
+        <nav class="menu">
+            <button type="button" [class.activo]="seccion() === 'datos'" (click)="seccion.set('datos')">
+                Datos personales <span class="flecha">›</span>
+            </button>
+            <button type="button" [class.activo]="seccion() === 'compras'" (click)="seccion.set('compras')">
+                Mis compras <span class="flecha">›</span>
+            </button>
+            <button type="button" [class.activo]="seccion() === 'puntos'" (click)="seccion.set('puntos')">
+                Mis puntos <span class="flecha">›</span>
+            </button>
+        </nav>
+    </aside>
+
+    <section class="contenido">
+
+        @if (seccion() === 'datos') {
+            <h1>Datos personales</h1>
+            <p class="bajada">Estos son los datos con los que te registraste.</p>
+
+            @if (datosPerfil(); as datos) {
+                <div class="tarjeta">
+                    <h2>Mis datos</h2>
+                    <div class="datos">
+                        <div class="dato"><span>Nombre</span><strong>{{ datos.nombre }}</strong></div>
+                        <div class="dato"><span>Apellido</span><strong>{{ datos.apellido }}</strong></div>
+                        <div class="dato"><span>Mail</span><strong>{{ datos.mail }}</strong></div>
+                        <div class="dato"><span>Fecha de nacimiento</span><strong>{{ datos.fecha_nacimiento | date:'dd/MM/yyyy':'UTC' }}</strong></div>
+                        <div class="dato"><span>Tipo de sangre</span><strong>{{ datos.tipo_sangre }}</strong></div>
+                        <div class="dato"><span>Color de ojos</span><strong>{{ datos.color_ojos }}</strong></div>
+                        <div class="dato"><span>Días de vacaciones al año</span><strong>{{ datos.dias_vacaciones_anio }}</strong></div>
+                    </div>
+                </div>
+            } @else {
+                <p class="vacio">Cargando tus datos...</p>
+            }
+        }
+
+        @if (seccion() === 'compras') {
+            <h1>Mis compras</h1>
+            <p class="bajada">Todas las compras que hiciste, de la más nueva a la más vieja.</p>
+
+            @for (compra of datosCompras(); track compra.id) {
+                <article class="compra">
+                    <div class="compra-arriba">
+                        <div>
+                            <span>Fecha de compra</span>
+                            <strong>{{ compra.fecha | date:'dd/MM/yyyy HH:mm' }}</strong>
+                        </div>
+                        <div>
+                            <span>Total</span>
+                            <strong>{{ compra.total | currency }}</strong>
+                            <small class="metodo">{{ compra.metodo_pago }}</small>
+                        </div>
+                        <div class="codigo">
+                            <span>Código</span>
+                            <strong>#{{ compra.qr_code }}</strong>
+                        </div>
+                    </div>
+
+                    @if (compra.entradas[0]; as primera) {
+                        <div class="compra-medio">
+                            <img class="poster" [src]="primera.funciones.peliculas.imagen_url" [alt]="primera.funciones.peliculas.nombre">
+                            <div>
+                                <h3>{{ primera.funciones.peliculas.nombre }}</h3>
+                                <p>{{ primera.funciones.inicio | date:'dd/MM/yyyy - HH:mm' }} hs · {{ primera.funciones.salas.nombre }} · {{ primera.funciones.idioma }} {{ primera.funciones.formato }}</p>
+                                <p>{{ compra.entradas.length }} entradas</p>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="detalle">
+                        <div class="bloque">
+                            <h4>Entradas</h4>
+                            @for (entrada of compra.entradas; track $index) {
+                                <div class="fila-detalle">
+                                    <span>{{ entrada.butacas.fila }}{{ entrada.butacas.columna }} · {{ entrada.butacas.tipo }}</span>
+                                    @if (entrada.combo_id) {
+                                        <span>Incluida en el combo</span>
+                                    } @else {
+                                        <span>{{ entrada.precio | currency }}</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        @if (compra.candy_vendido.length > 0) {
+                            <div class="bloque">
+                                <h4>Candy y combos</h4>
+                                @for (item of compra.candy_vendido; track $index) {
+                                    <div class="fila-detalle">
+                                        <span>
+                                            {{ item.cantidad }} ×
+                                            @if (item.productos_candy) {
+                                                {{ item.productos_candy.nombre }}
+                                            } @else if (item.combos) {
+                                                {{ item.combos.nombre }}
+                                            }
+                                        </span>
+                                        <span>{{ item.precio_unitario * item.cantidad | currency }}</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <div class="bloque">
+                            <div class="fila-detalle"><span>Subtotal</span><span>{{ compra.subtotal | currency }}</span></div>
+                            @if (compra.subtotal > compra.total) {
+                                <div class="fila-detalle descuento"><span>Descuento</span><span>- {{ compra.subtotal - compra.total | currency }}</span></div>
+                            }
+                            <div class="fila-detalle total"><span>Total pagado</span><span>{{ compra.total | currency }}</span></div>
+                        </div>
+                    </div>
+                </article>
+            } @empty {
+                <p class="vacio">Todavía no hiciste ninguna compra.</p>
+            }
+        }
+
+        @if (seccion() === 'puntos') {
+            <h1>Mis Puntos</h1>
+            <p class="bajada">Estos son tus puntos acumulados</p>
+        }
+
+
+    </section>
+</div>

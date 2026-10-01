@@ -4,12 +4,23 @@
 }
 
 .auth-card {
+  max-width: 720px;
   margin: 0 auto;
 }
 
+.auth-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
 
-.gestionarSalas {
-  max-width: 900px;
+.campo-ancho {
+  grid-column: 1 / -1;
+}
+
+.gestionarCupones {
+  width: fit-content;
+  max-width: 100%;
   margin: 32px auto 0;
   background: var(--color-card);
   border: 1px solid var(--color-borde);
@@ -19,13 +30,12 @@
   overflow-x: auto;
 }
 
-.gestionarSalas table {
-  width: 100%;
+.gestionarCupones table {
   border-collapse: collapse;
   color: var(--text-on-card);
 }
 
-.gestionarSalas th {
+.gestionarCupones th {
   background: var(--color-btn);
   color: var(--text-on-dark);
   font-family: var(--font-display);
@@ -35,70 +45,75 @@
   font-size: 14px;
   text-align: left;
   padding: 12px 16px;
+  white-space: nowrap;
 }
 
-
-.gestionarSalas th:first-child {
+.gestionarCupones th:first-child {
   border-radius: var(--radius) 0 0 var(--radius);
 }
 
-.gestionarSalas th:last-child {
+.gestionarCupones th:last-child {
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 
-.gestionarSalas td {
+.gestionarCupones td {
   padding: 12px 16px;
   font-size: 15px;
   border-bottom: 1px solid var(--color-divider);
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 147px;
 }
 
-.gestionarSalas tbody tr:last-child td {
+.gestionarCupones td.acciones {
+  width: 240px;
+}
+
+.gestionarCupones td.descripcion {
+  white-space: normal;
+  width: 240px;
+}
+
+.gestionarCupones tbody tr:last-child td {
   border-bottom: none;
 }
 
-.gestionarSalas tbody tr:hover {
+.gestionarCupones tbody tr:hover {
   background: var(--color-bg-suave);
 }
 
-.gestionarSalas tr.deshabilitada td {
+.gestionarCupones tr.deshabilitada td {
   opacity: 0.5;
 }
 
-.gestionarSalas tr.deshabilitada td.acciones {
+.gestionarCupones tr.deshabilitada td.acciones {
   opacity: 1;
 }
 
-.gestionarSalas tr.bloqueada td {
-  opacity: 0.5;
-}
-
-.gestionarSalas tr.bloqueada td.acciones {
-  opacity: 1;
-}
-
-.gestionarSalas tr.editando {
+.gestionarCupones tr.editando {
   background: var(--color-bg-suave);
 }
 
-.gestionarSalas td input,
-.gestionarSalas td select {
+.gestionarCupones td input,
+.gestionarCupones td select {
   width: 100%;
   padding: 6px 10px;
   font-size: 14px;
+  min-width: 115px;
   background: #ffffff;
   color: #1a1310;
 }
 
-.gestionarSalas .acciones {
+.gestionarCupones .acciones {
   text-align: right;
   white-space: nowrap;
 }
 
-.gestionarSalas .acciones button + button {
+.gestionarCupones .acciones button + button {
   margin-left: 8px;
 }
 
-.gestionarSalas .acciones button {
+.gestionarCupones .acciones button {
   padding: 6px 12px;
   font-size: 13px;
   white-space: nowrap;
@@ -106,57 +121,50 @@
   color: var(--text-on-dark);
 }
 
-.gestionarSalas .acciones button:hover:not(:disabled) {
+.gestionarCupones .acciones button:hover:not(:disabled) {
   background: var(--color-btn-hover);
 }
 
-.gestionarSalas .acciones button:disabled {
+.gestionarCupones .acciones button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.gestionarSalas .acciones button.secundario {
-  background: transparent;
-  color: var(--text-on-card);
-  border: 1px solid var(--color-btn);
-}
-
-.gestionarSalas .acciones button.confirmar {
+.gestionarCupones .acciones button.confirmar {
   background: var(--color-accent);
 }
 
-.gestionarSalas .acciones button.confirmar:hover:not(:disabled) {
+.gestionarCupones .acciones button.confirmar:hover:not(:disabled) {
   background: var(--color-accent-hover);
 }
 
-.gestionarSalas .acciones button.desactivar {
+.gestionarCupones .acciones button.desactivar {
   background: var(--color-danger);
 }
 
-.gestionarSalas .acciones button.desactivar:hover:not(:disabled) {
+.gestionarCupones .acciones button.desactivar:hover:not(:disabled) {
   background: var(--color-danger-hover);
 }
 
-.gestionarSalas .acciones button.secundario.desactivar {
+.gestionarCupones .acciones button.secundario.desactivar {
   background: transparent;
   color: var(--color-danger);
   border: 1px solid var(--color-danger);
 }
 
-.gestionarSalas .error {
+.gestionarCupones .error {
   color: #7a0f14;
   font-size: 14px;
   margin: 10px 16px;
 }
 
-.gestionarSalas td:first-child {
+.gestionarCupones td:first-child {
   width: 60px;
   opacity: 0.7;
 }
 
-
 @media (max-width: 600px) {
-  .gestionarSalas table {
-    min-width: 640px;
+  .auth-card form {
+    grid-template-columns: 1fr;
   }
 }
