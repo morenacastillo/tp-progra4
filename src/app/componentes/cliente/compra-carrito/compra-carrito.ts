@@ -5,6 +5,7 @@ import { Carrito } from '../../../servicios/carrito';
 import { Compras } from '../../../servicios/compras';
 import { PdfCompra } from '../../../servicios/pdf-compras';
 import { Cupones } from '../../../servicios/cupones';
+import { Funciones } from '../../../servicios/funciones';
 
 @Component({
   imports: [CurrencyPipe, DatePipe, RouterLink],
@@ -21,7 +22,7 @@ export class CompraCarrito{
   codigoCompra = signal<string | null>(null);
   errorCupon = signal('');
 
-  constructor(public carrito: Carrito, private comprasService: Compras, private pdfService: PdfCompra,private router: Router, private cuponesServices: Cupones) {}
+  constructor(public carrito: Carrito, private comprasService: Compras, private pdfService: PdfCompra,private router: Router, private cuponesServices: Cupones, private funcionesService: Funciones) {}
 
   private hoyTexto() {
     const hoy = new Date();
@@ -93,6 +94,27 @@ export class CompraCarrito{
 
     this.procesando.set(true)
     this.error.set('')
+
+    const funcion = this.carrito.funcion();
+    if (!funcion) {
+      this.procesando.set(false);
+      return;
+    }
+
+    const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
+
+    let tomadas: string[] = [];
+    for (let butaca of this.carrito.butacas()) {
+      if (ocupadas.includes(butaca.id)) {
+        tomadas.push(butaca.fila + butaca.columna);
+      }
+    }
+
+    if (tomadas.length > 0) {
+      this.procesando.set(false);
+      this.error.set('Estas butacas ya fueron compradas por otra persona: ' + tomadas.join(', ') + '. Volvé y elegí otras.');
+      return;
+    }
 
     const compra = await this.comprasService.crearCompra(metodo)
 

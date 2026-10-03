@@ -11,7 +11,7 @@ import { CardComprar } from '../directivas/card-comprar';
 
 export class CartaCandy {
   nombre = input.required<string>();
-  imagen = input.required<string | null>();
+  imagen = input.required<string>();
   descripcion = input.required<string>();
   precio = input.required<number>();
 

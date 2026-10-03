@@ -38,20 +38,21 @@
             <p class="error campo-ancho">{{ error() }}</p>
             }
 
-            <button type="submit" class="campo-ancho" [disabled]="formProductos.invalid || cargando()">
-            @if (cargando()) {
-                Guardando...
-            } @else {
-                Guardar producto
-            }
-            </button>
-
+        <button type="submit" class="campo-ancho" [disabled]="formProductos.invalid || cargando()">
+        @if (cargando()) {
+            Guardando...
+        } @else {
+            Guardar producto
+        }
+        </button>
     </form>
 
     @if (guardadoOk()) {
         <p class="exito campo-ancho">Producto guardado con éxito.</p>
     }
+
 </div>
+
 
 <div class="gestionarProductos">
     <table>
@@ -100,6 +101,7 @@
                             <button type="button" class="secundario desactivar" (click)="cancelarEdicion()">Cancelar</button>
                         </td>
                     </tr>
+                    
                 } @else {
                     <tr [class.deshabilitada]="!producto.estado" [class.bloqueada]="productoEditandoId() !== null && productoEditandoId() !== producto.id">
                         <td>{{ producto.id }}</td>
@@ -107,13 +109,7 @@
                         <td>{{ producto.nombre }}</td>
                         <td>{{ producto.descripcion }}</td>
                         <td>{{ producto.precio | currency }}</td>
-                        <td>
-                            @if (producto.imagen_url) {
-                                <img class="miniatura" [src]="producto.imagen_url" [alt]="producto.nombre">
-                            } @else {
-                                -
-                            }
-                        </td>
+                        <td><img class="miniatura" [src]="producto.imagen_url" [alt]="producto.nombre"></td>
                         <td>{{ producto.estado ? 'Activo' : 'Inactivo' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(producto)" [disabled]="productoEditandoId() !== null">Modificar</button>

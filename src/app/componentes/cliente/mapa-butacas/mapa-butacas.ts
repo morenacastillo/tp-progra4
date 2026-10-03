@@ -51,7 +51,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
     this.ocupadas.set(ocupadas);
 
-    this.seleccionadas.set(this.carrito.butacas());
+    this.seleccionadas.set(this.carrito.butacas().filter(b => !ocupadas.includes(b.id)));
   }
 
   butacasDeFila(fila: string) {

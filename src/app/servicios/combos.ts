@@ -36,7 +36,7 @@ export class Combos {
             .from('combos')
             .insert(datos)
             .select()
-            .single();
+            .single(); // select y sigle devuelven la fila recien creada como objeto
         return { data, error };
     }
 
@@ -47,7 +47,7 @@ export class Combos {
         return { error };
     }
 
-    async actualizarCombo(id: number, cambios: { nombre: string; descripcion: string; precio: number; imagen_url: string | null; estado: boolean }) {
+    async actualizarCombo(id: number, cambios: { nombre: string; descripcion: string; precio: number; imagen_url: string; estado: boolean }) {
         const { error } = await this.auth.client()
             .from('combos')
             .update(cambios)

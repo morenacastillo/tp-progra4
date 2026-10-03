@@ -37,6 +37,7 @@ export class Perfil {
                     funciones(inicio, formato, idioma, salas(nombre), peliculas(nombre, imagen_url))),
                     candy_vendido(cantidad, precio_unitario, productos_candy(nombre), combos(nombre))`)
             .eq('usuario_id', usuario.id)
+            .eq('estado', 'confirmada')
             .order('fecha', { ascending: false });
         if (error) {
             console.error('Error trayendo las compras:', error);

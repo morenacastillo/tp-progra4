@@ -8,9 +8,9 @@ import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { GetSala } from '../../../modelos/datos-salas';
 import { GetFuncion } from '../../../modelos/datos-funciones';
 import { RouterLink } from '@angular/router';
+import { FechaValidator } from '../../publico/validators/fecha-validator';
+import { HoraValidator } from '../../publico/validators/hora-validator';
 
-const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
-const PATRON_HORA = '^([01][0-9]|2[0-3]):[0-5][0-9]$';
 
 @Component({
   imports: [ReactiveFormsModule, DatePipe, RouterLink],
@@ -21,8 +21,8 @@ const PATRON_HORA = '^([01][0-9]|2[0-3]):[0-5][0-9]$';
 export class GestionFunciones implements OnInit {
   formFunciones = new FormGroup({
     peliculaId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
-    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_HORA)] }),
+    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, HoraValidator] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     idioma: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
@@ -36,8 +36,8 @@ export class GestionFunciones implements OnInit {
   guardadoOk = signal(false);
 
   formEdicion = new FormGroup({
-    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
-    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_HORA)] }),
+    fecha: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    hora: new FormControl('', { nonNullable: true, validators: [Validators.required, HoraValidator] }),
     formato: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     idioma: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl<boolean>(true, { nonNullable: true }),

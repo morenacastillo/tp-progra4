@@ -4,7 +4,7 @@ export interface GetCombo {
     descripcion: string;
     precio: number;
     cantidad_entradas: number;
-    imagen_url: string | null;
+    imagen_url: string;
     estado: boolean;
 }
 
@@ -13,7 +13,7 @@ export interface AltaCombo {
     descripcion: string;
     precio: number;
     cantidad_entradas: number;
-    imagen_url: string | null;
+    imagen_url: string;
 }
 
 
@@ -23,7 +23,7 @@ export interface ComboProducto {
     cantidad: number;
 }
 
-export interface ItemCombo {
+export interface ItemCombo { // alta de combo x item
     producto_id: number;
     nombre: string;
     cantidad: number;

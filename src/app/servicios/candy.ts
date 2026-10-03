@@ -32,12 +32,12 @@ export class Candy {
 
     async crearProducto(datos: AltaProducto) {
         const { error } = await this.auth.client()
-        .from('productos_candy')
+            .from('productos_candy')
             .insert(datos);
         return { error };
     }
 
-    async actualizarProducto(id: number, cambios: { categoria_id: number; nombre: string; descripcion: string; precio: number; imagen_url: string | null; estado: boolean }) {
+    async actualizarProducto(id: number, cambios: { categoria_id: number; nombre: string; descripcion: string; precio: number; imagen_url: string; estado: boolean }) {
         const { error } = await this.auth.client()
             .from('productos_candy')
             .update(cambios)

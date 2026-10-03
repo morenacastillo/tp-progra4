@@ -9,7 +9,7 @@ export interface GetProducto {
     nombre: string;
     descripcion: string;
     precio: number;
-    imagen_url: string | null;
+    imagen_url: string;
     estado: boolean;
 }
 
@@ -18,5 +18,5 @@ export interface AltaProducto {
     nombre: string;
     descripcion: string;
     precio: number;
-    imagen_url: string | null;
+    imagen_url: string;
 }

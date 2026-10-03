@@ -1,6 +1,7 @@
 import { RouterLink } from '@angular/router';
 import { Component, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FechaValidator } from '../../publico/validators/fecha-validator';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -14,7 +15,7 @@ export class Empleados {
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
-    fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$')] }),
+    fechaNacimiento: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
     tipoSangre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     colorOjos: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     diasVacacionesAnio: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),

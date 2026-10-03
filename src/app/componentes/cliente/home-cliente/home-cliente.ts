@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Peliculas } from '../../../servicios/peliculas';
 import { CartaPelicula } from '../carta-pelicula/carta-pelicula';
@@ -21,7 +21,6 @@ export class HomeCliente implements OnInit{
   combosDestacados = signal<GetCombo[]>([]);
   enCartelera = signal<GetPelicula[]>([]);
   
-
   constructor(private peliculasService: Peliculas, private combosService: Combos, private carrito: Carrito, private router: Router) {}
 
   ngOnInit() {

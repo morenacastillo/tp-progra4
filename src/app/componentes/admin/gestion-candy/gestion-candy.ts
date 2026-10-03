@@ -15,8 +15,8 @@ import { CurrencyPipe } from '@angular/common';
 export class GestionCandy implements OnInit{
 
   error = signal('');
-  cargando = signal(false);
-  guardadoOk = signal(false);
+  cargando = signal(false); // control para botones/mensajes
+  guardadoOk = signal(false); // control para botones/mensajes
   productos = signal<GetProducto[]>([]);
   categorias = signal<GetCategoria[]>([]);
 
@@ -28,6 +28,10 @@ export class GestionCandy implements OnInit{
     precio: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^https?://.+')] }),
   })
+  
+  productoEditandoId = signal<number | null>(null);
+  errorEdicion = signal('');
+  guardandoEdicion = signal(false);
 
   formEdicion = new FormGroup({
     categoria_id: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
@@ -38,9 +42,6 @@ export class GestionCandy implements OnInit{
     estado: new FormControl(true, { nonNullable: true })
   })
 
-  productoEditandoId = signal<number | null>(null);
-  errorEdicion = signal('');
-  guardandoEdicion = signal(false);
 
   constructor(private candyServices: Candy) {}
 
@@ -114,7 +115,7 @@ export class GestionCandy implements OnInit{
       nombre: producto.nombre,
       descripcion: producto.descripcion,
       precio: producto.precio,
-      imagen_url: producto.imagen_url ?? '',
+      imagen_url: producto.imagen_url,
       estado: producto.estado
     });
   }
@@ -156,23 +157,19 @@ export class GestionCandy implements OnInit{
 
   async desactivar(producto: GetProducto) {
     const { error } = await this.candyServices.cambiarEstadoProducto(producto.id, false);
-
     if (error) {
       this.errorEdicion.set(error.message);
       return;
     }
-
     this.cargarCandy();
   }
 
   async activar(producto: GetProducto) {
     const { error } = await this.candyServices.cambiarEstadoProducto(producto.id, true);
-
     if (error) {
       this.errorEdicion.set(error.message);
       return;
     }
-
     this.cargarCandy();
   }
 

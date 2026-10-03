@@ -2,7 +2,7 @@
   "name": "CINEMA CLUB",
   "short_name": "CINEMA CLUB",
   "theme_color": "#bc7278",
-  "background_color": "#2b0a0c",
+  "background_color": "#fdf1f3",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

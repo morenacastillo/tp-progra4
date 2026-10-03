@@ -26,7 +26,7 @@
         
         <div class="campo campo-ancho">
             <label for="imagen_url">Imagen en URL</label>
-            <input type="url" id="imagen_url" formControlName="imagen_url" placeholder="Ingresa la imagen URL del combo (opcional)">
+            <input type="url" id="imagen_url" formControlName="imagen_url" placeholder="Ingresa la imagen URL del combo">
         </div>
     </form>
 
@@ -76,6 +76,7 @@
     }
 </div>
 
+
 <div class="gestionarCombos">
     <table>
         <thead>
@@ -124,13 +125,7 @@
                         <td>{{ combo.descripcion }}</td>
                         <td>{{ combo.precio | currency }}</td>
                         <td>{{ combo.cantidad_entradas }}</td>
-                        <td>
-                            @if (combo.imagen_url) {
-                                <img class="miniatura" [src]="combo.imagen_url" [alt]="combo.nombre">
-                            } @else {
-                                -
-                            }
-                        </td>
+                        <td><img class="miniatura" [src]="combo.imagen_url" [alt]="combo.nombre"></td>
                         <td>{{ combo.estado ? 'Activo' : 'Inactivo' }}</td>
                         <td class="acciones">
                             <button type="button" (click)="modificar(combo)" [disabled]="comboEditandoId() !== null">Modificar</button>

@@ -29,7 +29,7 @@ export class Cupones {
             console.error('Error trayendo el cupon:', error);
             return null;
         }
-        return data ?? [];
+        return data;
     }
 
 

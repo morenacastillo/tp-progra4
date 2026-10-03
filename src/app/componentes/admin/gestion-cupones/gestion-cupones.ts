@@ -4,8 +4,8 @@ import { Cupones } from '../../../servicios/cupones';
 import { GetCupon } from '../../../modelos/datos-cupones';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { FechaValidator } from '../../publico/validators/fecha-validator';
 
-const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink, DatePipe],
@@ -26,8 +26,8 @@ export class GestionCupones implements OnInit{
     porcentaje_descuento: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(100)] }),
     solo_primera_compra: new FormControl(true, { nonNullable: true }),
     edad_minima: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(0), Validators.max(120)] }),
-    valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
-    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
   })
   
   formEdicion = new FormGroup({
@@ -36,8 +36,8 @@ export class GestionCupones implements OnInit{
     porcentaje_descuento: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(100)] }),
     solo_primera_compra: new FormControl(true, { nonNullable: true }),
     edad_minima: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(0), Validators.max(120)] }),
-    valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
-    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
     activo: new FormControl(true, { nonNullable: true }),
   })
 

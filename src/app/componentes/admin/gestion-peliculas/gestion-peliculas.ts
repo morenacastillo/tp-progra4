@@ -4,8 +4,8 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Peliculas } from '../../../servicios/peliculas';
 import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { FechaValidator } from '../../publico/validators/fecha-validator';
 
-const PATRON_FECHA = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$';
 
 @Component({
   imports: [ReactiveFormsModule, CurrencyPipe, DatePipe, RouterLink],
@@ -23,7 +23,7 @@ export class GestionPeliculas implements OnInit{
     restriccionEdad: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     etapa: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
     precioBase: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioVip: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioPreventa: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
@@ -39,7 +39,7 @@ export class GestionPeliculas implements OnInit{
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     duracion: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(600)] }),
     restriccionEdad: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
-    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(PATRON_FECHA)] }),
+    fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
     precioBase: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioVip: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioPreventa: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(1)] }),

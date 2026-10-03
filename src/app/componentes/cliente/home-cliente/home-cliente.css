@@ -113,17 +113,64 @@ h1 {
   right: -40px;
 }
 
-.estreno {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 2;
-  padding: 4px 10px;
-  font-size: 13px;
+.estrenos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.carta-estreno {
+  display: flex;
+  background: var(--color-card);
+  color: var(--text-on-card);
+  border: 1px solid var(--color-borde);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.carta-estreno img {
+  flex: none;
+  width: 170px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.info-estreno {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 22px;
+}
+
+.info-estreno h4 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
   font-weight: 600;
-  background: var(--color-btn);
-  color: var(--text-on-dark);
-  border-radius: 8px;
+  font-size: 21px;
+}
+
+.fecha-estreno {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-btn);
+}
+
+.sinopsis-estreno {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  overflow: hidden;
+}
+
+@media (max-width: 1100px) {
+  .estrenos {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .fila.top {
@@ -197,6 +244,14 @@ h1 {
 
   .puesto-combo {
     width: 170px;
+  }
+
+  .carta-estreno img {
+    width: 120px;
+  }
+
+  .info-estreno {
+    padding: 14px 16px;
   }
 
   .flecha {

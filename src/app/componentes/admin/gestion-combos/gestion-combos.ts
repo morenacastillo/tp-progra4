@@ -27,10 +27,10 @@ export class GestionCombos implements OnInit {
     descripcion: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] }),
     precio: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     cantidad_entradas: new FormControl('0', { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
-    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.pattern('^https?://.+')] }),
+    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^https?://.+')] }),
   })
 
-  formItem = new FormGroup({
+  formItem = new FormGroup({ // agregar productos
     producto_id: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     cantidad: new FormControl('1', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
   })
@@ -40,7 +40,7 @@ export class GestionCombos implements OnInit {
     descripcion: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] }),
     precio: new FormControl(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     estado: new FormControl(true, { nonNullable: true }),
-    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.pattern('^https?://.+')] }),
+    imagen_url: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^https?://.+')] }),
   })
 
   comboEditandoId = signal<number | null>(null);
@@ -71,13 +71,13 @@ export class GestionCombos implements OnInit {
     }
 
     const valores = this.formItem.getRawValue();
-    const producto = this.productos().find(p => p.id === Number(valores.producto_id)); //recorre la tabla hasta que el id del prod ingresado matchee con una fila
+    const producto = this.productos().find(p => p.id === Number(valores.producto_id)); //recorre la tabla hasta que el id del prod ingresado matchee con una fila y la guarda en producto (solo esa fila)
 
     if (!producto) {
       return;
     }
 
-    if (this.itemsCombo().find(i => i.producto_id === producto.id)) {
+    if (this.itemsCombo().find(i => i.producto_id === producto.id)) { // recorre la lista de itemsCombo y si ya existe guardado el mismo id del producto que yo estoy seleccionando, te saca
       this.error.set('Ese producto ya está en el combo. Quitalo y volvelo a agregar con otra cantidad.');
       return;
     }
@@ -89,6 +89,7 @@ export class GestionCombos implements OnInit {
     ]);
     this.formItem.reset();
   }
+
 
   quitarItem(productoId: number) {
     this.itemsCombo.set(this.itemsCombo().filter(i => i.producto_id !== productoId)); // arma lista nueva con todos los productos menos el del id seleccionado
@@ -111,7 +112,7 @@ export class GestionCombos implements OnInit {
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
       cantidad_entradas: Number(valores.cantidad_entradas),
-      imagen_url: valores.imagen_url || null,
+      imagen_url: valores.imagen_url,
     });
 
     if (error || !data) {
@@ -156,7 +157,7 @@ export class GestionCombos implements OnInit {
       descripcion: combo.descripcion,
       precio: combo.precio,
       estado: combo.estado,
-      imagen_url: combo.imagen_url ?? '',
+      imagen_url: combo.imagen_url,
     });
   }
 
@@ -174,13 +175,13 @@ export class GestionCombos implements OnInit {
     this.errorEdicion.set('');
 
     const valores = this.formEdicion.getRawValue();
-
+    // a los combos ya existentes no se le cambian los productos
     const { error } = await this.combosServicios.actualizarCombo(combo.id, {
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
       estado: valores.estado,
-      imagen_url: valores.imagen_url || null,
+      imagen_url: valores.imagen_url,
     });
 
     this.guardandoEdicion.set(false);
@@ -196,23 +197,19 @@ export class GestionCombos implements OnInit {
 
   async desactivar(combo: GetCombo) {
     const { error } = await this.combosServicios.cambiarEstadoCombo(combo.id, false);
-
     if (error) {
       this.errorEdicion.set(error.message);
       return;
     }
-
     this.cargarCombos();
   }
 
   async activar(combo: GetCombo) {
     const { error } = await this.combosServicios.cambiarEstadoCombo(combo.id, true);
-
     if (error) {
       this.errorEdicion.set(error.message);
       return;
     }
-
     this.cargarCombos();
   }
 }

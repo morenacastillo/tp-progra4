@@ -17,7 +17,7 @@
 
 <section class="seccion">
   <div class="titulo-seccion">
-    <h3>PELICULAS EN CARTELERA</h3>
+    <h3>Peliculas en cartelera</h3>
     <a routerLink="/home-cliente/cartelera">Ver todas</a>
   </div>
       <div class="carrusel">
@@ -60,12 +60,16 @@
   <div class="titulo-seccion">
     <h3>Próximos estrenos</h3>
   </div>
-  <div class="fila">
+  <div class="estrenos">
     @for (pelicula of proximosEstrenos(); track pelicula.id) {
-      <div class="puesto-fila">
-        <span class="estreno">{{ pelicula.fecha_estreno | date:'dd/MM':'UTC' }}</span>
-        <app-carta-pelicula [id]="pelicula.id" [nombre]="pelicula.nombre" [imagen]="pelicula.imagen_url" />
-      </div>
+      <article class="carta-estreno">
+        <img [src]="pelicula.imagen_url" [alt]="pelicula.nombre">
+        <div class="info-estreno">
+          <h4>{{ pelicula.nombre }}</h4>
+          <p class="fecha-estreno">Estreno: {{ pelicula.fecha_estreno | date:'dd/MM/yyyy':'UTC' }}</p>
+          <p class="sinopsis-estreno">{{ pelicula.sinopsis }}</p>
+        </div>
+      </article>
     }
   </div>
 </section>

@@ -23,6 +23,6 @@ export class Cartelera implements OnInit {
 
     private async cargarPeliculas() {
       const datos = await this.peliculasService.obtenerPeliculas();
-      this.peliculas.set(datos);
+      this.peliculas.set(datos.filter(p => p.estado));
     }
   }

@@ -1,7 +1,5 @@
 <div class="carta-candy" appCardComprar>
-    @if (imagen()) {
-        <img [src]="imagen()" [alt]="nombre()" />
-    }
+    <img [src]="imagen()" [alt]="nombre()" />
     <div class="overlay-hover">
         <span>{{ nombre() }}</span>
         <span>{{ descripcion() }}</span>

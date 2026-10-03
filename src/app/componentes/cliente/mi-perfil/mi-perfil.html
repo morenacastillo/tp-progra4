@@ -3,10 +3,9 @@
     <aside class="lateral">
         @if (datosPerfil(); as datos) {
             <div class="saludo">
-                <div class="avatar">{{ datos.nombre.charAt(0) }}{{ datos.apellido.charAt(0) }}</div>
                 <div>
                     <small>¡Hola!</small>
-                    <strong>{{ datos.nombre }}!</strong>
+                    <strong>{{ datos.nombre }} {{ datos.apellido }}!</strong>
                 </div>
             </div>
         }

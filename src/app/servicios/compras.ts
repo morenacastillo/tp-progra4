@@ -26,6 +26,8 @@ export class Compras {
                 total: this.carrito.total(),
                 metodo_pago: metodoPago,
                 qr_code: 'CC-' + Date.now(),
+                cupon_id: this.carrito.cupon()?.id ?? null,
+                descuento: this.carrito.descuento()
             })
             .select()
             .single();
@@ -58,6 +60,7 @@ export class Compras {
             .insert(entradas);
         if (errorEntradas) {
             console.error('Error creando las entradas:', errorEntradas);
+            await this.cancelarCompra(compra.id);
             return null;
         }
 
@@ -98,10 +101,23 @@ export class Compras {
 
             if (errorCandy) {
                 console.error('Error creando el candy:', errorCandy);
+                await this.cancelarCompra(compra.id);
                 return null;
             }
         }
 
         return compra;
+    }
+
+    private async cancelarCompra(compraId: number) {
+        await this.auth.client()
+            .from('entradas')
+            .update({ estado: 'cancelada' })
+            .eq('compra_id', compraId);
+
+        await this.auth.client()
+            .from('compras')
+            .update({ estado: 'cancelada' })
+            .eq('id', compraId);
     }
 }
