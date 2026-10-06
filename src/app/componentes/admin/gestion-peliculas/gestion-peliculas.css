@@ -14,7 +14,7 @@ textarea {
   font-family: var(--font-body);
   font-size: 15px;
   border-radius: var(--radius);
-  border: none;
+  border: 1px solid var(--color-borde);
   padding: 10px 14px;
   background: #ffffff;
   color: #1a1310;
@@ -237,4 +237,83 @@ textarea {
   .gestionarPeliculas table {
     min-width: 900px;
   }
+}
+
+.generos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.generos button {
+  width: auto;
+  margin-top: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--color-bg-suave);
+  color: var(--text-on-card);
+}
+
+.generos button.activo {
+  background: var(--color-accent);
+  color: var(--text-on-dark);
+}
+
+.auth-card h3 {
+  font-size: 18px;
+  margin: 24px 0 10px;
+  color: var(--text-on-card);
+}
+
+.armado {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.armado button {
+  width: auto;
+  margin-top: 0;
+  padding: 10px 18px;
+}
+
+.items-genero {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  background: var(--color-bg-suave);
+  border-radius: var(--radius);
+}
+
+.items-genero li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.items-genero li:last-child {
+  border-bottom: none;
+}
+
+.items-genero .quitar {
+  width: auto;
+  margin-top: 0;
+  padding: 4px 12px;
+  font-size: 13px;
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.sin-items {
+  margin: 14px 0 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.btn-guardar {
+  margin-top: 22px;
 }

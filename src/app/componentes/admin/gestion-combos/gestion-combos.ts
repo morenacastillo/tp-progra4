@@ -6,6 +6,7 @@ import { Candy } from '../../../servicios/candy';
 import { GetCombo, ItemCombo } from '../../../modelos/datos-combos';
 import { GetProducto } from '../../../modelos/datos-candy';
 import { CurrencyPipe } from '@angular/common';
+import { Actividad } from '../../../servicios/actividad';
 
 @Component({
   imports: [ReactiveFormsModule, CurrencyPipe, RouterLink],
@@ -47,7 +48,7 @@ export class GestionCombos implements OnInit {
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private combosServicios: Combos, private candyServicios: Candy) {}
+  constructor(private combosServicios: Combos, private candyServicios: Candy, private logsService: Actividad) {}
 
   ngOnInit() {
     this.cargarCombos();
@@ -138,6 +139,8 @@ export class GestionCombos implements OnInit {
     }
 
     this.cargando.set(false);
+    await this.logsService.crearLog('Crear combo', valores.nombre);
+
     this.guardadoOk.set(true);
     this.formCombos.reset();
     this.itemsCombo.set([]);
@@ -191,6 +194,12 @@ export class GestionCombos implements OnInit {
       return;
     }
 
+    if (combo.precio !== Number(valores.precio)) {
+      await this.logsService.crearLog('Modificar precio', combo.nombre + ': de ' + combo.precio + ' a ' + Number(valores.precio));
+    } else {
+      await this.logsService.crearLog('Modificar combo', combo.nombre);
+    }
+
     this.comboEditandoId.set(null);
     this.cargarCombos();
   }
@@ -201,6 +210,8 @@ export class GestionCombos implements OnInit {
       this.errorEdicion.set(error.message);
       return;
     }
+    await this.logsService.crearLog('Desactivar combo', combo.nombre);
+
     this.cargarCombos();
   }
 
@@ -210,6 +221,8 @@ export class GestionCombos implements OnInit {
       this.errorEdicion.set(error.message);
       return;
     }
+    await this.logsService.crearLog('Activar combo', combo.nombre);
+
     this.cargarCombos();
   }
 }

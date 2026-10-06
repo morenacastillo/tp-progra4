@@ -5,6 +5,7 @@ import { GetCupon } from '../../../modelos/datos-cupones';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FechaValidator } from '../../publico/validators/fecha-validator';
+import { Actividad } from '../../../servicios/actividad';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class GestionCupones implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private cuponesService: Cupones) {}
+  constructor(private cuponesService: Cupones, private logsService: Actividad) {}
   
   ngOnInit() {
     this.cargarCupones();
@@ -94,6 +95,8 @@ export class GestionCupones implements OnInit{
       this.error.set(error.message);
       return;
     }
+
+    await this.logsService.crearLog('Crear cupón', valores.codigo);
 
     this.guardadoOk.set(true);
     this.formCupones.reset();
@@ -153,6 +156,8 @@ export class GestionCupones implements OnInit{
         return;
       }
   
+          await this.logsService.crearLog('Modificar cupón', cupon.codigo);
+
           this.cuponEditandoId.set(null);
           this.cargarCupones();
     }
@@ -166,6 +171,8 @@ export class GestionCupones implements OnInit{
         return;
       }
   
+      await this.logsService.crearLog('Desactivar cupón', cupon.codigo);
+
       this.cargarCupones();
     }
   
@@ -177,6 +184,8 @@ export class GestionCupones implements OnInit{
         return;
       }
   
+      await this.logsService.crearLog('Activar cupón', cupon.codigo);
+
       this.cargarCupones();
     }
   

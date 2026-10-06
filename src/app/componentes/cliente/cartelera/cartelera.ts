@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
 import { CartaPelicula } from '../carta-pelicula/carta-pelicula';
 import { FiltroPipe } from '../pipes/filtro-pipe';
-import { GetPelicula } from '../../../modelos/datos-pelicula';
+import { GetPelicula, GENEROS } from '../../../modelos/datos-pelicula';
+import { GeneroPipe } from '../pipes/genero-pipe';
 
 @Component({
-  imports: [CartaPelicula, FormsModule, FiltroPipe],
+  imports: [CartaPelicula, FormsModule, FiltroPipe, GeneroPipe],  
   selector: 'app-cartelera',
   styleUrl: './cartelera.css',
   templateUrl: './cartelera.html',
@@ -14,6 +15,8 @@ import { GetPelicula } from '../../../modelos/datos-pelicula';
 export class Cartelera implements OnInit {
     peliculas = signal<GetPelicula[]>([]);
     busqueda = signal('');
+    generos = GENEROS;
+    genero = signal('');  
 
     constructor(private peliculasService: Peliculas) {}
 

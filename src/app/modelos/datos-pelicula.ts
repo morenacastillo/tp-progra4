@@ -1,3 +1,5 @@
+export const GENEROS = ['Acción', 'Animación', 'Aventura', 'Ciencia ficción', 'Comedia', 'Drama', 'Romance', 'Suspenso', 'Terror'];
+
 export interface AltaPelicula {
     nombre: string;
     sinopsis: string;
@@ -11,6 +13,7 @@ export interface AltaPelicula {
     dias_preventa: number | null;
     imagen_horizontal_url: string;
     etapa: string;
+    generos: string[];
 }
 
 export interface GetPelicula {
@@ -29,4 +32,5 @@ export interface GetPelicula {
     estado: boolean;
     creado_en: string;
     etapa: 'Cartelera' | 'Proximamente';
+    generos: string[];
 }

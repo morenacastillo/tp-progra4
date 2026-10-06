@@ -27,8 +27,6 @@
 
         @if (seccion() === 'datos') {
             <h1>Datos personales</h1>
-            <p class="bajada">Estos son los datos con los que te registraste.</p>
-
             @if (datosPerfil(); as datos) {
                 <div class="tarjeta">
                     <h2>Mis datos</h2>
@@ -49,8 +47,6 @@
 
         @if (seccion() === 'compras') {
             <h1>Mis compras</h1>
-            <p class="bajada">Todas las compras que hiciste, de la más nueva a la más vieja.</p>
-
             @for (compra of datosCompras(); track compra.id) {
                 <article class="compra">
                     <div class="compra-arriba">
@@ -130,7 +126,6 @@
 
         @if (seccion() === 'puntos') {
             <h1>Mis Puntos</h1>
-            <p class="bajada">Estos son tus puntos acumulados</p>
         }
 
 

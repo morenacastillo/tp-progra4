@@ -10,6 +10,7 @@ import { GetFuncion } from '../../../modelos/datos-funciones';
 import { RouterLink } from '@angular/router';
 import { FechaValidator } from '../../publico/validators/fecha-validator';
 import { HoraValidator } from '../../publico/validators/hora-validator';
+import { Actividad } from '../../../servicios/actividad';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class GestionFunciones implements OnInit {
     idioma: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
+  
   peliculas = signal<GetPelicula[]>([]);
   salas = signal<GetSala[]>([]);
   funciones = signal<GetFuncion[]>([]);
@@ -47,7 +49,7 @@ export class GestionFunciones implements OnInit {
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private funcionesService: Funciones, private peliculasService: Peliculas, private salasService: Salas) {}
+  constructor(private funcionesService: Funciones, private peliculasService: Peliculas, private salasService: Salas, private logsService: Actividad) {}
 
   ngOnInit() {
     this.cargarPeliculas();
@@ -60,23 +62,28 @@ export class GestionFunciones implements OnInit {
     this.peliculas.set(datos);
   }
 
+
   private async cargarSalas() {
     const datos = await this.salasService.obtenerSalas();
     this.salas.set(datos);
   }
+
 
   private async cargarFunciones() {
     const datos = await this.funcionesService.obtenerFunciones();
     this.funciones.set(datos);
   }
 
+
   nombrePelicula(peliculaId: number) {
     return this.peliculas().find(p => p.id === peliculaId)?.nombre ?? '—';
   }
 
+
   nombreSala(salaId: number) {
     return this.salas().find(s => s.id === salaId)?.nombre ?? '—';
   }
+
 
   private armarInicio(fecha: string, hora: string) {
     const partes = fecha.split('/');
@@ -92,19 +99,23 @@ export class GestionFunciones implements OnInit {
     return inicio;
   }
 
+
   private dosDigitos(numero: number) {
     return numero.toString().padStart(2, '0');
   }
+
 
   private aFechaTexto(fechaIso: string) {
     const fecha = new Date(fechaIso);
     return this.dosDigitos(fecha.getDate()) + '/' + this.dosDigitos(fecha.getMonth() + 1) + '/' + fecha.getFullYear();
   }
 
+
   private aHoraTexto(fechaIso: string) {
     const fecha = new Date(fechaIso);
     return this.dosDigitos(fecha.getHours()) + ':' + this.dosDigitos(fecha.getMinutes());
   }
+
 
   async guardar() {
     if (this.formFunciones.invalid) {
@@ -150,7 +161,8 @@ export class GestionFunciones implements OnInit {
       const choque = funcionesDeEstaSala.some(f => {
         const otroInicio = new Date(f.inicio);
         const otroFinBloqueo = new Date(f.fin_bloqueo);
-        return inicio < otroFinBloqueo && otroInicio < finBloqueo;
+        return inicio < otroFinBloqueo // la nueva empieza antes de que la otra libere la sala.
+        && otroInicio < finBloqueo; // la otra empieza antes de que la nueva libere la sala.
       });
       return !choque;
     });
@@ -178,6 +190,8 @@ export class GestionFunciones implements OnInit {
       return;
     }
 
+    await this.logsService.crearLog('Crear función', pelicula.nombre + ' - ' + valores.fecha + ' ' + valores.hora + ' - ' + salaLibre.nombre);
+
     this.guardadoOk.set(true);
     this.formFunciones.reset();
     this.cargarFunciones();
@@ -186,6 +200,7 @@ export class GestionFunciones implements OnInit {
       this.guardadoOk.set(false);
     }, 2500);
   }
+
 
   modificar(funcion: GetFuncion) {
     this.errorEdicion.set('');
@@ -199,10 +214,12 @@ export class GestionFunciones implements OnInit {
     });
   }
 
+
   cancelarEdicion() {
     this.funcionEditandoId.set(null);
     this.errorEdicion.set('');
   }
+
 
   async guardarEdicion(funcion: GetFuncion) {
     if (this.formEdicion.invalid) {
@@ -247,9 +264,12 @@ export class GestionFunciones implements OnInit {
       return;
     }
 
+    await this.logsService.crearLog('Modificar función', this.nombrePelicula(funcion.pelicula_id) + ' - ' + this.aFechaTexto(funcion.inicio) + ' ' + this.aHoraTexto(funcion.inicio) + ' - ' + this.nombreSala(funcion.sala_id));
+
     this.funcionEditandoId.set(null);
     this.cargarFunciones();
   }
+
 
   async desactivar(funcion: GetFuncion) {
     const { error } = await this.funcionesService.cambiarEstadoFuncion(funcion.id, false);
@@ -259,8 +279,11 @@ export class GestionFunciones implements OnInit {
       return;
     }
 
+    await this.logsService.crearLog('Desactivar función', this.nombrePelicula(funcion.pelicula_id) + ' - ' + this.aFechaTexto(funcion.inicio) + ' ' + this.aHoraTexto(funcion.inicio) + ' - ' + this.nombreSala(funcion.sala_id));
+
     this.cargarFunciones();
   }
+
 
   async activar(funcion: GetFuncion) {
     const { error } = await this.funcionesService.cambiarEstadoFuncion(funcion.id, true);
@@ -269,6 +292,8 @@ export class GestionFunciones implements OnInit {
       this.errorEdicion.set(error.message);
       return;
     }
+
+    await this.logsService.crearLog('Activar función', this.nombrePelicula(funcion.pelicula_id) + ' - ' + this.aFechaTexto(funcion.inicio) + ' ' + this.aHoraTexto(funcion.inicio) + ' - ' + this.nombreSala(funcion.sala_id));
 
     this.cargarFunciones();
   }

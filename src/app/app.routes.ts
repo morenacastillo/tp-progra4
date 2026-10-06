@@ -5,6 +5,7 @@ import { roleEmpleado } from './guards/role-empleado-guard';
 import { butacasElegidas } from './guards/butacas-elegidas';
 import { funcionElegida } from './guards/funcion-elegida';
 
+
 export const routes: Routes = [
     {   
       path: "", 
@@ -63,6 +64,10 @@ export const routes: Routes = [
         {
           path: 'cupones', 
           loadComponent: () => import('./componentes/admin/gestion-cupones/gestion-cupones').then(m => m.GestionCupones) 
+        },
+        {
+          path: 'logs', 
+          loadComponent: () => import('./componentes/admin/log-actividad/log-actividad').then(m => m.LogActividad) 
         },
       ]
     },

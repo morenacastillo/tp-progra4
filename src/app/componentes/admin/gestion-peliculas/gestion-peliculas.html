@@ -3,7 +3,7 @@
 <div class="auth-card">
     <h2>Alta de peliculas</h2>
 
-    <form [formGroup]="formPeliculas" (ngSubmit)="guardar()">
+    <form [formGroup]="formPeliculas">
 
       <div class="campo">
         <label for="nombre">Nombre</label>
@@ -84,22 +84,47 @@
         <textarea id="sinopsis" formControlName="sinopsis" placeholder="Ingresa la sinopsis de la pelicula"></textarea>
       </div>
 
-      @if (error()) {
-        <p class="error campo-ancho">{{ error() }}</p>
-      }
-
-      <button type="submit" class="campo-ancho" [disabled]="formPeliculas.invalid || cargando()">
-        @if (cargando()) {
-          Guardando...
-        } @else {
-          Guardar película
-        }
-      </button>
-
     </form>
 
+    <h3>Géneros de la película</h3>
+
+    <div class="armado" [formGroup]="formGenero">
+      <select formControlName="genero">
+        <option value="" disabled>Selecciona un género</option>
+        @for (genero of generos; track genero) {
+          <option [value]="genero">{{ genero }}</option>
+        }
+      </select>
+      <button type="button" (click)="agregarGenero()" [disabled]="formGenero.invalid">Agregar</button>
+    </div>
+
+    @if (generosElegidos().length > 0) {
+      <ul class="items-genero">
+        @for (genero of generosElegidos(); track genero) {
+          <li>
+            <span>{{ genero }}</span>
+            <button type="button" class="quitar" (click)="quitarGenero(genero)">Quitar</button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="sin-items">Todavía no agregaste géneros.</p>
+    }
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="button" class="btn-guardar" (click)="guardar()" [disabled]="formPeliculas.invalid || generosElegidos().length === 0 || cargando()">
+      @if (cargando()) {
+        Guardando...
+      } @else {
+        Guardar película
+      }
+    </button>
+
     @if (guardadoOk()) {
-      <p class="exito campo-ancho">Película guardada con éxito.</p>
+      <p class="exito">Película guardada con éxito.</p>
     }
 </div>
 

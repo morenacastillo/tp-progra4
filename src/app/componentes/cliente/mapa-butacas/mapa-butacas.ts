@@ -44,14 +44,19 @@ export class MapaButacas implements OnInit, OnDestroy {
     if (!funcion) {
       return;
     }
-
     const butacas = await this.salasService.obtenerButacas(funcion.sala_id);
     this.butacas.set(butacas);
 
     const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
     this.ocupadas.set(ocupadas);
 
-    this.seleccionadas.set(this.carrito.butacas().filter(b => !ocupadas.includes(b.id)));
+    let libres: getButacas[] = [];
+    for (let butaca of this.carrito.butacas()) {
+      if (!ocupadas.includes(butaca.id)) { // si la butaca no esta dentro de ocupadas, la guardo y luego seteo en seleccionadas
+        libres.push(butaca);
+      }
+    }
+    this.seleccionadas.set(libres);
   }
 
   butacasDeFila(fila: string) {

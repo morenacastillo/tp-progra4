@@ -2,9 +2,10 @@ import { RouterLink } from '@angular/router';
 import { Component, signal, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Peliculas } from '../../../servicios/peliculas';
-import { GetPelicula } from '../../../modelos/datos-pelicula';
+import { GetPelicula, GENEROS } from '../../../modelos/datos-pelicula';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FechaValidator } from '../../publico/validators/fecha-validator';
+import { Actividad } from '../../../servicios/actividad';
 
 
 @Component({
@@ -14,6 +15,13 @@ import { FechaValidator } from '../../publico/validators/fecha-validator';
   templateUrl: './gestion-peliculas.html',
 })
 export class GestionPeliculas implements OnInit{
+  error = signal('');
+  cargando = signal(false);
+  guardadoOk = signal(false);
+  peliculas = signal<GetPelicula[]>([]);
+  generos = GENEROS;
+  generosElegidos = signal<string[]>([])
+  
   formPeliculas = new FormGroup({
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     sinopsis: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(20)] }),
@@ -30,10 +38,9 @@ export class GestionPeliculas implements OnInit{
     diasPreventa: new FormControl('', { nonNullable: true, validators: [Validators.min(1), Validators.max(30)] }),
   });
 
-  error = signal('');
-  cargando = signal(false);
-  guardadoOk = signal(false);
-  peliculas = signal<GetPelicula[]>([]);
+  formGenero = new FormGroup({
+    genero: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  })
 
   formEdicion = new FormGroup({
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -51,7 +58,7 @@ export class GestionPeliculas implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private peliculasService: Peliculas) {}
+  constructor(private peliculasService: Peliculas, private logsService: Actividad) {}
 
   ngOnInit() {
     this.cargarPeliculas();
@@ -67,13 +74,35 @@ export class GestionPeliculas implements OnInit{
     return partes[2] + '-' + partes[1] + '-' + partes[0];
   }
 
+
   private aFechaTexto(fecha: string) {
     const partes = fecha.slice(0, 10).split('-');
     return partes[2] + '/' + partes[1] + '/' + partes[0];
   }
 
+  agregarGenero(){
+    if (this.formGenero.invalid) {
+      return;
+    } 
+    const genero = this.formGenero.getRawValue().genero
+
+    if(this.generosElegidos().includes(genero)){
+      this.error.set('Ese género ya está agregado')
+      return
+    }
+    this.error.set('')
+
+    this.generosElegidos.set([...this.generosElegidos(), genero])
+    this.formGenero.reset()
+  }
+
+  quitarGenero(genero: string){
+    this.generosElegidos.set(this.generosElegidos().filter(g => g !== genero));
+  }
+    
+
   async guardar() {
-    if (this.formPeliculas.invalid) {
+    if (this.formPeliculas.invalid || this.generosElegidos().length === 0) {
       return;
     }
 
@@ -97,6 +126,7 @@ export class GestionPeliculas implements OnInit{
       precio_preventa: valores.precioPreventa ? Number(valores.precioPreventa) : null,
       dias_preventa: valores.diasPreventa ? Number(valores.diasPreventa) : null,
       etapa: valores.etapa,
+      generos: this.generosElegidos(),
     });
 
     this.cargando.set(false);
@@ -107,7 +137,9 @@ export class GestionPeliculas implements OnInit{
     }
 
     this.guardadoOk.set(true);
+    await this.logsService.crearLog('Crear película', valores.nombre);
     this.formPeliculas.reset();
+    this.generosElegidos.set([]);
     this.cargarPeliculas()
     
     setTimeout(() => {
@@ -166,6 +198,12 @@ export class GestionPeliculas implements OnInit{
       return;
     }
 
+        if (pelicula.precio_base !== valores.precioBase || pelicula.precio_vip !== valores.precioVip) {
+          await this.logsService.crearLog('Modificar precio', pelicula.nombre + ': base ' + valores.precioBase + ', VIP ' + valores.precioVip);
+        } else {
+          await this.logsService.crearLog('Modificar película', pelicula.nombre);
+        }
+
         this.peliculaEditandoId.set(null);
         this.cargarPeliculas();
   }
@@ -179,6 +217,8 @@ export class GestionPeliculas implements OnInit{
       return;
     }
 
+    await this.logsService.crearLog('Desactivar película', pelicula.nombre);
+
     this.cargarPeliculas();
   }
 
@@ -189,6 +229,8 @@ export class GestionPeliculas implements OnInit{
       this.errorEdicion.set(error.message);
       return;
     }
+
+    await this.logsService.crearLog('Activar película', pelicula.nombre);
 
     this.cargarPeliculas();
   }

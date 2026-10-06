@@ -26,9 +26,9 @@ export class CompraCarrito{
 
   private hoyTexto() {
     const hoy = new Date();
-    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoy.getDate()).padStart(2, '0');
-    return hoy.getFullYear() + '-' + mes + '-' + dia;
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0'); //mes actual +1
+    const dia = String(hoy.getDate()).padStart(2, '0'); // dia actual
+    return hoy.getFullYear() + '/' + mes + '/' + dia;
   }
 
   nombreTipo(tipo: string) {
@@ -53,7 +53,7 @@ export class CompraCarrito{
   async aplicarCupon(codigo: string) {
     this.errorCupon.set('');
 
-    const texto = codigo.trim().toUpperCase();
+    const texto = codigo.trim().toUpperCase(); //sin espacios y mayusculas
     if (!texto) {
       this.errorCupon.set('Ingresá un código.');
       return;
@@ -105,7 +105,7 @@ export class CompraCarrito{
 
     let tomadas: string[] = [];
     for (let butaca of this.carrito.butacas()) {
-      if (ocupadas.includes(butaca.id)) {
+      if (ocupadas.includes(butaca.id)) { // se guardan las butacas que ya ocupo otra persona
         tomadas.push(butaca.fila + butaca.columna);
       }
     }

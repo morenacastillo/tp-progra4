@@ -1,0 +1,34 @@
+<button type="button" class="btn-volver arriba" routerLink="/home-admin">← Volver al panel</button>
+
+<div class="logActividad">
+    <h2>Log de actividad</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Detalle</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (log of logs(); track log.id) {
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.usuarios.nombre }} {{ log.usuarios.apellido }}</td>
+                    <td><span class="accion">{{ log.accion }}</span></td>
+                    <td>{{ log.detalle }}</td>
+                    <td class="fecha">{{ log.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                </tr>
+            }
+
+            @if (logs().length === 0) {
+                <tr>
+                    <td colspan="5" class="vacio">Todavía no hay actividad registrada.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

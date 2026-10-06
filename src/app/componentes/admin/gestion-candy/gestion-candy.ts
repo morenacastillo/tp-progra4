@@ -4,6 +4,7 @@ import { GetCategoria, GetProducto } from '../../../modelos/datos-candy';
 import { Candy } from '../../../servicios/candy';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
+import { Actividad } from '../../../servicios/actividad';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class GestionCandy implements OnInit{
   })
 
 
-  constructor(private candyServices: Candy) {}
+  constructor(private candyServices: Candy, private logsService: Actividad) {}
 
     ngOnInit() {
       this.cargarCandy();
@@ -95,6 +96,8 @@ export class GestionCandy implements OnInit{
       this.error.set(error.message);
       return;
     }
+
+    await this.logsService.crearLog('Crear producto', valores.nombre);
 
     this.guardadoOk.set(true);
     this.formProductos.reset();
@@ -151,6 +154,12 @@ export class GestionCandy implements OnInit{
       return;
     }
 
+    if (producto.precio !== Number(valores.precio)) {
+      await this.logsService.crearLog('Modificar precio', producto.nombre + ': de ' + producto.precio + ' a ' + Number(valores.precio));
+    } else {
+      await this.logsService.crearLog('Modificar producto', producto.nombre);
+    }
+
     this.productoEditandoId.set(null);
     this.cargarCandy();
   }
@@ -161,6 +170,8 @@ export class GestionCandy implements OnInit{
       this.errorEdicion.set(error.message);
       return;
     }
+    await this.logsService.crearLog('Desactivar producto', producto.nombre);
+
     this.cargarCandy();
   }
 
@@ -170,6 +181,8 @@ export class GestionCandy implements OnInit{
       this.errorEdicion.set(error.message);
       return;
     }
+    await this.logsService.crearLog('Activar producto', producto.nombre);
+
     this.cargarCandy();
   }
 

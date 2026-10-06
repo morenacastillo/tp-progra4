@@ -4,6 +4,7 @@ import { Salas } from '../../../servicios/salas';
 import { GetSala } from '../../../modelos/datos-salas';
 import { Funciones } from '../../../servicios/funciones'
 import { RouterLink } from '@angular/router';
+import { Actividad } from '../../../servicios/actividad';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -33,7 +34,7 @@ export class GestionSalas implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private salasService: Salas, private funcionesService: Funciones) {}
+  constructor(private salasService: Salas, private funcionesService: Funciones, private logsService: Actividad) {}
 
   ngOnInit() {
     this.cargarSalas();
@@ -66,6 +67,8 @@ export class GestionSalas implements OnInit{
         this.error.set(error.message);
         return;
       }
+
+      await this.logsService.crearLog('Crear sala', valores.nombre + ' (' + valores.formato + ')');
 
       this.guardadoOk.set(true);
       this.formSalas.reset();
@@ -110,6 +113,8 @@ export class GestionSalas implements OnInit{
       return;
     }
 
+    await this.logsService.crearLog('Modificar sala', sala.nombre);
+
     this.salaEditandoId.set(null);
     this.cargarSalas();
   }
@@ -137,6 +142,8 @@ export class GestionSalas implements OnInit{
       return;
     }
 
+    await this.logsService.crearLog('Desactivar sala', sala.nombre);
+
     this.cargarSalas();
   }
   
@@ -147,6 +154,8 @@ export class GestionSalas implements OnInit{
       this.errorEdicion.set(error.message);
       return;
     }
+
+    await this.logsService.crearLog('Activar sala', sala.nombre);
 
     this.cargarSalas();
   }
