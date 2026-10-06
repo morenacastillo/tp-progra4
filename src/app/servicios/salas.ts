@@ -1,7 +1,7 @@
 import { inject, Service } from '@angular/core';
 import { Auth } from './auth';
 import { AltaSala, GetSala } from '../modelos/datos-salas';
-import { altaButacas, getButacas } from '../modelos/datos-butacas';
+import { AltaButacas, GetButacas } from '../modelos/datos-butacas';
 
 @Service()
 export class Salas {
@@ -33,7 +33,7 @@ export class Salas {
         return data;
     }
     
-    async obtenerButacas(salaId: number): Promise<getButacas[]> {
+    async obtenerButacas(salaId: number): Promise<GetButacas[]> {
         const { data, error } = await this.auth.client()
             .from('butacas')
             .select('*')
@@ -53,7 +53,7 @@ export class Salas {
         const filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
         const columnas = [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30];
         const columnasAccesibles = [2,3, 11,12,13,14,15,16,17,18,19,20, 28,29]; 
-        const butacas: altaButacas[] = [];
+        const butacas: AltaButacas[] = [];
 
         for (const fila of filas) {
             for (const columna of columnas) {

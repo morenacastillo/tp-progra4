@@ -7,7 +7,7 @@ export interface GetCupon {
     edad_minima: number;
     activo: boolean;
     valido_desde: string;
-    valido_hasta: string;
+    valido_hasta: string | null;
 }
 
 export interface AltaCupon {
@@ -17,5 +17,5 @@ export interface AltaCupon {
     solo_primera_compra: boolean;
     edad_minima: number;
     valido_desde: string;
-    valido_hasta: string;
+    valido_hasta: string | null;
 }

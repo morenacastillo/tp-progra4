@@ -6,6 +6,7 @@ import { GetPelicula, GENEROS } from '../../../modelos/datos-pelicula';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FechaValidator } from '../../publico/validators/fecha-validator';
 import { Actividad } from '../../../servicios/actividad';
+import { Fechas } from '../../../servicios/fechas';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class GestionPeliculas implements OnInit{
     fechaEstreno: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
     precioBase: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     precioVip: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
-    precioPreventa: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(1)] }),
+    precioPreventa: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(0)] }),
     etapa: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl<boolean>(true, { nonNullable: true, validators: [Validators.required] }),
   })
@@ -58,7 +59,7 @@ export class GestionPeliculas implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private peliculasService: Peliculas, private logsService: Actividad) {}
+  constructor(private peliculasService: Peliculas, private logsService: Actividad, private fechasService: Fechas) {}
 
   ngOnInit() {
     this.cargarPeliculas();
@@ -69,17 +70,6 @@ export class GestionPeliculas implements OnInit{
     this.peliculas.set(datos);
   }
   
-  private aFechaBase(fecha: string) {
-    const partes = fecha.split('/');
-    return partes[2] + '-' + partes[1] + '-' + partes[0];
-  }
-
-
-  private aFechaTexto(fecha: string) {
-    const partes = fecha.slice(0, 10).split('-');
-    return partes[2] + '/' + partes[1] + '/' + partes[0];
-  }
-
   agregarGenero(){
     if (this.formGenero.invalid) {
       return;
@@ -97,7 +87,13 @@ export class GestionPeliculas implements OnInit{
   }
 
   quitarGenero(genero: string){
-    this.generosElegidos.set(this.generosElegidos().filter(g => g !== genero));
+    let restantes: string[] = [];
+    for (let elegido of this.generosElegidos()) {
+      if (elegido !== genero) {
+        restantes.push(elegido);
+      }
+    }
+    this.generosElegidos.set(restantes);
   }
     
 
@@ -120,7 +116,7 @@ export class GestionPeliculas implements OnInit{
       imagen_horizontal_url: valores.imagenHorizontal,
       duracion_minutos: Number(valores.duracion),
       restriccion_edad: Number(valores.restriccionEdad),
-      fecha_estreno: this.aFechaBase(valores.fechaEstreno),
+      fecha_estreno: this.fechasService.aFechaBase(valores.fechaEstreno),
       precio_base: Number(valores.precioBase),
       precio_vip: Number(valores.precioVip),
       precio_preventa: valores.precioPreventa ? Number(valores.precioPreventa) : null,
@@ -155,7 +151,7 @@ export class GestionPeliculas implements OnInit{
         nombre: pelicula.nombre,
         duracion: pelicula.duracion_minutos,
         restriccionEdad: pelicula.restriccion_edad,
-        fechaEstreno: this.aFechaTexto(pelicula.fecha_estreno),
+        fechaEstreno: this.fechasService.aFechaTexto(pelicula.fecha_estreno),
         precioBase: pelicula.precio_base,
         precioVip: pelicula.precio_vip,
         precioPreventa: pelicula.precio_preventa ?? 0,
@@ -181,12 +177,12 @@ export class GestionPeliculas implements OnInit{
 
     const { error } = await this.peliculasService.actualizarPelicula(pelicula.id, {
       nombre: valores.nombre,
-      duracion: valores.duracion,
+      duracion_minutos: valores.duracion,
       restriccion_edad: valores.restriccionEdad,
-      fecha_estreno: this.aFechaBase(valores.fechaEstreno),
+      fecha_estreno: this.fechasService.aFechaBase(valores.fechaEstreno),
       precio_base: valores.precioBase,
       precio_vip: valores.precioVip,
-      precio_preventa: valores.precioPreventa,
+      precio_preventa: valores.precioPreventa ? valores.precioPreventa : null,
       estado: valores.estado,
       etapa: valores.etapa,
     });

@@ -1,7 +1,7 @@
 import { Service, signal } from '@angular/core';
 import { GetFuncion } from '../modelos/datos-funciones';
 import { GetPelicula } from '../modelos/datos-pelicula';
-import { getButacas } from '../modelos/datos-butacas';
+import { GetButacas } from '../modelos/datos-butacas';
 import { ItemCandyCarrito } from '../modelos/datos-carrito';
 import { GetCombo } from '../modelos/datos-combos';
 import { GetCupon } from '../modelos/datos-cupones';
@@ -10,7 +10,7 @@ import { GetCupon } from '../modelos/datos-cupones';
 export class Carrito {
     pelicula = signal<GetPelicula | null>(null);
     funcion = signal<GetFuncion | null>(null);
-    butacas = signal<getButacas[]>([]);
+    butacas = signal<GetButacas[]>([]);
     candy = signal<ItemCandyCarrito[]>([]);
     combo = signal<GetCombo | null>(null);
     cupon = signal<GetCupon | null>(null);
@@ -22,7 +22,7 @@ export class Carrito {
         this.candy.set([]);
     }
 
-    elegirButacas(butacas: getButacas[]) {
+    elegirButacas(butacas: GetButacas[]) {
         this.butacas.set(butacas);
     }
 
@@ -42,8 +42,17 @@ export class Carrito {
         this.cupon.set(null)
     }
 
+    private buscarCandy(tipo: string, id: number) {
+        for (let item of this.candy()) {
+            if (item.tipo === tipo && item.id === id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     agregarCandy(item: ItemCandyCarrito) {
-        const existente = this.candy().find(i => i.tipo === item.tipo && i.id === item.id);
+        const existente = this.buscarCandy(item.tipo, item.id);
 
         if (existente) {
             existente.cantidad = existente.cantidad + 1;
@@ -55,7 +64,7 @@ export class Carrito {
     }
 
     restarCandy(tipo: string, id: number) {
-        const existente = this.candy().find(i => i.tipo === tipo && i.id === id);
+        const existente = this.buscarCandy(tipo, id);
         if (!existente) {
             return;
         }
@@ -66,11 +75,17 @@ export class Carrito {
             return;
         }
 
-        this.candy.set(this.candy().filter(i => !(i.tipo === tipo && i.id === id)));
+        let restantes: ItemCandyCarrito[] = [];
+        for (let item of this.candy()) {
+            if (item !== existente) {
+                restantes.push(item);
+            }
+        }
+        this.candy.set(restantes);
     }
 
 
-    precioButaca(butaca: getButacas) {
+    precioButaca(butaca: GetButacas) {
         const pelicula = this.pelicula();
         if (!pelicula) {
             return 0;

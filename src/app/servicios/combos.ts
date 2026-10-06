@@ -55,10 +55,10 @@ export class Combos {
         return { error };
     }
 
-    async cambiarEstadoCombo(id: number, estado: boolean) {
+    async cambiarEstadoCombo(id: number, activo: boolean) {
         const { error } = await this.auth.client()
             .from('combos')
-            .update({ estado })
+            .update({ estado: activo })
             .eq('id', id);
         return { error };
     }

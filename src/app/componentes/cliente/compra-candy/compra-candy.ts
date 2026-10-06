@@ -19,7 +19,7 @@ export class CompraCandy implements OnInit{
   productosCandy = signal<GetProducto[]>([]);
   combosCandy = signal<GetCombo[]>([]);
 
-  constructor(private candyServices: Candy, private combosServices: Combos, private carrito: Carrito, private router: Router) {}
+  constructor(private candyService: Candy, private combosService: Combos, private carrito: Carrito, private router: Router) {}
 
   ngOnInit() {
     this.cargarCandyProductos();
@@ -27,13 +27,25 @@ export class CompraCandy implements OnInit{
   }
 
   private async cargarCandyProductos() {
-      const datos = await this.candyServices.obtenerProductos();
-      this.productosCandy.set(datos.filter(p => p.estado));
+      const datos = await this.candyService.obtenerProductos();
+      let activos: GetProducto[] = [];
+      for (let producto of datos) {
+        if (producto.estado) {
+          activos.push(producto);
+        }
+      }
+      this.productosCandy.set(activos);
   }
 
   private async cargarCombos() {
-    const datos = await this.combosServices.obtenerCombos();
-    this.combosCandy.set(datos.filter(c => c.estado && c.cantidad_entradas === 0));
+    const datos = await this.combosService.obtenerCombos();
+    let sinEntradas: GetCombo[] = [];
+    for (let combo of datos) {
+      if (combo.estado && combo.cantidad_entradas === 0) {
+        sinEntradas.push(combo);
+      }
+    }
+    this.combosCandy.set(sinEntradas);
   }
 
   agregarProducto(producto: GetProducto) {

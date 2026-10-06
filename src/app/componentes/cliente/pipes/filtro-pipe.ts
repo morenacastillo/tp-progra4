@@ -9,7 +9,12 @@ export class FiltroPipe implements PipeTransform {
     if (!busqueda) {
       return peliculas
     }
-    return peliculas.filter(pelicula => pelicula.nombre.toLowerCase().includes(busqueda.toLowerCase())
-    );
+    let filtradas: GetPelicula[] = [];
+    for (let pelicula of peliculas) {
+      if (pelicula.nombre.toLowerCase().includes(busqueda.toLowerCase())) {
+        filtradas.push(pelicula);
+      }
+    }
+    return filtradas;
   }
 }

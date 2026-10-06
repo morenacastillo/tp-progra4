@@ -45,8 +45,15 @@ export class DetallePelicula implements OnInit, OnDestroy {
 
   private async cargarFuncionPorId(id: string) {
     const datos = await this.funcionesService.obtenerFuncionesPorPelicula(id);
-    this.funcionPorPelicula.set(datos);
     
+    const ahora = new Date()
+    let futuras: GetFuncion[] = []
+    for (let funcion of datos ){
+      if (new Date(funcion.inicio) > ahora) {
+        futuras.push(funcion)
+      }
+    }
+    this.funcionPorPelicula.set(futuras);
   }
 
   diaDe(funcion: GetFuncion) {

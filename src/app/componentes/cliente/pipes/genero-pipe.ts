@@ -9,7 +9,12 @@ export class GeneroPipe implements PipeTransform {
     if (!genero) {
       return peliculas
     }
-    return peliculas.filter(pelicula => pelicula.generos.includes(genero)
-    );
+    let filtradas: GetPelicula[] = [];
+    for (let pelicula of peliculas) {
+      if (pelicula.generos.includes(genero)) {
+        filtradas.push(pelicula);
+      }
+    }
+    return filtradas;
   }
 }

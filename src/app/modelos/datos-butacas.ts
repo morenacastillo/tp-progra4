@@ -1,4 +1,4 @@
-export interface altaButacas {
+export interface AltaButacas {
     sala_id: number;
     fila: string;
     columna: number;
@@ -6,7 +6,7 @@ export interface altaButacas {
     activa: boolean;
 }
 
-export interface getButacas {
+export interface GetButacas {
     id: number;
     sala_id: number;
     fila: string;

@@ -75,13 +75,57 @@ export class GestionFunciones implements OnInit {
   }
 
 
+  private buscarPelicula(peliculaId: number) {
+    for (let pelicula of this.peliculas()) {
+      if (pelicula.id === peliculaId) {
+        return pelicula;
+      }
+    }
+    return null;
+  }
+
+
   nombrePelicula(peliculaId: number) {
-    return this.peliculas().find(p => p.id === peliculaId)?.nombre ?? '—';
+    const pelicula = this.buscarPelicula(peliculaId);
+    if (pelicula) {
+      return pelicula.nombre;
+    }
+    return '-';
   }
 
 
   nombreSala(salaId: number) {
-    return this.salas().find(s => s.id === salaId)?.nombre ?? '—';
+    for (let sala of this.salas()) {
+      if (sala.id === salaId) {
+        return sala.nombre;
+      }
+    }
+    return '-';
+  }
+
+
+  private hayChoque(salaId: number, funciones: GetFuncion[], inicio: Date, finBloqueo: Date) {
+    for (let funcion of funciones) {
+      if (funcion.sala_id === salaId) {
+        const otroInicio = new Date(funcion.inicio);
+        const otroFinBloqueo = new Date(funcion.fin_bloqueo);
+        if (inicio < otroFinBloqueo // la nueva empieza antes de que la otra libere la sala.
+          && otroInicio < finBloqueo) { // la otra empieza antes de que la nueva libere la sala.
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  private buscarSalaLibre(formato: string, funciones: GetFuncion[], inicio: Date, finBloqueo: Date) {
+    for (let sala of this.salas()) {
+      if (sala.estado && sala.formato === formato && !this.hayChoque(sala.id, funciones, inicio, finBloqueo)) {
+        return sala;
+      }
+    }
+    return null;
   }
 
 
@@ -127,7 +171,7 @@ export class GestionFunciones implements OnInit {
     this.guardadoOk.set(false);
 
     const valores = this.formFunciones.getRawValue();
-    const pelicula = this.peliculas().find(p => p.id === Number(valores.peliculaId));
+    const pelicula = this.buscarPelicula(Number(valores.peliculaId));
 
     if (!pelicula) {
       this.error.set('Película no encontrada.');
@@ -153,19 +197,7 @@ export class GestionFunciones implements OnInit {
 
     const funcionesExistentes = await this.funcionesService.obtenerFunciones();
 
-    const salaLibre = this.salas().find(sala => {
-      if (!sala.estado || sala.formato !== valores.formato) {
-        return false;
-      }
-      const funcionesDeEstaSala = funcionesExistentes.filter(f => f.sala_id === sala.id);
-      const choque = funcionesDeEstaSala.some(f => {
-        const otroInicio = new Date(f.inicio);
-        const otroFinBloqueo = new Date(f.fin_bloqueo);
-        return inicio < otroFinBloqueo // la nueva empieza antes de que la otra libere la sala.
-        && otroInicio < finBloqueo; // la otra empieza antes de que la nueva libere la sala.
-      });
-      return !choque;
-    });
+    const salaLibre = this.buscarSalaLibre(valores.formato, funcionesExistentes, inicio, finBloqueo);
 
     if (!salaLibre) {
       this.error.set('No hay salas ' + valores.formato + ' disponibles en ese horario.');
@@ -229,7 +261,7 @@ export class GestionFunciones implements OnInit {
     this.guardandoEdicion.set(true);
     this.errorEdicion.set('');
 
-    const pelicula = this.peliculas().find(p => p.id === funcion.pelicula_id);
+    const pelicula = this.buscarPelicula(funcion.pelicula_id);
 
     if (!pelicula) {
       this.errorEdicion.set('Película no encontrada.');

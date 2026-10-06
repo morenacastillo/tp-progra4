@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../servicios/auth';
 import { PasswordValidator } from '../validators/password-validator';
 import { FechaValidator } from '../validators/fecha-validator';
+import { Fechas } from '../../../servicios/fechas';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class Registro {
   cargando = signal(false);
   guardadoOk = signal(false);
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router, private fechasService: Fechas) {}
 
   async registrar() {
     if (this.formRegistro.invalid) {
@@ -48,12 +49,6 @@ export class Registro {
     const anio = Number(partes[2]);
     const fecha = new Date(anio, mes - 1, dia);
 
-    if (fecha.getDate() !== dia) {
-      this.cargando.set(false);
-      this.error.set('La fecha de nacimiento no existe.');
-      return;
-    }
-
     if (fecha > new Date()) {
       this.cargando.set(false);
       this.error.set('La fecha de nacimiento no puede ser futura.');
@@ -65,7 +60,7 @@ export class Registro {
       password: valores.password,
       nombre: valores.nombre,
       apellido: valores.apellido,
-      fechaNacimiento: partes[2] + '-' + partes[1] + '-' + partes[0],
+      fechaNacimiento: this.fechasService.aFechaBase(valores.fechaNacimiento),
       tipoSangre: valores.tipoSangre,
       colorOjos: valores.colorOjos,
       diasVacacionesAnio: valores.diasVacacionesAnio,

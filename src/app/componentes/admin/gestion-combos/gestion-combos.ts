@@ -48,7 +48,7 @@ export class GestionCombos implements OnInit {
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private combosServicios: Combos, private candyServicios: Candy, private logsService: Actividad) {}
+  constructor(private combosService: Combos, private candyService: Candy, private logsService: Actividad) {}
 
   ngOnInit() {
     this.cargarCombos();
@@ -56,13 +56,37 @@ export class GestionCombos implements OnInit {
   }
 
   private async cargarCombos() {
-    const datos = await this.combosServicios.obtenerCombos();
+    const datos = await this.combosService.obtenerCombos();
     this.combos.set(datos);
   }
 
   private async cargarProductos() {
-    const datos = await this.candyServicios.obtenerProductos();
-    this.productos.set(datos.filter(p => p.estado));   
+    const datos = await this.candyService.obtenerProductos();
+    let activos: GetProducto[] = [];
+    for (let producto of datos) {
+      if (producto.estado) {
+        activos.push(producto);
+      }
+    }
+    this.productos.set(activos);
+  }
+
+  private buscarProducto(productoId: number) {
+    for (let producto of this.productos()) {
+      if (producto.id === productoId) {
+        return producto;
+      }
+    }
+    return null;
+  }
+
+  private estaEnElCombo(productoId: number) {
+    for (let item of this.itemsCombo()) {
+      if (item.producto_id === productoId) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -72,13 +96,13 @@ export class GestionCombos implements OnInit {
     }
 
     const valores = this.formItem.getRawValue();
-    const producto = this.productos().find(p => p.id === Number(valores.producto_id)); //recorre la tabla hasta que el id del prod ingresado matchee con una fila y la guarda en producto (solo esa fila)
+    const producto = this.buscarProducto(Number(valores.producto_id)); //recorre la tabla hasta que el id del prod ingresado matchee con una fila y la guarda en producto (solo esa fila)
 
     if (!producto) {
       return;
     }
 
-    if (this.itemsCombo().find(i => i.producto_id === producto.id)) { // recorre la lista de itemsCombo y si ya existe guardado el mismo id del producto que yo estoy seleccionando, te saca
+    if (this.estaEnElCombo(producto.id)) { // recorre la lista de itemsCombo y si ya existe guardado el mismo id del producto que yo estoy seleccionando, te saca
       this.error.set('Ese producto ya está en el combo. Quitalo y volvelo a agregar con otra cantidad.');
       return;
     }
@@ -93,7 +117,13 @@ export class GestionCombos implements OnInit {
 
 
   quitarItem(productoId: number) {
-    this.itemsCombo.set(this.itemsCombo().filter(i => i.producto_id !== productoId)); // arma lista nueva con todos los productos menos el del id seleccionado
+    let restantes: ItemCombo[] = []; // arma lista nueva con todos los productos menos el del id seleccionado
+    for (let item of this.itemsCombo()) {
+      if (item.producto_id !== productoId) {
+        restantes.push(item);
+      }
+    }
+    this.itemsCombo.set(restantes);
   }
 
 
@@ -108,7 +138,7 @@ export class GestionCombos implements OnInit {
 
     const valores = this.formCombos.getRawValue();
 
-    const { data, error } = await this.combosServicios.crearCombo({
+    const { data, error } = await this.combosService.crearCombo({
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
@@ -123,14 +153,14 @@ export class GestionCombos implements OnInit {
     }
 
     for (const item of this.itemsCombo()) {
-      const { error: errorItem } = await this.combosServicios.agregarProductoACombo({
+      const { error: errorItem } = await this.combosService.agregarProductoACombo({
         combo_id: data.id,
         producto_id: item.producto_id,
         cantidad: item.cantidad
       });
 
       if (errorItem) {
-        await this.combosServicios.cambiarEstadoCombo(data.id, false);
+        await this.combosService.cambiarEstadoCombo(data.id, false);
         this.cargando.set(false);
         this.error.set('El combo se creó pero falló al agregar ' + item.nombre + ', así que quedó desactivado. ' + errorItem.message);
         this.cargarCombos();
@@ -179,7 +209,7 @@ export class GestionCombos implements OnInit {
 
     const valores = this.formEdicion.getRawValue();
     // a los combos ya existentes no se le cambian los productos
-    const { error } = await this.combosServicios.actualizarCombo(combo.id, {
+    const { error } = await this.combosService.actualizarCombo(combo.id, {
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       precio: Number(valores.precio),
@@ -205,7 +235,7 @@ export class GestionCombos implements OnInit {
   }
 
   async desactivar(combo: GetCombo) {
-    const { error } = await this.combosServicios.cambiarEstadoCombo(combo.id, false);
+    const { error } = await this.combosService.cambiarEstadoCombo(combo.id, false);
     if (error) {
       this.errorEdicion.set(error.message);
       return;
@@ -216,7 +246,7 @@ export class GestionCombos implements OnInit {
   }
 
   async activar(combo: GetCombo) {
-    const { error } = await this.combosServicios.cambiarEstadoCombo(combo.id, true);
+    const { error } = await this.combosService.cambiarEstadoCombo(combo.id, true);
     if (error) {
       this.errorEdicion.set(error.message);
       return;

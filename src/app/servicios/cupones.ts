@@ -18,12 +18,12 @@ export class Cupones {
         return data ?? [];
     }
 
-    async obtenerCuponPorCodigo(codigo: string) {
+    async obtenerCuponPorCodigo(codigo: string): Promise<GetCupon | null> {
         const { data, error } = await this.auth.client()
             .from('cupones')
             .select('*')
             .eq('codigo', codigo)
-            .single();;
+            .single();
 
         if (error) {
             console.error('Error trayendo el cupon:', error);
@@ -53,7 +53,7 @@ export class Cupones {
     async cambiarEstadoCupon(id: number, activo: boolean) {
         const { error } = await this.auth.client()
             .from('cupones')
-            .update({ activo })
+            .update({ activo: activo })
             .eq('id', id);
         return { error };
     }

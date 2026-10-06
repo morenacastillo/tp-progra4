@@ -43,7 +43,7 @@ export class Peliculas {
         return { error }; // si la insercion fue exitosa -> error: null
     }
 
-    async actualizarPelicula(id: number, cambios: { nombre: string, duracion: number, restriccion_edad: number, fecha_estreno: string, precio_base: number, precio_vip: number, precio_preventa: number | null, estado: boolean, etapa: string,}) {
+    async actualizarPelicula(id: number, cambios: { nombre: string, duracion_minutos: number, restriccion_edad: number, fecha_estreno: string, precio_base: number, precio_vip: number, precio_preventa: number | null, estado: boolean, etapa: string,}) {
         const { error } = await this.auth.client()
             .from('peliculas')
             .update(cambios)
@@ -59,7 +59,7 @@ export class Peliculas {
         return { error };
     }
 
-    async obtenerTop3() {
+    async obtenerTop3(): Promise<GetPelicula[]> {
         const { data, error } = await this.auth.client()
             .from('peliculas')
             .select('*, funciones(entradas(estado))') // peliculas -> dentro de cada funcion -> el estado
@@ -91,7 +91,7 @@ export class Peliculas {
         return contador;
     }
 
-    async obtenerProximosEstrenos() {
+    async obtenerProximosEstrenos(): Promise<GetPelicula[]> {
         const { data, error } = await this.auth.client()
             .from('peliculas')
                 .select('*')

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { GetActividad } from '../../../modelos/datos-actividad';
 import { Actividad } from '../../../servicios/actividad';
 import { DatePipe } from '@angular/common';
@@ -10,17 +10,17 @@ import { RouterLink } from '@angular/router';
   styleUrl: './log-actividad.css',
   templateUrl: './log-actividad.html',
 })
-export class LogActividad {
+export class LogActividad implements OnInit {
   logs = signal<GetActividad[]>([]);
 
-  constructor(private serviceActividad: Actividad) {}
+  constructor(private logsService: Actividad) {}
   
   ngOnInit() {
     this.cargarLogs();
   }
     
   private async cargarLogs() {
-    const datos = await this.serviceActividad.obtenerLogs();
+    const datos = await this.logsService.obtenerLogs();
     this.logs.set(datos);
   }
 }

@@ -44,7 +44,7 @@ export class GestionCandy implements OnInit{
   })
 
 
-  constructor(private candyServices: Candy, private logsService: Actividad) {}
+  constructor(private candyService: Candy, private logsService: Actividad) {}
 
     ngOnInit() {
       this.cargarCandy();
@@ -52,12 +52,12 @@ export class GestionCandy implements OnInit{
     }
 
     private async cargarCandy() {
-      const datos = await this.candyServices.obtenerProductos();
+      const datos = await this.candyService.obtenerProductos();
       this.productos.set(datos);
     }
 
     private async cargarCategorias() {
-      const datos = await this.candyServices.obtenerCategorias();
+      const datos = await this.candyService.obtenerCategorias();
       this.categorias.set(datos);
     }
 
@@ -82,7 +82,7 @@ export class GestionCandy implements OnInit{
 
     const valores = this.formProductos.getRawValue();
 
-    const { error } = await this.candyServices.crearProducto({
+    const { error } = await this.candyService.crearProducto({
       categoria_id: Number(valores.categoria_id),
       nombre: valores.nombre,
       descripcion: valores.descripcion,
@@ -138,7 +138,7 @@ export class GestionCandy implements OnInit{
 
     const valores = this.formEdicion.getRawValue();
 
-    const { error } = await this.candyServices.actualizarProducto(producto.id, {
+    const { error } = await this.candyService.actualizarProducto(producto.id, {
       categoria_id: Number(valores.categoria_id),
       nombre: valores.nombre,
       descripcion: valores.descripcion,
@@ -165,7 +165,7 @@ export class GestionCandy implements OnInit{
   }
 
   async desactivar(producto: GetProducto) {
-    const { error } = await this.candyServices.cambiarEstadoProducto(producto.id, false);
+    const { error } = await this.candyService.cambiarEstadoProducto(producto.id, false);
     if (error) {
       this.errorEdicion.set(error.message);
       return;
@@ -176,7 +176,7 @@ export class GestionCandy implements OnInit{
   }
 
   async activar(producto: GetProducto) {
-    const { error } = await this.candyServices.cambiarEstadoProducto(producto.id, true);
+    const { error } = await this.candyService.cambiarEstadoProducto(producto.id, true);
     if (error) {
       this.errorEdicion.set(error.message);
       return;

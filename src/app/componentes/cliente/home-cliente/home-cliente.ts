@@ -42,12 +42,24 @@ export class HomeCliente implements OnInit{
 
   private async cargarCombosDestacados() {
     const datos = await this.combosService.obtenerCombos();
-    this.combosDestacados.set(datos.filter(c => c.estado && c.cantidad_entradas > 0));
+    let conEntradas: GetCombo[] = [];
+    for (let combo of datos) {
+      if (combo.estado && combo.cantidad_entradas > 0) {
+        conEntradas.push(combo);
+      }
+    }
+    this.combosDestacados.set(conEntradas);
   }
 
   private async cargarCartelera() {
     const datos = await this.peliculasService.obtenerPeliculas();
-    this.enCartelera.set(datos.filter(p => p.estado && p.etapa === 'Cartelera'));
+    let cartelera: GetPelicula[] = [];
+    for (let pelicula of datos) {
+      if (pelicula.estado && pelicula.etapa === 'Cartelera') {
+        cartelera.push(pelicula);
+      }
+    }
+    this.enCartelera.set(cartelera);
   }
 
   comprarCombo(combo: GetCombo) {

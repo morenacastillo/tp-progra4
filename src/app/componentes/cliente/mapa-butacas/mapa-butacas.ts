@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Salas } from '../../../servicios/salas';
 import { Funciones } from '../../../servicios/funciones';
 import { Carrito } from '../../../servicios/carrito';
-import { getButacas } from '../../../modelos/datos-butacas';
+import { GetButacas } from '../../../modelos/datos-butacas';
 import { ResaltarButaca } from '../directivas/resaltar-butaca';
 
 
@@ -16,10 +16,10 @@ import { ResaltarButaca } from '../directivas/resaltar-butaca';
   templateUrl: './mapa-butacas.html',
 })
 export class MapaButacas implements OnInit, OnDestroy {
-  butacas = signal<getButacas[]>([]);
+  butacas = signal<GetButacas[]>([]);
   filas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'];
   ocupadas = signal<number[]>([]);
-  seleccionadas = signal<getButacas[]>([]);
+  seleccionadas = signal<GetButacas[]>([]);
   esVip = signal('');
 
   private suscripcion?: Subscription;
@@ -50,7 +50,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
     this.ocupadas.set(ocupadas);
 
-    let libres: getButacas[] = [];
+    let libres: GetButacas[] = [];
     for (let butaca of this.carrito.butacas()) {
       if (!ocupadas.includes(butaca.id)) { // si la butaca no esta dentro de ocupadas, la guardo y luego seteo en seleccionadas
         libres.push(butaca);
@@ -60,14 +60,20 @@ export class MapaButacas implements OnInit, OnDestroy {
   }
 
   butacasDeFila(fila: string) {
-    return this.butacas().filter(b => b.fila === fila);
+    let deLaFila: GetButacas[] = [];
+    for (let butaca of this.butacas()) {
+      if (butaca.fila === fila) {
+        deLaFila.push(butaca);
+      }
+    }
+    return deLaFila;
   }
 
-  estaOcupada(butaca: getButacas) {
+  estaOcupada(butaca: GetButacas) {
     return this.ocupadas().includes(butaca.id);
   }
 
-  estaSeleccionada(butaca: getButacas) {
+  estaSeleccionada(butaca: GetButacas) {
     for (let elegida of this.seleccionadas()) {
       if (elegida.id === butaca.id) {
         return true;
@@ -88,13 +94,19 @@ export class MapaButacas implements OnInit, OnDestroy {
     return 0;
   }
 
-  tocarButaca(butaca: getButacas) {
+  tocarButaca(butaca: GetButacas) {
     if (!butaca.activa || this.estaOcupada(butaca)) {
       return;
     }
 
     if (this.estaSeleccionada(butaca)) {
-      this.seleccionadas.set(this.seleccionadas().filter(b => b.id !== butaca.id));
+      let restantes: GetButacas[] = [];
+      for (let elegida of this.seleccionadas()) {
+        if (elegida.id !== butaca.id) {
+          restantes.push(elegida);
+        }
+      }
+      this.seleccionadas.set(restantes);
       return;
     }
 

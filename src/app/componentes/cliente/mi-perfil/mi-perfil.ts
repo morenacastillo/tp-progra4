@@ -21,12 +21,12 @@ export class MiPerfil implements OnInit{
     this.cargarComprasUsuarioActual()
   }
 
-  async cargarDatosUsuarioActual() {
+  private async cargarDatosUsuarioActual() {
     const datos = await this.perfilService.obtenerDatos()
     this.datosPerfil.set(datos)
   }
 
-  async cargarComprasUsuarioActual() {
+  private async cargarComprasUsuarioActual() {
     const datos = await this.perfilService.obtenerCompras()
     this.datosCompras.set(datos)
   }

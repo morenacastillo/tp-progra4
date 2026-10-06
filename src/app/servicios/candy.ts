@@ -45,10 +45,10 @@ export class Candy {
         return { error };
     }
 
-    async cambiarEstadoProducto(id: number, estado: boolean) {
+    async cambiarEstadoProducto(id: number, activo: boolean) {
         const { error } = await this.auth.client()
             .from('productos_candy')
-            .update({ estado })
+            .update({ estado: activo })
             .eq('id', id);
         return { error };
     }

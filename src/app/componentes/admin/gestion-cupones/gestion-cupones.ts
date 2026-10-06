@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FechaValidator } from '../../publico/validators/fecha-validator';
 import { Actividad } from '../../../servicios/actividad';
+import { Fechas } from '../../../servicios/fechas';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class GestionCupones implements OnInit{
     solo_primera_compra: new FormControl(true, { nonNullable: true }),
     edad_minima: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(0), Validators.max(120)] }),
     valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
-    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    valido_hasta: new FormControl('', { nonNullable: true, validators: [FechaValidator] }),
   })
   
   formEdicion = new FormGroup({
@@ -38,7 +39,7 @@ export class GestionCupones implements OnInit{
     solo_primera_compra: new FormControl(true, { nonNullable: true }),
     edad_minima: new FormControl<number>(0, { nonNullable: true, validators: [Validators.min(0), Validators.max(120)] }),
     valido_desde: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
-    valido_hasta: new FormControl('', { nonNullable: true, validators: [Validators.required, FechaValidator] }),
+    valido_hasta: new FormControl('', { nonNullable: true, validators: [FechaValidator] }),
     activo: new FormControl(true, { nonNullable: true }),
   })
 
@@ -46,25 +47,15 @@ export class GestionCupones implements OnInit{
   errorEdicion = signal('');
   guardandoEdicion = signal(false);
 
-  constructor(private cuponesService: Cupones, private logsService: Actividad) {}
+  constructor(private cuponesService: Cupones, private logsService: Actividad, private fechasService: Fechas) {}
   
   ngOnInit() {
     this.cargarCupones();
     }
 
-  async cargarCupones() {
+  private async cargarCupones() {
     const datos = await this.cuponesService.obtenerCupones();
     this.cupones.set(datos);
-  }
-
-  private aFechaBase(fecha: string) {
-    const partes = fecha.split('/');
-    return partes[2] + '-' + partes[1] + '-' + partes[0];
-  }
-
-  private aFechaTexto(fecha: string) {
-    const partes = fecha.slice(0, 10).split('-');
-    return partes[2] + '/' + partes[1] + '/' + partes[0];
   }
 
   async guardar() {
@@ -85,8 +76,8 @@ export class GestionCupones implements OnInit{
       porcentaje_descuento: valores.porcentaje_descuento,
       solo_primera_compra: valores.solo_primera_compra,
       edad_minima: Number(valores.edad_minima),
-      valido_desde: this.aFechaBase(valores.valido_desde),
-      valido_hasta: this.aFechaBase(valores.valido_hasta),
+      valido_desde: this.fechasService.aFechaBase(valores.valido_desde),
+      valido_hasta: valores.valido_hasta ? this.fechasService.aFechaBase(valores.valido_hasta) : null,
     });
 
     this.cargando.set(false);
@@ -117,8 +108,8 @@ export class GestionCupones implements OnInit{
           porcentaje_descuento: cupon.porcentaje_descuento,
           solo_primera_compra: cupon.solo_primera_compra,
           edad_minima: Number(cupon.edad_minima),
-          valido_desde: this.aFechaTexto(cupon.valido_desde),
-          valido_hasta: cupon.valido_hasta ? this.aFechaTexto(cupon.valido_hasta) : '',
+          valido_desde: this.fechasService.aFechaTexto(cupon.valido_desde),
+          valido_hasta: cupon.valido_hasta ? this.fechasService.aFechaTexto(cupon.valido_hasta) : '',
           activo: cupon.activo
         });
       }
@@ -144,8 +135,8 @@ export class GestionCupones implements OnInit{
         porcentaje_descuento: valores.porcentaje_descuento,
         solo_primera_compra: valores.solo_primera_compra,
         edad_minima: Number(valores.edad_minima),
-        valido_desde: this.aFechaBase(valores.valido_desde),
-        valido_hasta: this.aFechaBase(valores.valido_hasta),
+        valido_desde: this.fechasService.aFechaBase(valores.valido_desde),
+        valido_hasta: this.fechasService.aFechaBase(valores.valido_hasta),
         activo: valores.activo
       });
   

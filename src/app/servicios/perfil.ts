@@ -6,7 +6,7 @@ import { Auth } from './auth';
 export class Perfil {
     private auth = inject(Auth)
 
-    async obtenerDatos() {
+    async obtenerDatos(): Promise<DatosUsuario | null> {
         const usuario = await this.auth.getCurrentUser()
         if (!usuario) {
             return null;
@@ -20,7 +20,7 @@ export class Perfil {
             console.error('Error trayendo los datos:', error);
             return null;
         }
-        return data as DatosUsuario;
+        return data;
         }
 
 
