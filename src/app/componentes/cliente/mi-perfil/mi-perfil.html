@@ -14,11 +14,8 @@
             <button type="button" [class.activo]="seccion() === 'datos'" (click)="seccion.set('datos')">
                 Datos personales <span class="flecha">›</span>
             </button>
-            <button type="button" [class.activo]="seccion() === 'compras'" (click)="seccion.set('compras')">
-                Compras <span class="flecha">›</span>
-            </button>
-            <button type="button" [class.activo]="seccion() === 'puntos'" (click)="seccion.set('puntos')">
-                Puntos <span class="flecha">›</span>
+            <button type="button" [class.activo]="seccion() === 'peliculas'" (click)="seccion.set('peliculas')">
+                Peliculas <span class="flecha">›</span>
             </button>
             <button type="button" [class.activo]="seccion() === 'resenas'" (click)="seccion.set('resenas')">
                 Reseñas <span class="flecha">›</span>
@@ -48,8 +45,8 @@
             }
         }
 
-        @if (seccion() === 'compras') {
-            <h1>Mis compras</h1>
+        @if (seccion() === 'peliculas') {
+            <h1>Mis peliculas</h1>
             @for (compra of datosCompras(); track compra.id) {
                 <article class="compra">
                     <div class="compra-arriba">
@@ -127,6 +124,35 @@
                             }
                             <div class="fila-detalle total"><span>Total pagado</span><span>{{ compra.total | currency }}</span></div>
                         </div>
+
+                        @if (compra.entradas[0]; as primera) {
+                            @if (yaOpino(primera.funciones.peliculas.id)) {
+                                <div class="bloque">
+                                    @for (resena of resenas(); track resena.id) {
+                                        @if (resena.pelicula_id === primera.funciones.peliculas.id) {
+                                            <article class="resena">
+                                                <div class="resena-arriba">
+                                                    <strong>Tu reseña</strong>
+                                                    <span>{{ resena.fecha | date:'dd/MM/yyyy' }}</span>
+                                                </div>
+                                                <div class="estrellas">
+                                                    @for (numero of [1, 2, 3, 4, 5]; track numero) {
+                                                        <span [class.llena]="numero <= resena.estrellas">★</span>
+                                                    }
+                                                </div>
+                                                <p>{{ resena.comentario }}</p>
+                                            </article>
+                                        }
+                                    }
+                                </div>
+                            }
+                            @if (!yaOpino(primera.funciones.peliculas.id) && compraRetirada(compra)) {
+                                <div class="bloque">
+                                    <button type="button" class="btn-guardar" (click)="seccion.set('resenas')">Dejar reseña</button>
+                                </div>
+                            }
+                        
+                        }
                     </div>
                 </article>
             } @empty {
@@ -134,10 +160,6 @@
             }
         }
 
-        @if (seccion() === 'puntos') {
-            <h1>Mis Puntos</h1>
-            
-        }
 
         @if (seccion() === 'resenas') {
             <h1>Mis Reseñas</h1>

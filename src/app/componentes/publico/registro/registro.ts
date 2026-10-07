@@ -78,6 +78,6 @@ export class Registro {
 
     setTimeout(() => {
       this.guardadoOk.set(false);
-    }, 2500);
+    }, 8000);
   }
 }

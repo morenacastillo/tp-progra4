@@ -28,7 +28,7 @@ export class Cartelera implements OnInit {
       const datos = await this.peliculasService.obtenerPeliculas();
       let activas: GetPelicula[] = [];
       for (let pelicula of datos) {
-        if (pelicula.estado) {
+        if (pelicula.estado && pelicula.etapa === 'Cartelera') {
           activas.push(pelicula);
         }
       }

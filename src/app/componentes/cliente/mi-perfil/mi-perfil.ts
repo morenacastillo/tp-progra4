@@ -17,7 +17,7 @@ export class MiPerfil implements OnInit{
   datosPerfil = signal<DatosUsuario | null>(null);
   datosCompras = signal<CompraPerfil[]>([]);
   resenas = signal<GetResena[]>([]);
-  seccion = signal<'datos' | 'compras' | 'puntos' | 'resenas'>('datos');
+  seccion = signal<'datos' | 'peliculas' | 'resenas'>('datos');
 
   error = signal('');
   cargando = signal(false);
@@ -95,7 +95,7 @@ export class MiPerfil implements OnInit{
     for (let compra of this.datosCompras()) {
       const entrada = compra.entradas[0]; // toma la primer entrada de la pelicula
 
-      if (entrada && new Date(entrada.funciones.fin) < new Date()) { // preg si la compra tiene entradas y la peli ya termino
+      if (entrada && this.compraRetirada(compra)) { // preg si la compra tiene entradas y la peli ya termino
         const pelicula = entrada.funciones.peliculas;
 
         if (!this.yaOpino(pelicula.id) && !idsAgregados.includes(pelicula.id)) { // si aun no opinaste de esa peli y no esta en la lista

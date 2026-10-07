@@ -391,6 +391,7 @@
   margin: 0;
   font-size: 15px;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 800px) {

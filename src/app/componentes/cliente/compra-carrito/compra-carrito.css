@@ -230,3 +230,9 @@
 .btn-volver {
   margin-top: 24px;
 }
+
+.ayuda-cupon {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}

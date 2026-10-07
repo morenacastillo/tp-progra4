@@ -94,6 +94,7 @@
                         <input type="text" placeholder="Ingresá tu código" #codigoCupon />
                         <button type="button" (click)="aplicarCupon(codigoCupon.value)">Aplicar</button>
                     </div>
+                    <p class="ayuda-cupon">¿Es tu primera compra? Probá con BIENVENIDA20.</p>
                 }
                 @if (errorCupon()) {
                     <p class="error">{{ errorCupon() }}</p>
