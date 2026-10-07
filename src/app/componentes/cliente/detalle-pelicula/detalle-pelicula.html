@@ -49,9 +49,35 @@
           Comprar entradas
         }
       </button>
+
+      @if (errorEdad()) {
+        <p class="error-edad">{{ errorEdad() }}</p>
+      }
       
     </div>
   } @else {
     <p>No hay funciones disponibles para esta película.</p>
   }
+
+  <section class="resenas">
+    <h3>Reseñas</h3>
+
+    @for (resena of resenas(); track resena.id) {
+      <article class="resena">
+        <div class="resena-arriba">
+          <strong>{{ resena.usuarios.nombre }} {{ resena.usuarios.apellido }}</strong>
+          <span class="fecha-resena">{{ resena.fecha | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="estrellas">
+          @for (numero of [1, 2, 3, 4, 5]; track numero) {
+            <span [class.llena]="numero <= resena.estrellas">★</span>
+          }
+        </div>
+        <p class="comentario">{{ resena.comentario }}</p>
+      </article>
+    } 
+    @if (resenas().length === 0) {
+      <p class="sin-resenas">Todavía no hay reseñas para esta película.</p>
+    }
+  </section>
 }

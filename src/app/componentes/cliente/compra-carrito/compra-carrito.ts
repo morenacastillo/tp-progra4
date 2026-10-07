@@ -8,6 +8,7 @@ import { Cupones } from '../../../servicios/cupones';
 import { Funciones } from '../../../servicios/funciones';
 import { Perfil } from '../../../servicios/perfil';
 import { Auth } from '../../../servicios/auth';
+import { Fechas } from '../../../servicios/fechas';
 
 @Component({
   imports: [CurrencyPipe, DatePipe, RouterLink],
@@ -24,14 +25,8 @@ export class CompraCarrito{
   codigoCompra = signal<string | null>(null);
   errorCupon = signal('');
 
-  constructor(public carrito: Carrito, private comprasService: Compras, private pdfService: PdfCompra,private router: Router, private cuponesService: Cupones, private funcionesService: Funciones, private perfilService: Perfil, private auth: Auth) {}
+  constructor(public carrito: Carrito, private comprasService: Compras, private pdfService: PdfCompra,private router: Router, private cuponesService: Cupones, private funcionesService: Funciones, private perfilService: Perfil, private auth: Auth, private fechasService: Fechas) {}
 
-  private hoyTexto() {
-    const hoy = new Date();
-    const mes = String(hoy.getMonth() + 1).padStart(2, '0'); //mes actual +1
-    const dia = String(hoy.getDate()).padStart(2, '0'); // dia actual
-    return hoy.getFullYear() + '-' + mes + '-' + dia;
-  }
 
   nombreTipo(tipo: string) {
     if (tipo === 'vip') {
@@ -52,15 +47,6 @@ export class CompraCarrito{
     }
   }
 
-  private edad(fechaNacimiento: string) {
-    const hoy = this.hoyTexto();
-    let edad = Number(hoy.slice(0, 4)) - Number(fechaNacimiento.slice(0, 4));
-
-    if (hoy.slice(5) < fechaNacimiento.slice(5)) {
-      edad = edad - 1
-    }
-    return edad
-  }
 
   async aplicarCupon(codigo: string) {
     this.errorCupon.set('');
@@ -83,7 +69,7 @@ export class CompraCarrito{
       return;
     }
 
-    const hoy = this.hoyTexto();
+    const hoy = this.fechasService.hoyTexto();
 
     if (cupon.valido_desde.slice(0, 10) > hoy) {
       this.errorCupon.set('El cupón todavía no está vigente.');
@@ -110,7 +96,7 @@ export class CompraCarrito{
 
     if (cupon.edad_minima > 0) {
       const datos = await this.perfilService.obtenerDatos();
-      if (!datos || this.edad(datos.fecha_nacimiento) < cupon.edad_minima) {
+      if (!datos || this.fechasService.edad(datos.fecha_nacimiento) < cupon.edad_minima) {
         this.errorCupon.set('Este cupón es para mayores de ' + cupon.edad_minima + ' años.');
         return;
       }

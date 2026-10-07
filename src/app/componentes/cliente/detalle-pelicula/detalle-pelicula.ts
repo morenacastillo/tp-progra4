@@ -7,6 +7,11 @@ import { Funciones } from '../../../servicios/funciones';
 import { Carrito } from '../../../servicios/carrito';
 import { GetPelicula } from '../../../modelos/datos-pelicula';
 import { GetFuncion, GrupoFunciones } from '../../../modelos/datos-funciones';
+import { Fechas } from '../../../servicios/fechas';
+import { Auth } from '../../../servicios/auth';
+import { Perfil } from '../../../servicios/perfil';
+import { Resenas } from '../../../servicios/resenas';
+import { GetResena } from '../../../modelos/datos-resenas';
 
 @Component({
   imports: [DatePipe],
@@ -20,9 +25,11 @@ export class DetallePelicula implements OnInit, OnDestroy {
   funcionPorPelicula = signal<GetFuncion[]>([]);
   diaElegido = signal<string | null>(null);
   funcionElegida = signal<GetFuncion | null>(null);
+  errorEdad = signal('');
+  resenas = signal<GetResena[]>([]);
   private suscripcion?: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router, private peliculasService: Peliculas, private funcionesService: Funciones, private carrito: Carrito) {}
+  constructor(private route: ActivatedRoute, private router: Router, private peliculasService: Peliculas, private funcionesService: Funciones, private carrito: Carrito, private auth: Auth, private perfilService: Perfil, private fechasService: Fechas, private resenasService: Resenas) {}
 
   ngOnInit() {
     this.suscripcion = this.route.paramMap.subscribe(params => {
@@ -30,6 +37,7 @@ export class DetallePelicula implements OnInit, OnDestroy {
       if (id) {
         this.cargarPelicula(id);
         this.cargarFuncionPorId(id);
+        this.cargarResenasPorPelicula(id)
       }
     });
   }
@@ -54,6 +62,11 @@ export class DetallePelicula implements OnInit, OnDestroy {
       }
     }
     this.funcionPorPelicula.set(futuras);
+  }
+
+  private async cargarResenasPorPelicula(id: string) {
+    const datos = await this.resenasService.obtenerResenaPorPelicula(id);
+    this.resenas.set(datos);
   }
 
   diaDe(funcion: GetFuncion) {
@@ -113,7 +126,7 @@ export class DetallePelicula implements OnInit, OnDestroy {
     this.carrito.cancelarCombo();
   }
 
-  comprar() {
+  async comprar() {
     const funcion = this.funcionElegida();
     const pelicula = this.pelicula();
 
@@ -121,7 +134,24 @@ export class DetallePelicula implements OnInit, OnDestroy {
       return;
     }
 
+    this.errorEdad.set('');
+
+    if (pelicula.restriccion_edad > 0 && this.auth.usuarioLogueado()) {
+      const datos = await this.perfilService.obtenerDatos();
+      if (!datos || this.fechasService.edad(datos.fecha_nacimiento) < pelicula.restriccion_edad) {
+        this.errorEdad.set('No podés comprar entradas: esta película es para mayores de ' + pelicula.restriccion_edad + ' años.');
+        return;
+      }
+    }
+
     this.carrito.iniciar(funcion, pelicula);
     this.router.navigate(['/home-cliente/butacas', funcion.id]);
   }
+
+  
+
+
+
+
+
 }

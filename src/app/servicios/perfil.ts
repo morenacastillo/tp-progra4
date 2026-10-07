@@ -34,7 +34,7 @@ export class Perfil {
             .select(`*,
                 entradas(precio, combo_id,
                     butacas(fila, columna, tipo),
-                    funciones(inicio, formato, idioma, salas(nombre), peliculas(nombre, imagen_url))),
+                    funciones(inicio, fin, formato, idioma, salas(nombre), peliculas(id, nombre, imagen_url))),
                     candy_vendido(cantidad, precio_unitario, productos_candy(nombre), combos(nombre))`)
             .eq('usuario_id', usuario.id)
             .eq('estado', 'confirmada')

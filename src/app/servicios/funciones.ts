@@ -13,9 +13,9 @@ export class Funciones {
             .order('id');
 
         if (error) {
-                console.error('Error trayendo las funciones:', error);
-                return [];
-            }
+            console.error('Error trayendo las funciones:', error);
+            return [];
+        }
 
         return data ?? [];
     }

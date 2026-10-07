@@ -96,7 +96,6 @@ export class GestionCupones implements OnInit{
     setTimeout(() => {
       this.guardadoOk.set(false);
     }, 2500);
-  
   } 
 
   modificar(cupon: GetCupon) {

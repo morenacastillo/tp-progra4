@@ -22,10 +22,11 @@ export interface CompraPerfil {
         butacas: { fila: string; columna: number; tipo: string };
         funciones: {
             inicio: string;
+            fin: string;
             formato: string;
             idioma: string;
             salas: { nombre: string };
-            peliculas: { nombre: string; imagen_url: string };
+            peliculas: { id: number; nombre: string; imagen_url: string };
         };
     }[];
     candy_vendido: {

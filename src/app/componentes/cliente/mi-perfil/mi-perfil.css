@@ -8,14 +8,14 @@
 .perfil {
   display: flex;
   gap: 48px;
-  max-width: 1150px;
+  max-width: 1250px;
   margin: 0 auto;
   padding: 48px 24px;
   align-items: flex-start;
 }
 
 .lateral {
-  width: 300px;
+  width: 380px;
   flex: none;
   position: sticky;
   top: 24px;
@@ -47,12 +47,12 @@
   display: block;
   color: var(--color-btn);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .saludo strong {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -60,7 +60,7 @@
 .menu {
   background: #ffffff;
   border-radius: 16px;
-  padding: 6px 20px;
+  padding: 8px 26px;
   box-shadow: var(--sombra);
 }
 
@@ -68,13 +68,13 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 18px 4px;
+  padding: 24px 4px;
   background: transparent;
   color: var(--text-on-card);
   border-radius: 0;
   border-bottom: 1px solid var(--color-borde);
   text-align: left;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .menu button:last-child {
@@ -83,7 +83,7 @@
 
 .menu .flecha {
   margin-left: auto;
-  font-size: 18px;
+  font-size: 22px;
   opacity: 0.6;
 }
 
@@ -257,7 +257,152 @@
   padding-top: 10px;
 }
 
+.form-resena {
+  margin: 20px 0 24px;
+  box-shadow: var(--sombra);
+}
+
+.fila-campos {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.campo {
+  margin-bottom: 16px;
+}
+
+.campo label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.campo select,
+.campo textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-family: var(--font-body);
+  color: var(--text-on-card);
+  background: #ffffff;
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.botones-resena {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-guardar,
+.btn-cancelar {
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.btn-guardar {
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: var(--color-btn-hover);
+}
+
+.btn-cancelar {
+  background: transparent;
+  color: var(--color-btn);
+  border: 1px solid var(--color-btn);
+}
+
+.btn-cancelar:hover:not(:disabled) {
+  background: var(--color-bg-suave);
+}
+
+.btn-guardar:disabled,
+.btn-cancelar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error,
+.exito {
+  margin: 14px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.exito {
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+.resena {
+  background: #ffffff;
+  border: 1px solid var(--color-borde);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+  padding: 18px 28px;
+  margin-top: 16px;
+}
+
+.resena-arriba {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.resena-arriba strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.resena-arriba span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.estrellas {
+  margin: 4px 0 8px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--color-borde);
+}
+
+.estrellas .llena {
+  color: #f5b301;
+}
+
+.resena p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
 @media (max-width: 800px) {
+  .fila-campos {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .resena {
+    padding: 16px;
+  }
+
   .perfil {
     flex-direction: column;
     padding: 24px 16px;

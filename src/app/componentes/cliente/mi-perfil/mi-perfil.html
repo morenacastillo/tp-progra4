@@ -15,10 +15,13 @@
                 Datos personales <span class="flecha">›</span>
             </button>
             <button type="button" [class.activo]="seccion() === 'compras'" (click)="seccion.set('compras')">
-                Mis compras <span class="flecha">›</span>
+                Compras <span class="flecha">›</span>
             </button>
             <button type="button" [class.activo]="seccion() === 'puntos'" (click)="seccion.set('puntos')">
-                Mis puntos <span class="flecha">›</span>
+                Puntos <span class="flecha">›</span>
+            </button>
+            <button type="button" [class.activo]="seccion() === 'resenas'" (click)="seccion.set('resenas')">
+                Reseñas <span class="flecha">›</span>
             </button>
         </nav>
     </aside>
@@ -126,8 +129,91 @@
 
         @if (seccion() === 'puntos') {
             <h1>Mis Puntos</h1>
+            
+        }
+
+        @if (seccion() === 'resenas') {
+            <h1>Mis Reseñas</h1>
+
+            @if (peliculasVistas().length > 0) {
+                <div class="tarjeta form-resena">
+                    <h2>Nueva reseña</h2>
+                    <form [formGroup]="formResenas">
+                        <div class="fila-campos">
+                            <div class="campo">
+                                <label for="pelicula_id">Película</label>
+                                <select id="pelicula_id" formControlName="pelicula_id">
+                                    <option value="" disabled>Selecciona una película</option>
+                                    @for (pelicula of peliculasVistas(); track pelicula.id) {
+                                        <option [value]="pelicula.id">{{ pelicula.nombre }}</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="estrellas">Estrellas</label>
+                                <select id="estrellas" formControlName="estrellas">
+                                    <option value="" disabled>Selecciona la cantidad de estrellas</option>
+                                    <option [value]="1">1</option>
+                                    <option [value]="2">2</option>
+                                    <option [value]="3">3</option>
+                                    <option [value]="4">4</option>
+                                    <option [value]="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label for="comentario">Comentario</label>
+                            <textarea id="comentario" formControlName="comentario" rows="3" maxlength="200" placeholder="Contanos qué te pareció (máximo 200 caracteres)"></textarea>
+                        </div>
+                    </form>
+
+                    <div class="botones-resena">
+                        <button type="button" class="btn-guardar" (click)="agregarResena()" [disabled]="formResenas.invalid || cargando()">
+                            @if (cargando()) {
+                                Guardando...
+                            } @else {
+                                Guardar reseña
+                            }
+                        </button>
+                        <button type="button" class="btn-cancelar" (click)="cancelar()" [disabled]="cargando()">Cancelar</button>
+                    </div>
+
+                    @if (error()) {
+                        <p class="error">{{ error() }}</p>
+                    }
+                </div>
+            } @else {
+                <p class="vacio">No tenés películas pendientes de reseñar.</p>
+            }
+
+            @if (guardadoOk()) {
+                <p class="exito">Reseña guardada con éxito.</p>
+            }
+
+            @for (resena of resenas(); track resena.id) {
+                <article class="resena">
+                    <div class="resena-arriba">
+                        <strong>{{ resena.peliculas.nombre }}</strong>
+                        <span>{{ resena.fecha | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="estrellas">
+                        @for (numero of [1, 2, 3, 4, 5]; track numero) {
+                            <span [class.llena]="numero <= resena.estrellas">★</span>
+                        }
+                    </div>
+                    <p>{{ resena.comentario }}</p>
+                </article>
+            }
+
+            @if (resenas().length === 0) {
+                <p class="vacio">Todavía no escribiste ninguna reseña.</p>
+            }
         }
 
 
     </section>
+
+
 </div>
