@@ -135,7 +135,7 @@ export class GestionCupones implements OnInit{
         solo_primera_compra: valores.solo_primera_compra,
         edad_minima: Number(valores.edad_minima),
         valido_desde: this.fechasService.aFechaBase(valores.valido_desde),
-        valido_hasta: this.fechasService.aFechaBase(valores.valido_hasta),
+        valido_hasta: valores.valido_hasta ? this.fechasService.aFechaBase(valores.valido_hasta) : null,
         activo: valores.activo
       });
   

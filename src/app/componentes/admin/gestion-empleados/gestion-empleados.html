@@ -3,7 +3,7 @@
 <div class="auth-card">
   <h2>Alta de usuarios</h2>
 
-  <form [formGroup]="formUsuarios" (ngSubmit)="guardar()">
+  <form [formGroup]="formUsuarios" >
 
     <div class="campo">
       <label for="nombre">Nombre</label>
@@ -68,7 +68,7 @@
       <p class="error campo-ancho">{{ error() }}</p>
     }
 
-    <button type="submit" class="campo-ancho" [disabled]="formUsuarios.invalid || cargando()">
+    <button type="button" class="campo-ancho" (click)="guardarEmpleado()" [disabled]="formUsuarios.invalid || cargando()">
       @if (cargando()) {
         Guardando...
       } @else {
@@ -81,4 +81,33 @@
   @if (guardadoOk()) {
     <p class="exito campo-ancho">Usuario guardado con éxito.</p>
   }
+
 </div>
+
+
+<div class="gestionarEmpleados">
+  <table>
+        <thead>
+            <tr>
+                <th>Mail</th>
+                <th>Nombre y apellido</th>
+                <th>Fecha de nacimiento</th>
+                <th>Tipo de sangre</th>
+                <th>Color de ojos</th>
+                <th>Vacaciones por año</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+          @for (empleado of empleados(); track empleado.id) {
+            <tr>
+              <td>{{empleado.mail}} </td>
+              <td>{{empleado.nombre}} {{empleado.apellido}}</td>
+              <td>{{ empleado.fecha_nacimiento | date:'dd/MM/yyyy':'UTC' }}</td>
+              <td>{{ empleado.tipo_sangre }}</td>
+              <td>{{ empleado.color_ojos }}</td>
+              <td>{{ empleado.dias_vacaciones_anio }}</td>
+              <td>{{empleado.rol}}</td>
+            </tr>
+          }
+        </tbody>

@@ -207,11 +207,19 @@
   gap: 16px;
 }
 
+.titulo-resenas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--color-borde);
+}
+
 .resenas h3 {
   font-size: 24px;
   margin: 0;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--color-borde);
 }
 
 .resena {
@@ -265,4 +273,14 @@
   .resena {
     padding: 14px 16px;
   }
+}
+
+.promedio {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.estrella-promedio {
+  color: #f5b301;
 }

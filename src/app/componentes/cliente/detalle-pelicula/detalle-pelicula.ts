@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Peliculas } from '../../../servicios/peliculas';
 import { Funciones } from '../../../servicios/funciones';
 import { Carrito } from '../../../servicios/carrito';
@@ -14,7 +14,7 @@ import { Resenas } from '../../../servicios/resenas';
 import { GetResena } from '../../../modelos/datos-resenas';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, DecimalPipe],
   selector: 'app-detalle-pelicula',
   styleUrl: './detalle-pelicula.css',
   templateUrl: './detalle-pelicula.html',
@@ -67,6 +67,18 @@ export class DetallePelicula implements OnInit, OnDestroy {
   private async cargarResenasPorPelicula(id: string) {
     const datos = await this.resenasService.obtenerResenaPorPelicula(id);
     this.resenas.set(datos);
+  }
+
+  promedio() {
+    if (this.resenas().length === 0) {
+      return 0;
+    }
+
+    let suma = 0;
+    for (let resena of this.resenas()) {
+      suma = suma + resena.estrellas;
+    }
+    return suma / this.resenas().length;
   }
 
   diaDe(funcion: GetFuncion) {
@@ -149,7 +161,6 @@ export class DetallePelicula implements OnInit, OnDestroy {
   }
 
   
-
 
 
 

@@ -42,7 +42,7 @@ export class Cupones {
         return { data, error };
     }
 
-    async actualizarCupon(id: number, cambios: { codigo: string; descripcion: string; porcentaje_descuento: number; solo_primera_compra: boolean; edad_minima: number; activo: boolean; valido_desde: string; valido_hasta: string;}) {
+    async actualizarCupon(id: number, cambios: { codigo: string; descripcion: string; porcentaje_descuento: number; solo_primera_compra: boolean; edad_minima: number; activo: boolean; valido_desde: string; valido_hasta: string | null;}) {
         const { error } = await this.auth.client()
             .from('cupones')
             .update(cambios)

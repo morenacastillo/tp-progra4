@@ -39,7 +39,7 @@ export const routes: Routes = [
         },
         {
           path: 'empleados', 
-          loadComponent: () => import('./componentes/admin/empleados/empleados').then(m => m.Empleados) 
+          loadComponent: () => import('./componentes/admin/gestion-empleados/gestion-empleados').then(m => m.GestionEmpleados) 
         },
         {
           path: 'peliculas', 
