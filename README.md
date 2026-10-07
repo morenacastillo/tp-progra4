@@ -110,7 +110,7 @@ Las tres secciones (`home-admin`, `home-cliente`, `home-empleado`) cargan el `La
 | `resenas` | Estrellas y comentario por usuario y película (una sola por par) |
 | `log_actividad` | Usuario, acción, detalle y fecha |
 
-Las relaciones se resuelven con claves foráneas, y las consultas traen los datos relacionados con selects anidados (por ejemplo, una compra con sus entradas, su función y su película).
+Las tablas se relacionan con claves foráneas y las consultas usan selects anidados.
 
 ## Reglas de negocio
 
@@ -118,11 +118,11 @@ Las relaciones se resuelven con claves foráneas, y las consultas traen los dato
 
 Todas las salas tienen la misma forma: 20 filas (A a T) con bloques de 4, 20 y 4 butacas, y dos pasillos. Las butacas se generan desde Angular al crear la sala (`Salas.generarButacas`), una fila por butaca en la tabla `butacas` con su `fila`, `columna`, `tipo` (`normal`, `accesible` o `vip`) y si está `activa`.
 
-- La fila **K** se genera inactiva y la **J** tiene activas solo las 14 butacas accesibles (2 - 10 - 2), así en el mapa queda el espacio de la fila que se quitó.
+- La fila **K** se genera inactiva y la **J** tiene activas solo las 14 butacas accesibles (2 - 10 - 2).
 - Las filas **R, S y T** son VIP.
 - Una butaca figura ocupada en una función si hay una entrada de esa función que no esté cancelada.
 
-Uso una tabla de butacas para que cada entrada apunte a una butaca real (clave foránea entradas.butaca_id) y para guardar en cada una su tipo y si se vende o no: así la fila K y los lugares libres de la J existen en el mapa pero no se pueden elegir.
+Uso una tabla de butacas para que cada entrada apunte a una butaca real (clave foránea `entradas.butaca_id`) y para guardar en cada una su tipo y si se vende o no: así la fila K y los lugares libres de la J existen en el mapa pero no se pueden elegir.
 
 ### Precio de las entradas
 
@@ -130,11 +130,11 @@ El precio depende de la película: cada una define su `precio_base` y su `precio
 
 ### Armado de funciones
 
-La sala se asigna sola: al crear una función se busca la primera sala que no tenga otra función en ese horario. Cada función guarda su `fin` (inicio + duración de la película) y su `fin_bloqueo` (fin + 30 minutos), y el choque de horarios se controla contra `fin_bloqueo`, así siempre quedan 30 minutos entre funciones. Esta validación está en el código de Angular.
+Al crear una función se asigna la primera sala activa, del mismo formato y sin otra función en ese horario. Cada función guarda su `fin` (inicio + duración de la película) y su `fin_bloqueo` (fin + 30 minutos), y el choque de horarios se controla contra `fin_bloqueo`.
 
 ### Perfiles de usuario
 
-Cada persona está en la tabla `usuarios`, con una columna `rol` (`cliente`, `empleado` o `admin`). El registro público siempre crea clientes; a los empleados los da de alta el administrador. Como el `signUp` de Supabase deja logueado al usuario que crea, el alta usa un segundo cliente de Supabase que no guarda sesión, así el administrador no pierde la suya. El anónimo no se guarda en Supabase: su nombre y apellido quedan en el servicio `Auth` mientras dura la sesión.
+Cada persona está en la tabla `usuarios`, con una columna `rol` (`cliente`, `empleado` o `admin`). El registro público crea clientes; a los empleados los da de alta el administrador, con un segundo cliente de Supabase que no guarda sesión. El anónimo no se guarda en la base: su nombre y apellido quedan en el servicio `Auth`.
 
 ### Recorrido de compra
 
@@ -142,11 +142,11 @@ Película → función → butacas → candy → carrito, cada paso en su pantal
 
 Se puede llegar al pago de dos formas:
 - **Sin combo:** cartelera → detalle → butacas → candy → carrito. El candy es opcional.
-- **Con combo destacado:** el cliente elige un combo con entradas desde el home, después la película y la función, elige tantas butacas como entradas trae el combo y pasa directo al carrito, porque el combo ya incluye el candy.
+- **Con combo destacado:** el cliente elige un combo con entradas desde el home, después la película y la función, elige tantas butacas como entradas trae el combo y pasa directo al carrito.
 
 ### Restricción de edad
 
-Las películas pueden ser para todo público, +13 o +18. Un usuario registrado menor a la restricción no puede comprar. Al anónimo no se le valida la edad, porque no se conoce. En todos los casos la entrada sale con la aclaración de que los menores van con un adulto.
+Las películas pueden ser para todo público, +13 o +18. Un usuario registrado menor a la restricción no puede comprar. Al anónimo no se le valida la edad. La entrada sale con la aclaración de que los menores van con un adulto.
 
 ### Cupones
 
@@ -154,7 +154,7 @@ Al aplicar un cupón se controla que exista, esté activo y vigente. Si es de pr
 
 ### Reseñas
 
-Se leen en el detalle de la película, antes de comprar. Se escriben desde Mi perfil: solo se puede opinar de una película que se compró y cuya entrada fue validada por el empleado, y una sola vez (la base tiene una regla que lo impide).
+Se leen en el detalle de la película. Se escriben desde Mi perfil: solo de una película que se compró y cuya entrada fue validada por el empleado, y una sola vez.
 
 ### Combos
 
@@ -166,37 +166,37 @@ Un combo con `cantidad_entradas > 0` es un **combo destacado**: aparece en el ho
 
 1. `compras`: una fila con el total, el método de pago y un código único (`CC-` + fecha y hora en milisegundos). Si compra un anónimo, `usuario_id` queda en `null`.
 2. `entradas`: una fila por butaca, con su precio. Con combo destacado, las entradas se guardan en $0 y con el `combo_id`.
-3. `candy_vendido`: una fila por producto o combo, con el precio que tenía en ese momento en `precio_unitario`. El combo destacado va acá con su precio completo, así entradas + candy siempre suma lo que se pagó.
+3. `candy_vendido`: una fila por producto o combo, con el precio que tenía en ese momento en `precio_unitario`. El combo destacado va acá con su precio completo.
 
 ### Comprobante
 
-Cada compra tiene **un solo código** (`compras.qr_code`), que es lo que lleva el QR. Con ese mismo código se entra a la sala y se retira el candy: el empleado lo ingresa, y al validar las entradas pasan a `escaneada` y el candy a `retirado`, así no se puede usar dos veces. Solo se puede validar desde una hora antes de la función y hasta que termina. El PDF se arma en el navegador con la película, la función, la sala, las butacas (marcando las VIP), el candy, el QR y el total, y se descarga al confirmar.
+Cada compra tiene **un solo código** (`compras.qr_code`), que es lo que lleva el QR. El empleado lo ingresa, y al validar las entradas pasan a `escaneada` y el candy a `retirado`. Solo se puede validar desde una hora antes de la función y hasta que termina. El PDF se arma en el navegador con la película, la función, la sala, las butacas (marcando las VIP), el candy, el QR y el total, y se descarga al confirmar.
 
 ## Arquitectura y criterios técnicos
 
 ### Datos y servicios
-- El cliente de Supabase se crea una sola vez en el servicio `Auth`; los demás servicios lo piden con `inject(Auth).client()`. Todos los servicios usan `@Service()`, que es lo mismo que `providedIn: 'root'`: hay una única instancia para toda la app.
-- Los componentes no consultan la base directamente: siempre pasan por un servicio.
+- El cliente de Supabase se crea en el servicio `Auth`; los demás servicios lo piden con `inject(Auth).client()`. Todos los servicios usan `@Service()`.
+- Los componentes no consultan la base: pasan por un servicio.
 - Cada tabla principal tiene su interfaz en `modelos/`.
-- `Carrito` guarda la compra en curso con signals. Las pantallas del flujo no son padre e hijo, entonces no pueden compartir datos con `input`/`output`; al ser un servicio único, lo que guarda una pantalla lo lee la siguiente. Los totales son métodos que leen esas signals, así siempre están actualizados.
+- `Carrito` guarda la compra en curso (película, función, butacas, candy, combo y cupón) con signals, y calcula subtotal, descuento y total.
 
 ### Rutas y guards
 - Los guards de rol (`roleAdmin`, `roleCliente`, `roleEmpleado`) son `canMatch` y están en la ruta padre de cada sección: si no tenés el rol, el router sigue buscando, llega al `**` y te manda al login.
-- Los guards del flujo (`funcionElegida`, `butacasElegidas`) son `canActivate`: si entrás a butacas, candy o carrito sin haber hecho el paso anterior, cortan la navegación y te mandan a la cartelera.
-- `paramMap` se usa como Observable para leer el id de la URL, y la suscripción se cierra en `ngOnDestroy`.
+- Guards del flujo (`funcionElegida`, `butacasElegidas`): `canActivate` en butacas, candy y carrito. Sin el paso anterior, redirigen a la cartelera.
+- `paramMap` como Observable para leer el id de la URL; la suscripción se cierra en `ngOnDestroy`.
 - Todas las pantallas usan lazy loading: el código de cada una se descarga recién al entrar.
 
 ### Componentes y vistas
-- `*appEsAdmin` y `*appEsEmpleado` son directivas estructurales que muestran u ocultan links del navbar según el rol. Solo afectan lo que se ve; lo que protege el acceso son los guards.
-- `appCardComprar` es una directiva de atributo que con `host` escucha `mouseenter` / `mouseleave` y muestra el overlay con los datos y el botón en las cartas.
-- `CartaPelicula` y `CartaCandy` se reutilizan en varias pantallas con `input` / `output`. `CartaCandy` recibe el texto del botón y avisa con un `output` cuando la tocan, y la pantalla que la usa decide qué hacer (comprar el combo o sumarlo al carrito).
-- Los pipes propios `filtro` y `genero` filtran la cartelera por nombre y por género, encadenados; `currency`, `date` y `number` dan formato a precios, fechas y promedios.
-- Registro, login, ingreso anónimo y las gestiones del admin usan Reactive Forms con validaciones, y el botón queda deshabilitado mientras el formulario no es válido. Las fechas y horas se escriben como texto y se controlan con validadores propios (`FechaValidator`, `HoraValidator`).
-- Las conversiones de fecha y el cálculo de edad están en el servicio `Fechas`, que comparten varias pantallas.
-- Las plantillas usan el control flow nuevo (`@if`, `@for`, `@else`).
+- `*appEsAdmin` y `*appEsEmpleado`: directivas estructurales que muestran u ocultan links del navbar según el rol.
+- `appCardComprar` y `appResaltarButaca`: directivas de atributo que con `host` escuchan `mouseenter` / `mouseleave` en las cartas y en las butacas.
+- `CartaPelicula` y `CartaCandy` se reutilizan en varias pantallas con `input` / `output`.
+- Pipes propios `filtro` y `genero` para la cartelera, encadenados; `currency`, `date` y `number` para precios, fechas y promedios.
+- Registro, login, ingreso anónimo y las gestiones del admin usan Reactive Forms con validaciones. Las fechas y horas se escriben como texto, con validadores propios (`FechaValidator`, `HoraValidator`).
+- Las conversiones de fecha y el cálculo de edad están en el servicio `Fechas`.
+- Las plantillas usan `@if`, `@for` y `@else`.
 
 ### Librerías y deploy
-- jsPDF arma el PDF y qrcode genera la imagen del QR, todo del lado del navegador.
-- La app está en Firebase Hosting. Todas las rutas se redirigen a `index.html` para que, si se recarga estando en una pantalla interna, Angular pueda resolverla.
+- jsPDF arma el PDF y qrcode genera la imagen del QR, en el navegador.
+- La app está en Firebase Hosting, con todas las rutas redirigidas a `index.html`.
 
 
