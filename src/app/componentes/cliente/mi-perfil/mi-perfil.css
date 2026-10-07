@@ -434,3 +434,24 @@
     padding-right: 16px;
   }
 }
+
+.estado {
+  margin-left: auto;
+  flex: none;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--color-bg-suave);
+  color: var(--text-muted);
+}
+
+.estado.vencida {
+  background: rgba(168, 52, 46, 0.12);
+  color: var(--color-danger);
+}
+
+.estado.pendiente {
+  background: rgba(63, 145, 66, 0.15);
+  color: var(--color-accent);
+}

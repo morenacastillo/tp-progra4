@@ -1,24 +1,11 @@
-export interface DatosUsuario {
-    id: string;
-    mail: string;
-    nombre: string;
-    apellido: string;
-    fecha_nacimiento: string;
-    tipo_sangre: string;
-    color_ojos: string;
-    dias_vacaciones_anio: number;
-}
-
-export interface CompraPerfil {
+export interface CompraEscaneo {
     id: number;
     fecha: string;
-    subtotal: number;
+    estado: string;
     total: number;
-    metodo_pago: string;
     qr_code: string;
     entradas: {
-        precio: number;
-        combo_id: number | null;
+        id: number;
         estado: string;
         butacas: { fila: string; columna: number; tipo: string };
         funciones: {
@@ -27,12 +14,12 @@ export interface CompraPerfil {
             formato: string;
             idioma: string;
             salas: { nombre: string };
-            peliculas: { id: number; nombre: string; imagen_url: string };
+            peliculas: { nombre: string };
         };
     }[];
     candy_vendido: {
+        id: number;
         cantidad: number;
-        precio_unitario: number;
         estado: string;
         productos_candy: { nombre: string } | null;
         combos: { nombre: string } | null;

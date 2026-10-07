@@ -1,0 +1,180 @@
+:host {
+  display: block;
+  padding: 32px 24px;
+}
+
+.validacion {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.validacion h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--color-btn);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.tarjeta {
+  background: var(--color-card);
+  color: var(--text-on-card);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
+  border-radius: 16px;
+  padding: 24px 28px;
+}
+
+.buscador label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.fila-buscador {
+  display: flex;
+  gap: 12px;
+}
+
+.fila-buscador input {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  background: #ffffff;
+  color: var(--text-on-card);
+}
+
+.btn-buscar,
+.btn-validar {
+  background: var(--color-btn);
+  color: var(--text-on-dark);
+}
+
+.btn-buscar {
+  padding: 10px 28px;
+}
+
+.btn-buscar:hover,
+.btn-validar:hover {
+  background: var(--color-btn-hover);
+}
+
+.error {
+  margin: 14px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
+.compra {
+  margin-top: 24px;
+}
+
+.compra-arriba {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--color-borde);
+}
+
+.compra-arriba h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 6px;
+}
+
+.compra-arriba p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.codigo {
+  flex: none;
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--color-bg-suave);
+}
+
+.bloque {
+  margin-top: 18px;
+}
+
+.bloque h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-btn);
+  margin: 0 0 8px;
+}
+
+.fila-detalle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 15px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.fila-detalle:last-child {
+  border-bottom: none;
+}
+
+.estado {
+  flex: none;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--color-bg-suave);
+  color: var(--text-muted);
+}
+
+.estado.vigente {
+  background: rgba(63, 145, 66, 0.15);
+  color: var(--color-accent);
+}
+
+.btn-validar {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.aviso-validada {
+  margin: 22px 0 0;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--color-bg-suave);
+  color: var(--color-btn);
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  :host {
+    padding: 20px 16px;
+  }
+
+  .tarjeta {
+    padding: 18px 16px;
+  }
+
+  .fila-buscador,
+  .compra-arriba {
+    flex-direction: column;
+  }
+}

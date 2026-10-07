@@ -76,6 +76,13 @@
                                 <p>{{ primera.funciones.inicio | date:'dd/MM/yyyy - HH:mm' }} hs · {{ primera.funciones.salas.nombre }} · {{ primera.funciones.idioma }} {{ primera.funciones.formato }}</p>
                                 <p>{{ compra.entradas.length }} entradas</p>
                             </div>
+                            @if (compraRetirada(compra)) {
+                                <span class="estado">Retirada</span>
+                            } @else if (compraVencida(compra)) {
+                                <span class="estado vencida">Vencida</span>
+                            } @else {
+                                <span class="estado pendiente">Pendiente de retiro</span>
+                            }
                         </div>
                     }
 

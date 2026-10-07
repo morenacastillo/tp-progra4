@@ -56,6 +56,29 @@ export class MiPerfil implements OnInit{
     this.resenas.set(datos)
   }
 
+  compraRetirada(compra: CompraPerfil) {
+    for (let entrada of compra.entradas) {
+      if (entrada.estado === 'vigente') {
+        return false;
+      }
+    }
+
+    for (let item of compra.candy_vendido) {
+      if (item.estado === 'vigente') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  compraVencida(compra: CompraPerfil) {
+    const entrada = compra.entradas[0];
+    if (!entrada) {
+      return false;
+    }
+    return new Date(entrada.funciones.fin) < new Date();
+  }
+
   yaOpino(peliculaId: number) {
     for (let resena of this.resenas()) {
       if (resena.pelicula_id === peliculaId) {

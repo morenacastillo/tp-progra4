@@ -1,1 +1,64 @@
-<p>home-empleado works!</p>
+<div class="validacion">
+    <h1>Validar compra</h1>
+
+    <div class="tarjeta buscador">
+        <label for="codigoCompra">Código de la compra</label>
+        <div class="fila-buscador">
+            <input type="text" id="codigoCompra" placeholder="Ingresá el código (CC-...)" #codigoCompra />
+            <button type="button" class="btn-buscar" (click)="cargarCompraPorCodigo(codigoCompra.value)">Buscar</button>
+        </div>
+
+        @if (errorCodigo()) {
+            <p class="error">{{ errorCodigo() }}</p>
+        }
+    </div>
+
+    @if (compra(); as c) {
+        <div class="tarjeta compra">
+            @if (c.entradas[0]; as primera) {
+                <div class="compra-arriba">
+                    <div>
+                        <h2>{{ primera.funciones.peliculas.nombre }}</h2>
+                        <p>{{ primera.funciones.inicio | date:'dd/MM/yyyy - HH:mm' }} hs · {{ primera.funciones.salas.nombre }} · {{ primera.funciones.idioma }} {{ primera.funciones.formato }}</p>
+                    </div>
+                    <span class="codigo">#{{ c.qr_code }}</span>
+                </div>
+            }
+
+            <div class="bloque">
+                <h3>Entradas</h3>
+                @for (entrada of c.entradas; track entrada.id) {
+                    <div class="fila-detalle">
+                        <span>Butaca {{ entrada.butacas.fila }}{{ entrada.butacas.columna }} · {{ entrada.butacas.tipo }}</span>
+                        <span class="estado" [class.vigente]="entrada.estado === 'vigente'">{{ entrada.estado }}</span>
+                    </div>
+                }
+            </div>
+
+            @if (c.candy_vendido.length > 0) {
+                <div class="bloque">
+                    <h3>Candy y combos</h3>
+                    @for (item of c.candy_vendido; track item.id) {
+                        <div class="fila-detalle">
+                            <span>
+                                {{ item.cantidad }} ×
+                                @if (item.productos_candy) {
+                                    {{ item.productos_candy.nombre }}
+                                } @else if (item.combos) {
+                                    {{ item.combos.nombre }}
+                                }
+                            </span>
+                            <span class="estado" [class.vigente]="item.estado === 'vigente'">{{ item.estado }}</span>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (yaValidada()) {
+                <p class="aviso-validada">Esta compra ya fue validada. El código no se puede volver a usar.</p>
+            } @else {
+                <button type="button" class="btn-validar" (click)="validarCompraEmpleado()">Validar compra</button>
+            }
+        </div>
+    }
+</div>

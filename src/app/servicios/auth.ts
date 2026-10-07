@@ -123,7 +123,6 @@ export class Auth {
                 dias_vacaciones_anio: datos.diasVacacionesAnio,
                 rol: rol,
         });
-
     return { error: errorPerfil };
     }
 

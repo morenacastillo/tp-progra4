@@ -32,10 +32,10 @@ export class Perfil {
         const { data, error } = await this.auth.client()
             .from('compras')
             .select(`*,
-                entradas(precio, combo_id,
+                entradas(precio, combo_id, estado,
                     butacas(fila, columna, tipo),
                     funciones(inicio, fin, formato, idioma, salas(nombre), peliculas(id, nombre, imagen_url))),
-                    candy_vendido(cantidad, precio_unitario, productos_candy(nombre), combos(nombre))`)
+                    candy_vendido(cantidad, precio_unitario, estado, productos_candy(nombre), combos(nombre))`)
             .eq('usuario_id', usuario.id)
             .eq('estado', 'confirmada')
             .order('fecha', { ascending: false });
