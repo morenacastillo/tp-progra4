@@ -57,7 +57,7 @@ export class DetallePelicula implements OnInit, OnDestroy {
     const ahora = new Date()
     let futuras: GetFuncion[] = []
     for (let funcion of datos ){
-      if (new Date(funcion.inicio) > ahora) {
+      if (new Date(funcion.inicio) > ahora) {//si la pelicula comienza luego del AHORA (momento de la llamada), la guarda y la muestra
         futuras.push(funcion)
       }
     }
@@ -161,8 +161,4 @@ export class DetallePelicula implements OnInit, OnDestroy {
   }
 
   
-
-
-
-
 }

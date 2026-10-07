@@ -14,8 +14,16 @@
   overflow-x: auto;
 }
 
-.logActividad h2 {
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
   margin: 0 8px 16px;
+}
+
+.logActividad h2 {
+  margin: 0;
   font-size: 24px;
   color: var(--color-btn);
 }
@@ -92,4 +100,10 @@
   .logActividad table {
     min-width: 620px;
   }
+}
+
+.logActividad .btn-volver {
+  margin: 0;
+  color: var(--color-btn);
+  white-space: nowrap;
 }

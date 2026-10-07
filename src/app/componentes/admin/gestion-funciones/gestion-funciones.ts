@@ -109,19 +109,19 @@ export class GestionFunciones implements OnInit {
       if (funcion.sala_id === salaId) {
         const otroInicio = new Date(funcion.inicio);
         const otroFinBloqueo = new Date(funcion.fin_bloqueo);
-        if (inicio < otroFinBloqueo // la nueva empieza antes de que la otra libere la sala.
-          && otroInicio < finBloqueo) { // la otra empieza antes de que la nueva libere la sala.
-          return true;
+        if (inicio < otroFinBloqueo // la nueva empieza antes de que la otra libere la sala
+          && otroInicio < finBloqueo) { // la otra empieza antes de que la nueva la libere
+          return true; // existe superposicion
         }
       }
     }
-    return false;
+    return false; // si recorre toda la lista sin encontrar choque, da false y se puede agregar
   }
 
 
   private buscarSalaLibre(formato: string, funciones: GetFuncion[], inicio: Date, finBloqueo: Date) {
     for (let sala of this.salas()) {
-      if (sala.estado && sala.formato === formato && !this.hayChoque(sala.id, funciones, inicio, finBloqueo)) {
+      if (sala.estado && sala.formato === formato && !this.hayChoque(sala.id, funciones, inicio, finBloqueo)) { // si el estado es true, el formato de la funcion coincide con el de la sala, y no existe choque entre funciones -> ok nueva funcion
         return sala;
       }
     }
@@ -192,8 +192,8 @@ export class GestionFunciones implements OnInit {
       return;
     }
 
-    const fin = new Date(inicio.getTime() + pelicula.duracion_minutos * 60000);
-    const finBloqueo = new Date(fin.getTime() + 30 * 60000);
+    const fin = new Date(inicio.getTime() + pelicula.duracion_minutos * 60000); // get time devuelve milisegundos, se multiplica por 60000 para obtener la cantidad de minutos
+    const finBloqueo = new Date(fin.getTime() + 30 * 60000); // suma 30 min al final de la pelicula
 
     const funcionesExistentes = await this.funcionesService.obtenerFunciones();
 

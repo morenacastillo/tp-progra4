@@ -47,7 +47,7 @@ export class Compras {
                 precio = 0;
                 comboId = combo.id;
             }
-            entradas.push({
+            entradas.push({ // guarda una fila por butca con su precio, si tiene combo, id compra, funcion, etc
                 compra_id: compra.id,
                 funcion_id: funcion.id,
                 butaca_id: butaca.id,
@@ -63,7 +63,6 @@ export class Compras {
             await this.cancelarCompra(compra.id);
             return null;
         }
-
 
 
         //candy

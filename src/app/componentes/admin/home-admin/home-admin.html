@@ -1,54 +1,71 @@
-<h1>PANEL DE ADMINSTRACIÓN CINE</h1>
-<hr>
+<div class="panel">
 
-<div class="gestionPeliculas">
-    <a [routerLink]="['/home-admin/peliculas']">Gestionar peliculas</a>
+    <h1>Panel de administración · Cine</h1>
+
+    <div class="cartas">
+        <a class="carta" [routerLink]="['/home-admin/peliculas']">
+            <strong>Películas</strong>
+            <span>Alta, precios, géneros y estado</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/funciones']">
+            <strong>Funciones</strong>
+            <span>Horarios, formato e idioma</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/salas']">
+            <strong>Salas</strong>
+            <span>Salas y sus butacas</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/candy']">
+            <strong>Candy</strong>
+            <span>Productos por categoría</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/combos']">
+            <strong>Combos</strong>
+            <span>Combos con o sin entradas</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/cupones']">
+            <strong>Cupones</strong>
+            <span>Descuentos y vigencia</span>
+        </a>
+
+        <div class="carta pendiente">
+            <strong>Puntos</strong>
+            <span>Próximamente</span>
+        </div>
+
+        <div class="carta pendiente">
+            <strong>Preventas</strong>
+            <span>Próximamente</span>
+        </div>
+    </div>
+
+    <h1>Panel de administración · Backoffice</h1>
+
+    <div class="cartas">
+        <a class="carta" [routerLink]="['/home-admin/empleados']">
+            <strong>Empleados</strong>
+            <span>Alta de empleados y administradores</span>
+        </a>
+
+        <a class="carta" [routerLink]="['/home-admin/logs']">
+            <strong>Log de actividad</strong>
+            <span>Quién hizo qué y cuándo</span>
+        </a>
+
+        <div class="carta pendiente">
+            <strong>Facturación</strong>
+            <span>Próximamente</span>
+        </div>
+
+        <div class="carta pendiente">
+            <strong>Gráficos</strong>
+            <span>Próximamente</span>
+        </div>
+    </div>
+
 </div>
-
-<div class="gestionFunciones">
-    <a [routerLink]="['/home-admin/funciones']">Gestionar funciones</a>
-</div>
-
-<div class="gestionSalas">
-    <a [routerLink]="['/home-admin/salas']">Gestionar salas</a>
-</div>
-
-<div class="gestionSalas">
-    <a [routerLink]="['/home-admin/candy']">Gestionar candy</a>
-</div>
-
-<div class="gestionSalas">
-    <a [routerLink]="['/home-admin/combos']">Gestionar combos</a>
-</div>
-
-<div class="gestionCupones">
-    <a [routerLink]="['/home-admin/cupones']">Gestionar cupones</a>
-</div>
-
-<div class="gestionPuntos">
-    <p>Gestionar puntos</p>
-</div>
-
-<div class="gestionPreventas">
-    <p>Gestionar preventas</p>
-</div>
-
-<h1>PANEL DE ADMINSTRACIÓN BACKOFFICE</h1>
-<hr>
-<div class="gestionEmpleados">
-    <a [routerLink]="['/home-admin/empleados']">Gestionar empleados</a>
-</div>
-
-<div class="facturacion">
-    <p>Facturación</p>
-</div>
-
-<div class="graficos">
-    <p>Graficos</p>
-</div>
-
-<div class="Logs">
-    <a [routerLink]="['/home-admin/logs']">Logs de actividad</a>
-</div>
-
-

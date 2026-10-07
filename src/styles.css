@@ -149,6 +149,13 @@ input, select {
   background: var(--color-bg-suave);
 }
 
-.btn-volver.arriba {
-  margin: 24px 0 0 24px;
+.auth-card .btn-volver {
+  margin-top: 10px;
+  background: transparent;
+  color: var(--color-btn);
+  border: 1px solid var(--color-btn);
+}
+
+.auth-card .btn-volver:hover:not(:disabled) {
+  background: var(--color-bg-suave);
 }

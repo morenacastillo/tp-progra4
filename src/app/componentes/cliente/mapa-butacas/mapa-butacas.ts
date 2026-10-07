@@ -8,7 +8,6 @@ import { Carrito } from '../../../servicios/carrito';
 import { GetButacas } from '../../../modelos/datos-butacas';
 import { ResaltarButaca } from '../directivas/resaltar-butaca';
 
-
 @Component({
   imports: [CurrencyPipe, ResaltarButaca],
   selector: 'app-mapa-butacas',
@@ -50,6 +49,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     const ocupadas = await this.funcionesService.obtenerButacasOcupadas(funcion.id);
     this.ocupadas.set(ocupadas);
 
+    //recupera lo guardado en carrito si se regresa desde compracarrito o candy
     let libres: GetButacas[] = [];
     for (let butaca of this.carrito.butacas()) {
       if (!ocupadas.includes(butaca.id)) { // si la butaca no esta dentro de ocupadas, la guardo y luego seteo en seleccionadas
@@ -58,6 +58,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     }
     this.seleccionadas.set(libres);
   }
+
 
   butacasDeFila(fila: string) {
     let deLaFila: GetButacas[] = [];
@@ -68,6 +69,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     }
     return deLaFila;
   }
+
 
   estaOcupada(butaca: GetButacas) {
     return this.ocupadas().includes(butaca.id);
@@ -102,7 +104,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     if (this.estaSeleccionada(butaca)) {
       let restantes: GetButacas[] = [];
       for (let elegida of this.seleccionadas()) {
-        if (elegida.id !== butaca.id) {
+        if (elegida.id !== butaca.id) { // si la buitaca que seleccione, ya estaba en mis seleccionadas, guarda la lista restantes en this.seleccionadas (sin la que acabo de seleccionar)
           restantes.push(elegida);
         }
       }
@@ -116,6 +118,7 @@ export class MapaButacas implements OnInit, OnDestroy {
     }
 
     if (this.carrito.combo() && this.seleccionadas().length >= this.cantidadCombo()) {
+      this.esVip.set('Ya seleccionaste la cantidad maxima de entradas.');
       return;
     }
 
@@ -144,9 +147,9 @@ export class MapaButacas implements OnInit, OnDestroy {
   puedeContinuar() {
     const cantidad = this.seleccionadas().length;
     if (this.carrito.combo()) {
-      return cantidad === this.cantidadCombo();
+      return cantidad === this.cantidadCombo(); // devuelve true si la cantidad de seleccionadas es igual a la cantidad max del combo
     }
-    return cantidad > 0;
+    return cantidad > 0; // devuelve true si la cantidad seleccionada es > 0
   }
 
   continuar() {

@@ -89,7 +89,7 @@ export class GestionPeliculas implements OnInit{
   quitarGenero(genero: string){
     let restantes: string[] = [];
     for (let elegido of this.generosElegidos()) {
-      if (elegido !== genero) {
+      if (elegido !== genero) { // todos los generos menos el que se selecciono para quitar
         restantes.push(elegido);
       }
     }

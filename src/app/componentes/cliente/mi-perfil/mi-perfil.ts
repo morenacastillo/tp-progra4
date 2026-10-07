@@ -58,13 +58,13 @@ export class MiPerfil implements OnInit{
 
   compraRetirada(compra: CompraPerfil) {
     for (let entrada of compra.entradas) {
-      if (entrada.estado === 'vigente') {
+      if (entrada.estado === 'vigente') { // en base: vigente / escaneada
         return false;
       }
     }
 
-    for (let item of compra.candy_vendido) {
-      if (item.estado === 'vigente') {
+    for (let item of compra.candy_vendido) { 
+      if (item.estado === 'vigente') {// en base: vigente / retirado
         return false;
       }
     }
@@ -76,7 +76,7 @@ export class MiPerfil implements OnInit{
     if (!entrada) {
       return false;
     }
-    return new Date(entrada.funciones.fin) < new Date();
+    return new Date(entrada.funciones.fin) < new Date(); // si el fin de la funcion es antes del dia de hoy -> vencido
   }
 
   yaOpino(peliculaId: number) {
@@ -95,7 +95,7 @@ export class MiPerfil implements OnInit{
     for (let compra of this.datosCompras()) {
       const entrada = compra.entradas[0]; // toma la primer entrada de la pelicula
 
-      if (entrada && this.compraRetirada(compra)) { // preg si la compra tiene entradas y la peli ya termino
+      if (entrada && this.compraRetirada(compra)) { // preg si la compra tiene entradas y la peli ya se retiro
         const pelicula = entrada.funciones.peliculas;
 
         if (!this.yaOpino(pelicula.id) && !idsAgregados.includes(pelicula.id)) { // si aun no opinaste de esa peli y no esta en la lista
